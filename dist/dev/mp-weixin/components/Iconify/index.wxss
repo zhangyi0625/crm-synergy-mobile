@@ -1,0 +1,11 @@
+.iconify.data-v-f0e06e02 {
+  display: inline-block;
+  vertical-align: middle;
+  height: 44rpx;
+  width: 44rpx;
+  color: inherit;
+}
+.iconify.data-v-f0e06e02:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}

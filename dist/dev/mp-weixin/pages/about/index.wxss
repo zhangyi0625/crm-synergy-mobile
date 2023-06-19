@@ -1,0 +1,28 @@
+.container.data-v-6b4e7e2d {
+  padding: 96rpx 24rpx;
+}
+.container .head-wrap.data-v-6b4e7e2d {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container .head-wrap .avatar.data-v-6b4e7e2d {
+  height: 120rpx;
+  width: 120rpx;
+  border: 2rpx solid #d1d5db;
+  border-radius: 120rpx;
+  overflow: hidden;
+  padding: 6rpx;
+}
+.container .head-wrap .avatar .img.data-v-6b4e7e2d {
+  height: 100%;
+  width: 100%;
+}
+.container .head-wrap .desc.data-v-6b4e7e2d {
+  font-size: 28rpx;
+  line-height: 120rpx;
+}
+.container .cell.data-v-6b4e7e2d {
+  margin-top: 60rpx;
+  text-align: center;
+}

@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "Home",
+  "usingComponents": {
+    "basic-button": "../../components/BasicButton/index",
+    "app-provider": "../../components/AppProvider/inedx",
+    "iconify": "../../components/Iconify/index"
+  }
+}
