@@ -17,7 +17,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
   setup(__props, { emit }) {
     const props = __props;
     const iconSize = common_vendor.u(props.size ? `${props.size}rpx` : false);
-    let style = common_vendor.G(() => {
+    let style = common_vendor.H(() => {
       let ISize = common_vendor.w(iconSize);
       return common_vendor.h({ width: utils_is.a(ISize) ? "" : ISize, height: utils_is.a(ISize) ? "" : ISize }, { color: props.color });
     });
@@ -27,8 +27,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     return (_ctx, _cache) => {
       return {
         a: common_vendor.x(onClick),
-        b: common_vendor.H(__props.icon),
-        c: common_vendor.I(common_vendor.w(style))
+        b: common_vendor.I(__props.icon),
+        c: common_vendor.J(common_vendor.w(style))
       };
     };
   }

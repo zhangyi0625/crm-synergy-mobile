@@ -21,6 +21,13 @@ var PLATFORMS = /* @__PURE__ */ ((PLATFORMS2) => {
   PLATFORMS2["QUICKAPP_WEBVIEW_HUAWEI"] = "QUICKAPP-WEBVIEW-HUAWEI";
   return PLATFORMS2;
 })(PLATFORMS || {});
-const CURRENT_PLATFORM = {}["UNI_PLATFORM"];
+function PLATFORM_ENV() {
+  let platform = "DEFAULT";
+  platform = "VUE3";
+  platform = "MP";
+  platform = "MP-WEIXIN";
+  return platform;
+}
+const CURRENT_PLATFORM = PLATFORM_ENV();
 exports.C = CURRENT_PLATFORM;
 exports.P = PLATFORMS;

@@ -12,6 +12,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const appTitle = utils_env.a("VITE_APP_TITLE");
     const title = common_vendor.u(appTitle);
     const platform = enums_platformEnum.C;
+    console.log(platform, "sss", enums_platformEnum.C, enums_platformEnum.P);
     const isVue3 = utils_platform.j(enums_platformEnum.P.VUE3);
     const router = common_vendor.T();
     const handleGetStarted = () => {

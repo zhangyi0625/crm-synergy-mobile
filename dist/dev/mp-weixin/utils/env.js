@@ -1,4 +1,5 @@
 "use strict";
+require("../enums/platformEnum.js");
 const name = "Vue3-Vite-TS 基础框架";
 const version = "1.3.0";
 const scripts = {

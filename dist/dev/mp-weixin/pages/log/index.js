@@ -3,7 +3,7 @@ const common_vendor = require("../../common/vendor.js");
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
-    common_vendor.z((query) => {
+    common_vendor.B((query) => {
       console.log("log onLoad query", query);
     });
     return (_ctx, _cache) => {

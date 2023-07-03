@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "Demo",
   "usingComponents": {
+    "u-button": "../../uni_modules/vk-uview-ui/components/u-button/u-button",
     "basic-button": "../../components/BasicButton/index",
     "app-provider": "../../components/AppProvider/inedx"
   }

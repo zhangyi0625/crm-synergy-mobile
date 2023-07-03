@@ -10,7 +10,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const go = common_vendor.u("");
     const router = common_vendor.T();
     const redirect = common_vendor.u("");
-    common_vendor.z((query) => {
+    common_vendor.B((query) => {
       go.value = (query == null ? void 0 : query.go) || "";
       redirect.value = (query == null ? void 0 : query.redirect) || "";
     });

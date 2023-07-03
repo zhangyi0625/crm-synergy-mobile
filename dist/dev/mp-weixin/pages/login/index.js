@@ -1,20 +1,20 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js"), state_modules_auth = require("../../state/modules/auth.js"), utils_uniapi_prompt = require("../../utils/uniapi/prompt.js"), services_api_auth = require("../../services/api/auth.js");
-require("../../utils/cache/index.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/env.js"), require("../../utils/cipher.js"), require("../../utils/is.js"), require("../../enums/cacheEnum.js"), require("../../utils/http/index.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../utils/http/checkStatus.js");
+require("../../utils/cache/index.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/env.js"), require("../../enums/platformEnum.js"), require("../../utils/cipher.js"), require("../../utils/is.js"), require("../../enums/cacheEnum.js"), require("../../utils/http/index.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../utils/http/checkStatus.js");
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
     const pageQuery = common_vendor.u(void 0);
-    common_vendor.z((query) => {
+    common_vendor.B((query) => {
       pageQuery.value = query;
     });
     const router = common_vendor.T();
-    const form = common_vendor.C({
+    const form = common_vendor.D({
       email: "uni-app@test.com",
       password: "Vue3_Ts_Vite"
     });
     const authStore = state_modules_auth.u();
-    const { send: sendLogin } = common_vendor.D(services_api_auth.a, { immediate: false });
+    const { send: sendLogin } = common_vendor.F(services_api_auth.a, { immediate: false });
     const submit = (e) => {
       sendLogin(e.detail.value).then((res) => {
         utils_uniapi_prompt.T("登录成功", { duration: 1500 });
@@ -22,7 +22,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         setTimeout(() => {
           var _a, _b;
           if ((_a = common_vendor.w(pageQuery)) == null ? void 0 : _a.redirect) {
-            const params = common_vendor.F(common_vendor.w(pageQuery), ["redirect", "tabBar"]);
+            const params = common_vendor.G(common_vendor.w(pageQuery), ["redirect", "tabBar"]);
             if ((_b = common_vendor.w(pageQuery)) == null ? void 0 : _b.tabBar) {
               router.replaceAll({ name: common_vendor.w(pageQuery).redirect, params });
             } else {

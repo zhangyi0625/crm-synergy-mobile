@@ -737,8 +737,8 @@ function promisify$1(name, fn) {
     if (hasCallback(args)) {
       return wrapperReturnValue(name, invokeApi(name, fn, args, rest));
     }
-    return wrapperReturnValue(name, handlePromise(new Promise((resolve, reject) => {
-      invokeApi(name, fn, extend(args, { success: resolve, fail: reject }), rest);
+    return wrapperReturnValue(name, handlePromise(new Promise((resolve2, reject) => {
+      invokeApi(name, fn, extend(args, { success: resolve2, fail: reject }), rest);
     })));
   };
 }
@@ -1030,7 +1030,7 @@ function invokeGetPushCidCallbacks(cid2, errMsg) {
   getPushCidCallbacks.length = 0;
 }
 const API_GET_PUSH_CLIENT_ID = "getPushClientId";
-const getPushClientId = defineAsyncApi(API_GET_PUSH_CLIENT_ID, (_2, { resolve, reject }) => {
+const getPushClientId = defineAsyncApi(API_GET_PUSH_CLIENT_ID, (_2, { resolve: resolve2, reject }) => {
   Promise.resolve().then(() => {
     if (typeof enabled === "undefined") {
       enabled = false;
@@ -1039,7 +1039,7 @@ const getPushClientId = defineAsyncApi(API_GET_PUSH_CLIENT_ID, (_2, { resolve, r
     }
     getPushCidCallbacks.push((cid2, errMsg) => {
       if (cid2) {
-        resolve({ cid: cid2 });
+        resolve2({ cid: cid2 });
       } else {
         reject(errMsg);
       }
@@ -1104,9 +1104,9 @@ function promisify$2(name, api) {
     if (isFunction$1(options.success) || isFunction$1(options.fail) || isFunction$1(options.complete)) {
       return wrapperReturnValue(name, invokeApi(name, api, options, rest));
     }
-    return wrapperReturnValue(name, handlePromise(new Promise((resolve, reject) => {
+    return wrapperReturnValue(name, handlePromise(new Promise((resolve2, reject) => {
       invokeApi(name, api, extend({}, options, {
-        success: resolve,
+        success: resolve2,
         fail: reject
       }), rest);
     })));
@@ -3656,6 +3656,46 @@ function validateDirectiveName(name) {
     warn("Do not use built-in directive ids as custom directive id: " + name);
   }
 }
+const COMPONENTS = "components";
+function resolveComponent(name, maybeSelfReference) {
+  return resolveAsset(COMPONENTS, name, true, maybeSelfReference) || name;
+}
+function resolveAsset(type, name, warnMissing = true, maybeSelfReference = false) {
+  const instance = currentRenderingInstance || currentInstance;
+  if (instance) {
+    const Component2 = instance.type;
+    if (type === COMPONENTS) {
+      const selfName = getComponentName(
+        Component2,
+        false
+        /* do not include inferred name to avoid breaking existing code */
+      );
+      if (selfName && (selfName === name || selfName === camelize(name) || selfName === capitalize(camelize(name)))) {
+        return Component2;
+      }
+    }
+    const res = (
+      // local registration
+      // check instance[type] first which is resolved for options API
+      resolve(instance[type] || Component2[type], name) || // global registration
+      resolve(instance.appContext[type], name)
+    );
+    if (!res && maybeSelfReference) {
+      return Component2;
+    }
+    if ({}.NODE_ENV !== "production" && warnMissing && !res) {
+      const extra = type === COMPONENTS ? `
+If this is a native custom element, make sure to exclude it from component resolution via compilerOptions.isCustomElement.` : ``;
+      warn(`Failed to resolve ${type.slice(0, -1)}: ${name}${extra}`);
+    }
+    return res;
+  } else if ({}.NODE_ENV !== "production") {
+    warn(`resolve${capitalize(type.slice(0, -1))} can only be used in render() or setup().`);
+  }
+}
+function resolve(registry, name) {
+  return registry && (registry[name] || registry[camelize(name)] || registry[capitalize(camelize(name))]);
+}
 const getPublicInstance = (i2) => {
   if (!i2)
     return null;
@@ -5272,8 +5312,8 @@ function nextTick(instance, fn) {
       _resolve(instance.proxy);
     }
   });
-  return new Promise((resolve) => {
-    _resolve = resolve;
+  return new Promise((resolve2) => {
+    _resolve = resolve2;
   });
 }
 function clone(src, seen) {
@@ -9606,9 +9646,9 @@ const getLocalCacheConfigParam = (methodInstance) => {
 };
 const getHandlerMethod = (methodHandler, args = []) => isFn$1(methodHandler) ? methodHandler(...args) : methodHandler;
 const sloughConfig = (config, args = []) => isFn$1(config) ? config(...args) : config;
-const promisify = (targetFn) => (...args) => newInstance(PromiseCls, (resolve, reject) => {
+const promisify = (targetFn) => (...args) => newInstance(PromiseCls, (resolve2, reject) => {
   try {
-    resolve(targetFn(...args));
+    resolve2(targetFn(...args));
   } catch (error) {
     reject(error);
   }
@@ -9770,8 +9810,8 @@ const buildCompletedURL = (baseURL, url, params) => {
 function sendRequest(methodInstance, forceRequest) {
   let fromCache = trueValue$2;
   let requestAdapterCtrlsPromiseResolveFn;
-  const requestAdapterCtrlsPromise = newInstance(PromiseCls, (resolve) => {
-    requestAdapterCtrlsPromiseResolveFn = resolve;
+  const requestAdapterCtrlsPromise = newInstance(PromiseCls, (resolve2) => {
+    requestAdapterCtrlsPromiseResolveFn = resolve2;
   });
   const response = () => {
     const { beforeRequest = noop$2, responsed, responded, requestAdapter: requestAdapter2 } = getOptions(methodInstance);
@@ -10333,7 +10373,7 @@ const requestAdapter = (elements, method) => {
   const { url, data, type, headers: header } = elements;
   let taskInstance;
   let onDownload = noop$1, onUpload = noop$1;
-  const responsePromise = new Promise((resolve, reject) => {
+  const responsePromise = new Promise((resolve2, reject) => {
     const { config: adapterConfig } = method;
     const { requestType, timeout } = adapterConfig;
     if (requestType === "upload") {
@@ -10356,7 +10396,7 @@ const requestAdapter = (elements, method) => {
         header,
         formData,
         timeout,
-        success: (res) => resolve(res),
+        success: (res) => resolve2(res),
         fail: (reason) => reject(new Error(reason.errMsg)),
         complete: noop$1
       });
@@ -10371,7 +10411,7 @@ const requestAdapter = (elements, method) => {
         url,
         header,
         timeout,
-        success: (res) => resolve(res),
+        success: (res) => resolve2(res),
         fail: (reason) => reject(new Error(reason.errMsg)),
         complete: noop$1
       });
@@ -10388,7 +10428,7 @@ const requestAdapter = (elements, method) => {
         header,
         method: type,
         timeout,
-        success: (res) => resolve(res),
+        success: (res) => resolve2(res),
         fail: (reason) => reject(new Error(reason.errMsg))
       });
     }
@@ -10593,7 +10633,7 @@ function MockRequest({ enable = trueValue, delay = 2e3, httpAdapter, mockRequest
         rejectFn(new Error("request timeout"));
       }, timeout);
     }
-    const resonpsePromise = new Promise((resolve, reject) => {
+    const resonpsePromise = new Promise((resolve2, reject) => {
       rejectFn = reject;
       timer = setTimeout(() => {
         try {
@@ -10603,7 +10643,7 @@ function MockRequest({ enable = trueValue, delay = 2e3, httpAdapter, mockRequest
             data,
             headers: requestHeaders
           }) : mockDataRaw;
-          resolve(new Promise((resolveInner, rejectInner) => {
+          resolve2(new Promise((resolveInner, rejectInner) => {
             rejectFn = rejectInner;
             Promise.resolve(res).then(resolveInner).catch(rejectInner);
           }));
@@ -12128,14 +12168,15 @@ function _(e2) {
   return r;
 }
 exports.A = AdapterUniapp;
-exports.B = e;
-exports.C = reactive;
-exports.D = useRequest;
+exports.B = onLoad;
+exports.C = e;
+exports.D = reactive;
 exports.E = ECB;
-exports.F = omit$1;
-exports.G = computed;
-exports.H = n;
-exports.I = s$1;
+exports.F = useRequest;
+exports.G = omit$1;
+exports.H = computed;
+exports.I = n;
+exports.J = s$1;
 exports.T = T;
 exports.U = UTF8;
 exports._ = _;
@@ -12164,4 +12205,4 @@ exports.v = t;
 exports.w = unref;
 exports.x = o;
 exports.y = p$1;
-exports.z = onLoad;
+exports.z = resolveComponent;

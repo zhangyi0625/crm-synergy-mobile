@@ -1,7 +1,12 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+if (!Array) {
+  const _easycom_u_button2 = common_vendor.z("u-button");
+  _easycom_u_button2();
+}
+const _easycom_u_button = () => "../../uni_modules/vk-uview-ui/components/u-button/u-button.js";
 if (!Math) {
-  (BasicButton + AppProvider)();
+  (BasicButton + _easycom_u_button + AppProvider)();
 }
 const BasicButton = () => "../../components/BasicButton/index.js";
 const AppProvider = () => "../../components/AppProvider/inedx.js";
@@ -14,7 +19,16 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     };
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.x(jumpList1)
+        a: common_vendor.x(jumpList1),
+        b: common_vendor.y({
+          type: "primary"
+        }),
+        c: common_vendor.y({
+          type: "success"
+        }),
+        d: common_vendor.y({
+          type: "info"
+        })
       };
     };
   }
