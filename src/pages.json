@@ -1,136 +1,161 @@
 {
-    "pages": [
-        {
-            "name": "Home",
-            "path": "pages/index/index",
-            "style": {
-                "navigationBarTitleText": "Home"
-            },
-            "meta": {
-                "tabBar": true
-            }
-        },
-        {
-            "name": "Demo",
-            "path": "pages/demo/index",
-            "style": {
-                "navigationBarTitleText": "Demo"
-            },
-            "meta": {
-                "tabBar": true
-            }
-        },
-        {
-            "name": "About",
-            "path": "pages/about/index",
-            "style": {
-                "navigationBarTitleText": "关于"
-            },
-            "meta": {
-                "ignoreAuth": true,
-                "tabBar": true
-            }
-        },
-        {
-            "name": "Login",
-            "path": "pages/login/index",
-            "style": {
-                "navigationBarTitleText": "登录"
-            },
-            "meta": {
-                "ignoreAuth": true
-            }
-        },
-        {
-            "name": "Log",
-            "path": "pages/log/index",
-            "style": {
-                "navigationBarTitleText": "日志"
-            }
-        },
-        {
-            "name": "NotFound",
-            "path": "pages/notFound/404",
-            "style": {
-                "navigationBarTitleText": "Not Found"
-            },
-            "meta": {
-                "ignoreAuth": true
-            }
-        }
-    ],
-    "subPackages": [
-        {
-            "root": "pagesA",
-            "pages": [
-                {
-                    "path": "list/test1/index",
-                    "style": {
-                        "navigationBarTitleText": "test1"
-                    },
-                    "meta": {
-                        "ignoreAuth": true
-                    }
-                },
-                {
-                    "path": "list/test2/index",
-                    "style": {
-                        "navigationBarTitleText": "test2",
-                        "navigationStyle": "custom"
-                    },
-                    "meta": {
-                        "ignoreAuth": true
-                    }
-                }
-            ]
-        },
-        {
-            "root": "pagesB",
-            "pages": [
-                {
-                    "path": "detail/index",
-                    "style": {
-                        "navigationBarTitleText": "Detail"
-                    },
-                    "meta": {
-                        "ignoreAuth": true
-                    }
-                }
-            ]
-        }
-    ],
-    "globalStyle": {
-        "navigationBarTextStyle": "black",
-        "navigationBarTitleText": "uni-app",
-        "navigationBarBackgroundColor": "#F2F2F2",
-        "backgroundColor": "#F2F2F2",
-        "navigationStyle": "default",
-        "renderingMode": "seperated",
-        "pageOrientation": "portrait"
-    },
-    "tabBar": {
-        "color": "#474747",
-        "selectedColor": "#9BC6FC",
-        "backgroundColor": "#F2F2F2",
-        "list": [
-            {
-                "pagePath": "pages/index/index",
-                "text": "首页",
-                "iconPath": "static/images/tabBar/home.png",
-                "selectedIconPath": "static/images/tabBar/selectedHome.png"
-            },
-            {
-                "pagePath": "pages/demo/index",
-                "text": "Demo",
-                "iconPath": "static/images/tabBar/demo.png",
-                "selectedIconPath": "static/images/tabBar/selectedDemo.png"
-            },
-            {
-                "pagePath": "pages/about/index",
-                "text": "关于",
-                "iconPath": "static/images/tabBar/about.png",
-                "selectedIconPath": "static/images/tabBar/selectedAbout.png"
-            }
-        ]
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^u-(.*)": ""
     }
+  },
+  "pages": [
+    {
+      "name": "Home",
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "运价查询"
+      },
+      "meta": {
+        "tabBar": true
+      }
+    },
+    {
+      "name": "Collect",
+      "path": "pages/collect/index",
+      "style": {
+        "navigationBarTitleText": "收藏港口"
+      },
+      "meta": {
+        "tabBar": true
+      }
+    },
+    {
+      "name": "Profile",
+      "path": "pages/profile/index",
+      "style": {
+        "navigationBarTitleText": "",
+        "navigationStyle": "custom"
+      },
+      "meta": {
+        "ignoreAuth": true,
+        "tabBar": true
+      }
+    },
+    {
+      "name": "Login",
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationBarBackgroundColor": "#FFF"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "name": "Edit-Info",
+      "path": "pages/edit-info/index",
+      "style": {
+        "navigationBarTitleText": "修改密码",
+        "navigationBarBackgroundColor": "#FFF"
+      }
+    },
+    {
+      "name": "Password",
+      "path": "pages/edit-info/password",
+      "style": {
+        "navigationBarTitleText": "修改密码",
+        "navigationBarBackgroundColor": "#FFF"
+      }
+    },
+    {
+      "name": "SelectPort",
+      "path": "pages/select-port/index",
+      "style": {
+        "navigationBarTitleText": "选择起运港",
+        "navigationBarBackgroundColor": "#FFF"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "name": "NotFound",
+      "path": "pages/notFound/404",
+      "style": {
+        "navigationBarTitleText": "Not Found"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    }
+  ],
+  "subPackages": [
+    {
+      "root": "pagesA",
+      "pages": [
+        {
+          // "name": 'Freight',
+          "path": "freight/index",
+          "style": {
+            "navigationBarTitleText": "运价查询",
+            "navigationBarBackgroundColor": "#FFF"
+          }
+        },
+        {
+          // "name": 'FreightDetail',
+          "path": "freight/freight-detail/index",
+          "style": {
+            "navigationBarTitleText": "舱位详情",
+            "navigationBarBackgroundColor": "#FFF"
+          }
+        }
+      ]
+    },
+    {
+      "root": "pagesB",
+      "pages": [
+        {
+          "path": "detail/index",
+          "style": {
+            "navigationBarTitleText": "Detail"
+          },
+          "meta": {
+            "ignoreAuth": true
+          }
+        }
+      ]
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF",
+    "navigationStyle": "default",
+    "renderingMode": "seperated",
+    "pageOrientation": "portrait"
+  },
+  "tabBar": {
+    "color": "#303133",
+    "selectedColor": "#EE2233",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/images/tabBar/home.png",
+        "selectedIconPath": "static/images/tabBar/selectedHome.png"
+      },
+      {
+        "pagePath": "pages/collect/index",
+        "text": "收藏",
+        "iconPath": "static/images/tabBar/collect.png",
+        "selectedIconPath": "static/images/tabBar/selectedCollect.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "关于",
+        "iconPath": "static/images/tabBar/profile.png",
+        "selectedIconPath": "static/images/tabBar/selectedProfile.png"
+      }
+    ]
+  }
 }

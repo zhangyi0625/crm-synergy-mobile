@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "Demo",
-  "usingComponents": {
-    "basic-button": "../../components/BasicButton/index",
-    "app-provider": "../../components/AppProvider/inedx"
-  }
-}

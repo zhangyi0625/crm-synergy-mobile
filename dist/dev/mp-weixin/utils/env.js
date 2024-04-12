@@ -127,7 +127,7 @@ function getEnvMode() {
   return getEnvValue("VITE_ENV");
 }
 function getEnvValue(key) {
-  const envValue = { "VITE_USER_NODE_ENV": "development", "VITE_ROOT_DIR": "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp 移动端模版", "BASE_URL": "/", "MODE": "development", "DEV": true, "PROD": false, "SSR": false }[key];
+  const envValue = { "VITE_BASE_URL": "http://192.168.110.124:8885/apis", "VITE_CONSOLE_URL": "http://console.zaicang.net", "VITE_STATIC_URL": "https://wx.zaicang.net", "VITE_USER_NODE_ENV": "development", "VITE_ROOT_DIR": "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system", "BASE_URL": "/", "MODE": "development", "DEV": true, "PROD": false, "SSR": false }[key];
   return envValue === "true" ? true : envValue === "false" ? false : envValue;
 }
 function isDevMode() {

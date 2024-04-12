@@ -1,1 +1,1 @@
-<view class="_u_center"> Test1 </view><view class="_u_center"><basic-button u-s="{{['d']}}" bindclick="{{a}}" u-i="21ced226-0" bind:__l="__l">Test2 → </basic-button></view>
+<view class="_u_center"> Test1 </view><view class="_u_center"><basic-button u-s="{{['d']}}" bindclick="{{a}}" u-i="120d64a9-0" bind:__l="__l">Test2 → </basic-button></view>

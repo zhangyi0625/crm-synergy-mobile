@@ -1,1 +1,0 @@
-<app-provider class="data-v-54871354" u-s="{{['d']}}" u-i="54871354-0" bind:__l="__l"><view class="container data-v-54871354"> 页面构建中... </view><view class="_u_center data-v-54871354"><basic-button class="data-v-54871354" u-s="{{['d']}}" bindclick="{{a}}" u-i="54871354-1,54871354-0" bind:__l="__l">List1 → </basic-button></view></app-provider>

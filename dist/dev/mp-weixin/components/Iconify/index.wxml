@@ -1,1 +1,0 @@
-<view ref="elRef" bindtap="{{a}}" class="{{['data-v-f0e06e02', 'iconify', b]}}" style="{{c}}"></view>

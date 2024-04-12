@@ -1,8 +1,4 @@
 "use strict";
-const { toString } = Object.prototype;
-function is(val, type) {
-  return toString.call(val) === `[object ${type}]`;
-}
 function isDef(val) {
   return typeof val !== "undefined";
 }
@@ -15,8 +11,4 @@ function isNull(val) {
 function isNullOrUnDef(val) {
   return isUnDef(val) || isNull(val);
 }
-function isBoolean(val) {
-  return is(val, "Boolean");
-}
-exports.a = isBoolean;
 exports.i = isNullOrUnDef;

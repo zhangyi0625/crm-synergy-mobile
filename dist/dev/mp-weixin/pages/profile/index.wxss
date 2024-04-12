@@ -1,0 +1,8 @@
+.profile-title.data-v-f97f9319 {
+  height: 400rpx;
+  padding: 200rpx 0 0 32rpx;
+}
+.profile-content.data-v-f97f9319 {
+  height: 160rpx;
+  background: linear-gradient(180deg, #ee2233 0%, #f5f7fa 100%);
+}

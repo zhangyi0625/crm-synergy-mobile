@@ -1,0 +1,209 @@
+@import "./basic/font.css";
+@import "./basic/layout.css";
+@import "./basic/contain.css";
+@import "./basic/btn.css";
+
+.pointer {
+  cursor: pointer;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.w-400 {
+  width: 400rpx;
+}
+
+.w-300 {
+  width: 300rpx;
+}
+
+.w-300 {
+  width: 300rpx;
+}
+
+.w-166 {
+  width: 166rpx;
+}
+
+.w-112 {
+  width: 112rpx;
+}
+
+.w-68 {
+  width: 68rpx;
+}
+
+.w-52 {
+  width: 52rpx;
+}
+
+.w-48 {
+  width: 48rpx;
+}
+
+.w-36 {
+  width: 36rpx;
+}
+
+.w-32 {
+  width: 32rpx;
+}
+
+.w-24 {
+  width: 24rpx;
+}
+
+.w-16 {
+  width: 16rpx;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.h-400 {
+  height: 400rpx;
+}
+
+.h-300 {
+  height: 300rpx;
+}
+
+.h-280 {
+  height: 280rpx;
+}
+
+.h-112 {
+  height: 112rpx;
+}
+
+.h-68 {
+  height: 68rpx;
+}
+
+.h-52 {
+  height: 52rpx;
+}
+
+.h-48 {
+  height: 48rpx;
+}
+
+.h-36 {
+  height: 36rpx;
+}
+
+.h-32 {
+  height: 32rpx;
+}
+
+.h-24 {
+  height: 24rpx;
+}
+
+.h-20 {
+  height: 20rpx;
+}
+
+.h-12 {
+  height: 12rpx;
+}
+
+.br-100 {
+  border-radius: 100rpx;
+}
+
+.br-half {
+  border-radius: 50%;
+}
+
+.br25 {
+  border-radius: 25rpx;
+}
+
+.br20 {
+  border-radius: 20rpx;
+}
+
+.br16 {
+  border-radius: 16rpx;
+}
+
+.br12 {
+  border-radius: 12rpx;
+}
+
+.br12-sm {
+  border-bottom-left-radius: 12rpx;
+  border-top-right-radius: 12rpx;
+}
+
+.br8 {
+  border-radius: 8rpx;
+}
+
+.br6 {
+  border-radius: 6rpx;
+}
+
+.br4 {
+  border-radius: 4rpx;
+}
+
+.br2 {
+  border-radius: 2rpx;
+}
+
+.light-grey {
+  color: #909399;
+}
+
+.grey {
+  color: #606266;
+}
+
+.dull-grey {
+  color: #303133;
+}
+
+.slate {
+  color: #bfc2cc;
+}
+
+.light-red {
+  color: #fa5151;
+}
+
+.dull-red {
+  color: #ee2233;
+}
+
+.dull-blue {
+  color: #1677ff;
+}
+
+.neutral {
+  color: #fff;
+}
+
+.bg-neutral {
+  background: #fff;
+}
+
+.bg-light-grey {
+  background: #f5f7fa;
+}
+
+.bg-light-red {
+  background: #fde8ea;
+}
+
+.bg-dull-red {
+  background: #ee2233;
+}
+
+.text-center {
+  text-align: center;
+}
