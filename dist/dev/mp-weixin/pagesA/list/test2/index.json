@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "test2",
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "basic-button": "../../../components/BasicButton/index"
-  }
-}

@@ -1,1 +1,0 @@
-<view class="default-btn data-v-c5014d92" disabled="{{a}}" bindtap="{{b}}"><slot></slot></view>
