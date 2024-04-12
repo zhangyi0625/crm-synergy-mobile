@@ -1,18 +1,20 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/demo/index",
-    "pages/about/index",
+    "pages/collect/index",
+    "pages/profile/index",
     "pages/login/index",
-    "pages/log/index",
+    "pages/edit-info/index",
+    "pages/edit-info/password",
+    "pages/select-port/index",
     "pages/notFound/404"
   ],
   "subPackages": [
     {
       "root": "pagesA",
       "pages": [
-        "list/test1/index",
-        "list/test2/index"
+        "freight/index",
+        "freight/freight-detail/index"
       ]
     },
     {
@@ -25,16 +27,16 @@
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F2F2F2",
-    "backgroundColor": "#F2F2F2",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF",
     "navigationStyle": "default",
     "renderingMode": "seperated",
     "pageOrientation": "portrait"
   },
   "tabBar": {
-    "color": "#474747",
-    "selectedColor": "#9BC6FC",
-    "backgroundColor": "#F2F2F2",
+    "color": "#303133",
+    "selectedColor": "#EE2233",
+    "backgroundColor": "#FFFFFF",
     "list": [
       {
         "pagePath": "pages/index/index",
@@ -43,16 +45,16 @@
         "selectedIconPath": "static/images/tabBar/selectedHome.png"
       },
       {
-        "pagePath": "pages/demo/index",
-        "text": "Demo",
-        "iconPath": "static/images/tabBar/demo.png",
-        "selectedIconPath": "static/images/tabBar/selectedDemo.png"
+        "pagePath": "pages/collect/index",
+        "text": "收藏",
+        "iconPath": "static/images/tabBar/collect.png",
+        "selectedIconPath": "static/images/tabBar/selectedCollect.png"
       },
       {
-        "pagePath": "pages/about/index",
+        "pagePath": "pages/profile/index",
         "text": "关于",
-        "iconPath": "static/images/tabBar/about.png",
-        "selectedIconPath": "static/images/tabBar/selectedAbout.png"
+        "iconPath": "static/images/tabBar/profile.png",
+        "selectedIconPath": "static/images/tabBar/selectedProfile.png"
       }
     ]
   },

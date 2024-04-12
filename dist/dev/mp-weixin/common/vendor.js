@@ -5783,6 +5783,24 @@ function createVueApp(rootComponent, rootProps = null) {
   };
   return app;
 }
+function useCssVars(getter) {
+  const instance = getCurrentInstance();
+  if (!instance) {
+    ({}).NODE_ENV !== "production" && warn(`useCssVars is called without current active component instance.`);
+    return;
+  }
+  initCssVarsRender(instance, getter);
+}
+function initCssVarsRender(instance, getter) {
+  instance.ctx.__cssVars = () => {
+    const vars = getter(instance.proxy);
+    const cssVars = {};
+    for (const key2 in vars) {
+      cssVars[`--${key2}`] = vars[key2];
+    }
+    return cssVars;
+  };
+}
 function injectLifecycleHook(name, hook, publicThis, instance) {
   if (isFunction$1(hook)) {
     injectHook(name, hook.bind(publicThis), instance);
@@ -6048,6 +6066,38 @@ function patchStopImmediatePropagation(e2, value) {
     return value;
   }
 }
+function vFor(source, renderItem) {
+  let ret;
+  if (isArray$3(source) || isString$2(source)) {
+    ret = new Array(source.length);
+    for (let i2 = 0, l2 = source.length; i2 < l2; i2++) {
+      ret[i2] = renderItem(source[i2], i2, i2);
+    }
+  } else if (typeof source === "number") {
+    if ({}.NODE_ENV !== "production" && !Number.isInteger(source)) {
+      warn(`The v-for range expect an integer value but got ${source}.`);
+      return [];
+    }
+    ret = new Array(source);
+    for (let i2 = 0; i2 < source; i2++) {
+      ret[i2] = renderItem(i2 + 1, i2, i2);
+    }
+  } else if (isObject$1(source)) {
+    if (source[Symbol.iterator]) {
+      ret = Array.from(source, (item, i2) => renderItem(item, i2, i2));
+    } else {
+      const keys2 = Object.keys(source);
+      ret = new Array(keys2.length);
+      for (let i2 = 0, l2 = keys2.length; i2 < l2; i2++) {
+        const key2 = keys2[i2];
+        ret[i2] = renderItem(source[key2], key2, i2);
+      }
+    }
+  } else {
+    ret = [];
+  }
+  return ret;
+}
 function stringifyStyle(value) {
   if (isString$2(value)) {
     return value;
@@ -6065,6 +6115,7 @@ function stringify(styles) {
   return ret;
 }
 const o = (value, key2) => vOn(value, key2);
+const f$1 = (source, renderItem) => vFor(source, renderItem);
 const s$1 = (value) => stringifyStyle(value);
 const e = (target, ...sources) => extend(target, ...sources);
 const n = (value) => normalizeClass(value);
@@ -12168,15 +12219,19 @@ function _(e2) {
   return r;
 }
 exports.A = AdapterUniapp;
-exports.B = onLoad;
-exports.C = e;
-exports.D = reactive;
+exports.B = o;
+exports.C = f$1;
+exports.D = p$1;
 exports.E = ECB;
-exports.F = useRequest;
-exports.G = omit$1;
-exports.H = computed;
-exports.I = n;
-exports.J = s$1;
+exports.F = t;
+exports.G = n;
+exports.H = onLoad;
+exports.I = omit$1;
+exports.J = invalidateCache;
+exports.K = computed;
+exports.L = watch;
+exports.M = s$1;
+exports.N = useCssVars;
 exports.T = T;
 exports.U = UTF8;
 exports._ = _;
@@ -12200,9 +12255,9 @@ exports.q = _export_sfc;
 exports.r = requestAdapter;
 exports.s = sampleSize;
 exports.t = createSSRApp;
-exports.u = ref;
-exports.v = t;
-exports.w = unref;
-exports.x = o;
-exports.y = p$1;
-exports.z = resolveComponent;
+exports.u = resolveComponent;
+exports.v = ref;
+exports.w = reactive;
+exports.x = useRequest;
+exports.y = e;
+exports.z = unref;

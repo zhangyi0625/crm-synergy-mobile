@@ -1,8 +1,6 @@
 {
-  "navigationBarTitleText": "Home",
+  "navigationBarTitleText": "运价查询",
   "usingComponents": {
-    "basic-button": "../../components/BasicButton/index",
-    "app-provider": "../../components/AppProvider/inedx",
-    "iconify": "../../components/Iconify/index"
+    "u-notice-bar": "../../uni_modules/vk-uview-ui/components/u-notice-bar/u-notice-bar"
   }
 }

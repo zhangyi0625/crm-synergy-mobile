@@ -1,0 +1,100 @@
+@keyframes spinner-fd642f09 {
+to {
+    transform: rotate(360deg);
+}
+}
+@keyframes rotate-fd642f09 {
+from {
+    transform: rotate(0);
+}
+to {
+    transform: rotate(360deg);
+}
+}
+@keyframes move-fd642f09 {
+0%, 15% {
+    transform: translateY(0);
+}
+100% {
+    transform: translateY(-150%);
+}
+}
+.container.data-v-fd642f09 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.container .mask.data-v-fd642f09 {
+  z-index: 999 !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(255, 255, 255, var(--opacity));
+  transform: translate(0, 0);
+}
+.container .mask-mini.data-v-fd642f09 {
+  height: 300rpx;
+  width: 300rpx;
+  border-radius: 20rpx;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.container .mask-dark.data-v-fd642f09 {
+  background: rgba(7, 17, 27, var(--opacity));
+}
+.container .main-item.data-v-fd642f09 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.container .main-item .loader-annulus.data-v-fd642f09 {
+  width: 60px;
+  height: 60px;
+}
+.container .main-item .loader-annulus.data-v-fd642f09::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border-top: 2px solid var(--0374ca5e);
+  border-right: 2px solid transparent;
+  animation: spinner-fd642f09 1s linear infinite;
+}
+.container .main-item .loader-triangle.data-v-fd642f09 {
+  animation: rotate-fd642f09 2s linear infinite normal;
+  position: relative;
+  transform-origin: 50% 50%;
+}
+.container .main-item .loader-triangle-ball.data-v-fd642f09 {
+  height: 30rpx;
+  width: 30rpx;
+  left: -15rpx;
+  position: absolute;
+  top: -15rpx;
+  transform-origin: 50% 50%;
+}
+.container .main-item .loader-triangle-ball.data-v-fd642f09:nth-of-type(2) {
+  transform: rotate(120deg);
+}
+.container .main-item .loader-triangle-ball.data-v-fd642f09:nth-of-type(3) {
+  transform: rotate(240deg);
+}
+.container .main-item .loader-triangle-ball.data-v-fd642f09::after {
+  animation: move-fd642f09 1s ease-in-out infinite alternate;
+  background: linear-gradient(135deg, #1fa2ff, #12d8fa, #29ffc6);
+  border-radius: 50%;
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  transform-origin: 50% 50%;
+}

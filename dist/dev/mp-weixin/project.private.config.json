@@ -3,5 +3,18 @@
   "projectname": "uniapp_vue3_vite_ts",
   "setting": {
     "compileHotReLoad": true
+  },
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/select-port/index",
+          "pathName": "pages/select-port/index",
+          "query": "type=POR",
+          "launchMode": "default",
+          "scene": null
+        }
+      ]
+    }
   }
 }

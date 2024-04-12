@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "关于",
-  "usingComponents": {
-    "basic-button": "../../components/BasicButton/index",
-    "app-provider": "../../components/AppProvider/inedx"
-  }
-}

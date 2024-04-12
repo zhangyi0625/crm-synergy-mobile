@@ -1,9 +1,10 @@
 "use strict";
-const common_vendor = require("../../common/vendor.js"), utils_env = require("../env.js"), mock_index = require("../../mock/index.js"), state_modules_auth = require("../../state/modules/auth.js"), utils_http_checkStatus = require("./checkStatus.js"), enums_httpEnum = require("../../enums/httpEnum.js"), utils_uniapi_prompt = require("../uniapi/prompt.js");
+const common_vendor = require("../../common/vendor.js"), utils_env = require("../env.js"), mock_index = require("../../mock/index.js"), state_modules_auth = require("../../state/modules/auth.js"), utils_http_checkStatus = require("./checkStatus.js"), enums_httpEnum = require("../../enums/httpEnum.js");
 const BASE_URL = utils_env.b();
 const HEADER = {
   "Content-Type": enums_httpEnum.C.JSON,
   Accept: "application/json, text/plain, */*"
+  // Authorization: 'Bearer 86cc6e2130ae40a3ba471afe5b308a26'
 };
 const alovaInstance = common_vendor.g({
   baseURL: BASE_URL,
@@ -14,7 +15,17 @@ const alovaInstance = common_vendor.g({
   timeout: 5e3,
   beforeRequest: (method) => {
     const authStore = state_modules_auth.u();
-    method.config.headers = common_vendor.h(method.config.headers, HEADER, authStore.getAuthorization);
+    method.config.headers = common_vendor.h(
+      method.config.headers,
+      HEADER,
+      authStore.getAuthorization
+    );
+    if (method.url === "/admin/login/sms/phone/code") {
+      method.config.headers["X-Captcha-Answer"] = "PEw4oT7PgtQRSc8MHibNC5lmT3sMjNfI";
+      method.config.headers["Content-Type"] = enums_httpEnum.C.FORM_URLENCODED;
+    } else if (method.url === "/api/customer/login/wxapp/phone") {
+      method.config.headers["Content-Type"] = enums_httpEnum.C.FORM_URLENCODED;
+    }
   },
   responsed: {
     /**
@@ -28,7 +39,9 @@ const alovaInstance = common_vendor.g({
       const { enableDownload, enableUpload } = config;
       const { statusCode, data: rawData } = response;
       const { code, message, data } = rawData;
-      if (statusCode === 200) {
+      console.log(rawData, statusCode, message, code, data);
+      console.log(enableDownload, "enableUpload", enableUpload);
+      if (rawData.code === 200) {
         if (enableDownload) {
           return rawData;
         }
@@ -38,10 +51,9 @@ const alovaInstance = common_vendor.g({
         if (code === enums_httpEnum.R.SUCCESS) {
           return data;
         }
-        message && utils_uniapi_prompt.T(message);
-        return Promise.reject(rawData);
+        return rawData.data;
       }
-      utils_http_checkStatus.c(statusCode, message || "");
+      utils_http_checkStatus.c(rawData.code, rawData.message || "");
       return Promise.reject(rawData);
     },
     /**
@@ -51,6 +63,8 @@ const alovaInstance = common_vendor.g({
      * @param method
      */
     onError: (err, method) => {
+      console.log(err, "err", method);
+      console.log("sssssssss");
       return Promise.reject({ err, method });
     }
   }

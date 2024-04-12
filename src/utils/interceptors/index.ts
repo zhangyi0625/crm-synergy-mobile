@@ -1,8 +1,3 @@
+export function setupInterceptors() {}
 
-export function setupInterceptors() {
-
-}
-
-export function removeInterceptor() {
-
-}
+export function removeInterceptor() {}

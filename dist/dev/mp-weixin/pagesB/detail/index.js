@@ -4,5 +4,5 @@ const _sfc_main = {};
 function _sfc_render(_ctx, _cache) {
   return {};
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor.q(_sfc_main, [["render", _sfc_render], ["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp 移动端模版/src/pagesB/detail/index.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor.q(_sfc_main, [["render", _sfc_render], ["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system/src/pagesB/detail/index.vue"]]);
 wx.createPage(MiniProgramPage);

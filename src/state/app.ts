@@ -1,12 +1,12 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
 interface AppState {
-    sys?: string | number;
+  sys?: string | number;
 }
 
 export const useAppStore = defineStore({
-    id: 'app-store',
-    state: (): AppState => ({}),
-    getters: {},
-    actions: {},
+  id: "app-store",
+  state: (): AppState => ({}),
+  getters: {},
+  actions: {},
 });

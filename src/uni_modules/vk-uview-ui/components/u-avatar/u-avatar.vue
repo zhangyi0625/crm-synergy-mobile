@@ -12,7 +12,7 @@
       class="u-line-1"
       v-else-if="uText"
       :style="{
-        fontSize: '38rpx'
+        fontSize: '38rpx',
       }"
     >
       {{ uText }}
@@ -68,75 +68,75 @@ export default {
     // 背景颜色
     bgColor: {
       type: String,
-      default: "transparent"
+      default: "transparent",
     },
     // 头像路径
     src: {
       type: String,
-      default: ""
+      default: "",
     },
     // 尺寸，large-大，default-中等，mini-小，如果为数值，则单位为rpx
     // 宽度等于高度
     size: {
       type: [String, Number],
-      default: "default"
+      default: "default",
     },
     // 头像模型，square-带圆角方形，circle-圆形
     mode: {
       type: String,
-      default: "circle"
+      default: "circle",
     },
     // 文字内容
     text: {
       type: String,
-      default: ""
+      default: "",
     },
     // 图片的裁剪模型
     imgMode: {
       type: String,
-      default: "aspectFill"
+      default: "aspectFill",
     },
     // 标识符
     index: {
       type: [String, Number],
-      default: ""
+      default: "",
     },
     // 右上角性别角标，man-男，woman-女
     sexIcon: {
       type: String,
-      default: "man"
+      default: "man",
     },
     // 右下角的等级图标
     levelIcon: {
       type: String,
-      default: "level"
+      default: "level",
     },
     // 右下角等级图标背景颜色
     levelBgColor: {
       type: String,
-      default: ""
+      default: "",
     },
     // 右上角性别图标的背景颜色
     sexBgColor: {
       type: String,
-      default: ""
+      default: "",
     },
     // 是否显示性别图标
     showSex: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 是否显示等级图标
     showLevel: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       error: false,
       // 头像的地址，因为如果加载错误，需要赋值为默认图片，props值无法修改，所以需要一个中间值
-      avatar: this.src ? this.src : base64Avatar
+      avatar: this.src ? this.src : base64Avatar,
     };
   },
   watch: {
@@ -150,7 +150,7 @@ export default {
         this.avatar = n;
         this.error = false;
       }
-    }
+    },
   },
   computed: {
     wrapStyle() {
@@ -190,7 +190,7 @@ export default {
       let style = {};
       if (this.levelBgColor) style.backgroundColor = this.levelBgColor;
       return style;
-    }
+    },
   },
   methods: {
     // 图片加载错误时，显示默认头像
@@ -200,8 +200,8 @@ export default {
     },
     click() {
       this.$emit("click", this.index);
-    }
-  }
+    },
+  },
 };
 </script>
 

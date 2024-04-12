@@ -5,41 +5,41 @@
  * @constructor
  */
 export const SetClipboardData = (data: string, showToast = true) =>
-    new Promise((resolve, reject) => {
-        uni.setClipboardData({
-            data,
-            showToast,
-            success: (res) => {
-                resolve(res);
-            },
-            fail: (err) => {
-                reject(err);
-            },
-        });
+  new Promise((resolve, reject) => {
+    uni.setClipboardData({
+      data,
+      showToast,
+      success: (res) => {
+        resolve(res);
+      },
+      fail: (err) => {
+        reject(err);
+      },
     });
+  });
 
 /**
  * @description 获取系统剪贴板内容
  * @constructor
  */
 export const GetClipboardData = () =>
-    new Promise((resolve, reject) => {
-        uni.getClipboardData({
-            success: (res) => {
-                resolve(res);
-            },
-            fail: (err) => {
-                reject(err);
-            },
-        });
+  new Promise((resolve, reject) => {
+    uni.getClipboardData({
+      success: (res) => {
+        resolve(res);
+      },
+      fail: (err) => {
+        reject(err);
+      },
     });
+  });
 
 /**
  * rpx 换算为 px
  * @param upx
  */
 export const rpx2px = (upx: number) => {
-    return uni.upx2px(upx);
+  return uni.upx2px(upx);
 };
 
 /**
@@ -47,5 +47,5 @@ export const rpx2px = (upx: number) => {
  * @param px
  */
 export const px2rpx = (px: number) => {
-    return px / (uni.upx2px(100) / 100);
+  return px / (uni.upx2px(100) / 100);
 };

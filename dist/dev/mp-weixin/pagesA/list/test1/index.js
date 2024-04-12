@@ -13,10 +13,10 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     };
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.x(jumpTest2)
+        a: common_vendor.B(jumpTest2)
       };
     };
   }
 });
-const MiniProgramPage = /* @__PURE__ */ common_vendor.q(_sfc_main, [["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp 移动端模版/src/pagesA/list/test1/index.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor.q(_sfc_main, [["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system/src/pagesA/list/test1/index.vue"]]);
 wx.createPage(MiniProgramPage);

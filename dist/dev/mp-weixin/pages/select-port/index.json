@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "选择起运港",
+  "navigationBarBackgroundColor": "#FFF",
+  "usingComponents": {
+    "u-search": "../../uni_modules/vk-uview-ui/components/u-search/u-search",
+    "custom-loading": "../../components/Basic-loading/index"
+  }
+}

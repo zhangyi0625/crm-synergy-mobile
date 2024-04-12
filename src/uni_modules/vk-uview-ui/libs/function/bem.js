@@ -1,4 +1,2 @@
-function bem(name, conf) {
-  
-}
-export default { bem }
+function bem(name, conf) {}
+export default { bem };

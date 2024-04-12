@@ -1,0 +1,133 @@
+/**
+ flex 布局
+*/
+.flex {
+  display: flex;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowarp {
+  flex-wrap: nowrap;
+}
+
+.flex-start {
+  justify-content: start;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+.flex-around {
+  justify-content: space-around;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.align-baseline {
+  align-items: baseline;
+}
+
+/** 
+ grid 布局
+*/
+.gird {
+  display: grid;
+}
+
+.grid-2-1fr {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3-1fr {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-4-1fr {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 25%);
+}
+
+.grid-start-1 {
+  grid-column-start: 1;
+}
+
+.grid-end-3 {
+  grid-column-end: 3;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.top-84 {
+  top: 84rpx;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.bottom-60 {
+  bottom: 60rpx;
+}
+
+.right-24 {
+  right: 24rpx;
+}
+
+.right-0 {
+  right: 0;
+}

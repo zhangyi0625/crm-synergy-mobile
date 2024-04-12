@@ -3,7 +3,7 @@ const common_vendor = require("../../common/vendor.js"), utils_cache_index = req
 const useAuthStore = common_vendor.b({
   id: "auth",
   state: () => ({
-    token: void 0
+    token: utils_cache_index.g(enums_cacheEnum.T)
   }),
   getters: {
     getToken: (state) => state.token,
