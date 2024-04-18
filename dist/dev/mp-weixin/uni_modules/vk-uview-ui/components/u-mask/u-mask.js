@@ -97,8 +97,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     a: common_vendor.M($options.maskStyle),
     b: common_vendor.M($data.zoomStyle),
     c: common_vendor.M($options.filterStyle),
-    d: common_vendor.B((...args) => $options.click && $options.click(...args)),
-    e: common_vendor.B(() => {
+    d: common_vendor.C((...args) => $options.click && $options.click(...args)),
+    e: common_vendor.C(() => {
     }),
     f: $props.zoom ? 1 : "",
     g: $props.show ? 1 : ""

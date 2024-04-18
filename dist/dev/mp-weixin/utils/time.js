@@ -38,7 +38,6 @@ function formatUpdated(data, num) {
     } else if (hours > 0 && hours <= 24) {
       return hours + "小时前";
     } else {
-      console.log("sssss");
       return formatTime(data, "Y-M-D");
     }
   } else {

@@ -7,6 +7,10 @@
   height: 100%;
   background: linear-gradient(180deg, rgba(245, 247, 250, 0) 0%, #f5f7fa 100%);
 }
+.home .history {
+  max-height: 133rpx;
+  overflow: hidden;
+}
 .home .search {
   box-shadow: 0rpx 4rpx 32rpx 0rpx rgba(0, 0, 0, 0.06);
 }

@@ -1,29 +1,22 @@
 "use strict";
-const state_modules_auth = require("../state/modules/auth.js"), utils_cache_index = require("../utils/cache/index.js"), enums_cacheEnum = require("../enums/cacheEnum.js");
+const state_modules_auth = require("../state/modules/auth.js");
 function createRouterGuard(router) {
   createBeforeEachGuard(router);
   createAfterEachGuard(router);
 }
 function createBeforeEachGuard(router) {
   router.beforeEach((to, _, next) => {
-    var _a, _b;
+    var _a;
     const authStore = state_modules_auth.u();
     console.log(
       authStore,
       authStore.isLogin,
-      "to",
-      to,
-      utils_cache_index.g(enums_cacheEnum.T),
-      enums_cacheEnum.T
+      "to"
     );
     if (to && ((_a = to == null ? void 0 : to.meta) == null ? void 0 : _a.ignoreAuth)) {
       next();
     } else if (!authStore.isLogin && to && to.name !== "Login") {
-      next({
-        name: "Login",
-        params: { redirect: to.name, tabBar: (_b = to == null ? void 0 : to.meta) == null ? void 0 : _b.tabBar, ...to.query },
-        navType: "push"
-      });
+      next();
     } else if (authStore.isLogin && to && to.name === "Login") {
       next({ name: "Home", navType: "replaceAll" });
     } else {

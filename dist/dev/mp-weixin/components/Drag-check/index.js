@@ -5,22 +5,22 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
   emits: ["update:visible", "result"],
   setup(__props, { emit }) {
     const props = __props;
-    const imageUrl = common_vendor.w([
+    const imageUrl = common_vendor.x([
       "/static/images/drag-check/drag-check1.jpg",
       "/static/images/drag-check/drag-check2.jpg",
       "/static/images/drag-check/drag-check3.jpg"
     ]);
-    const imgUrl = common_vendor.v("");
-    const disabled = common_vendor.v(false);
-    const result = common_vendor.v("");
+    const imgUrl = common_vendor.w("");
+    const disabled = common_vendor.w(false);
+    const result = common_vendor.w("");
     common_vendor.L(props, () => {
       if (props.visiable) {
         result.value = "";
         toStart();
       }
     });
-    const deg = common_vendor.v(0);
-    const startDeg = common_vendor.v(0);
+    const deg = common_vendor.w(0);
+    const startDeg = common_vendor.w(0);
     const toStart = () => {
       var index = random(0, 2);
       imgUrl.value = imageUrl[index];
@@ -43,14 +43,14 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         toStart();
       }
     };
-    const x = common_vendor.v(0);
+    const x = common_vendor.w(0);
     const close = () => {
       if (!props.maskClick)
         return;
       emit("update:visible", false);
       disabled.value = false;
     };
-    const isPass = common_vendor.v(false);
+    const isPass = common_vendor.w(false);
     const onChange = (e) => {
       let newX = e.detail.x + startDeg.value;
       deg.value = newX;
@@ -60,12 +60,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       return Math.floor(Math.random() * (max - min)) + min;
     };
     return (_ctx, _cache) => {
-      return common_vendor.y({
+      return common_vendor.z({
         a: props.visiable
-      }, props.visiable ? common_vendor.y({
-        b: common_vendor.F(props.title),
-        c: common_vendor.F(props.minTitle),
-        d: common_vendor.F(result.value ? result.value : ""),
+      }, props.visiable ? common_vendor.z({
+        b: common_vendor.G(props.title),
+        c: common_vendor.G(props.minTitle),
+        d: common_vendor.G(result.value ? result.value : ""),
         e: result.value == "验证失败，请重试" ? 1 : "",
         f: imgUrl.value
       }, imgUrl.value ? {
@@ -75,13 +75,13 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         i: props.icon,
         j: disabled.value,
         k: x.value,
-        l: common_vendor.B(onChange),
-        m: common_vendor.B(touchEnd)
+        l: common_vendor.C(onChange),
+        m: common_vendor.C(touchEnd)
       }) : {}, {
-        n: common_vendor.B(close),
-        o: common_vendor.B(() => {
+        n: common_vendor.C(close),
+        o: common_vendor.C(() => {
         }),
-        p: common_vendor.G(props.visiable ? "pupop-model" : "pupop-models")
+        p: common_vendor.H(props.visiable ? "pupop-model" : "pupop-models")
       });
     };
   }

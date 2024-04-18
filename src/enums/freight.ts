@@ -3,6 +3,16 @@
  */
 
 export enum ProductType {
-  CUSTOMER = "CUSTOMER",
-  CARRIER = "CARRIER",
+	QMS = "QMS",
+	OTHER = "OTHER",
+}
+
+export enum priceType {
+	COST = "costPrice",
+	INNER = "innerPrice",
+	OUTER = "outerPrice"
+}
+
+export enum FreightCostDetail {
+
 }

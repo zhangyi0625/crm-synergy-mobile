@@ -222,7 +222,7 @@ const _sfc_main = {
   }
 };
 if (!Array) {
-  const _easycom_u_icon2 = common_vendor.u("u-icon");
+  const _easycom_u_icon2 = common_vendor.v("u-icon");
   _easycom_u_icon2();
 }
 const _easycom_u_icon = () => "../u-icon/u-icon.js";
@@ -230,18 +230,18 @@ if (!Math) {
   _easycom_u_icon();
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.y({
-    a: common_vendor.D({
+  return common_vendor.z({
+    a: common_vendor.F({
       size: 30,
       name: $props.searchIcon,
       color: $props.searchIconColor ? $props.searchIconColor : $props.color
     }),
-    b: common_vendor.B((...args) => $options.blur && $options.blur(...args)),
+    b: common_vendor.C((...args) => $options.blur && $options.blur(...args)),
     c: $options.valueCom,
-    d: common_vendor.B((...args) => $options.search && $options.search(...args)),
-    e: common_vendor.B((...args) => $options.inputChange && $options.inputChange(...args)),
+    d: common_vendor.C((...args) => $options.search && $options.search(...args)),
+    e: common_vendor.C((...args) => $options.inputChange && $options.inputChange(...args)),
     f: $props.disabled,
-    g: common_vendor.B((...args) => $options.getFocus && $options.getFocus(...args)),
+    g: common_vendor.C((...args) => $options.getFocus && $options.getFocus(...args)),
     h: $props.focus,
     i: $props.maxlength,
     j: $props.placeholder,
@@ -254,22 +254,22 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     m: common_vendor.M($props.inputStyle),
     n: $data.keyword && $props.clearabled && $data.focused
   }, $data.keyword && $props.clearabled && $data.focused ? {
-    o: common_vendor.D({
+    o: common_vendor.F({
       name: "close-circle-fill",
       size: "34",
       color: "#c0c4cc"
     }),
-    p: common_vendor.B((...args) => $options.clear && $options.clear(...args))
+    p: common_vendor.C((...args) => $options.clear && $options.clear(...args))
   } : {}, {
     q: $props.bgColor,
     r: $props.shape == "round" ? "100rpx" : "10rpx",
     s: $options.borderStyle,
     t: $props.height + "rpx",
-    v: common_vendor.F($props.actionText),
+    v: common_vendor.G($props.actionText),
     w: common_vendor.M($props.actionStyle),
-    x: common_vendor.G($options.showActionBtn || $data.show ? "u-action-active" : ""),
-    y: common_vendor.B((...args) => $options.custom && $options.custom(...args)),
-    z: common_vendor.B((...args) => $options.clickHandler && $options.clickHandler(...args)),
+    x: common_vendor.H($options.showActionBtn || $data.show ? "u-action-active" : ""),
+    y: common_vendor.C((...args) => $options.custom && $options.custom(...args)),
+    z: common_vendor.C((...args) => $options.clickHandler && $options.clickHandler(...args)),
     A: $props.margin
   });
 }

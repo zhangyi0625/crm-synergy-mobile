@@ -8,6 +8,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "pagesA/freight/freight-detail/index",
+          "pathName": "pagesA/freight/freight-detail/index",
+          "query": "id=1779787564463464450",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "pages/select-port/index",
           "pathName": "pages/select-port/index",
           "query": "type=POR",

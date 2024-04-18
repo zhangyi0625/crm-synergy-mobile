@@ -1,18 +1,25 @@
 "use strict";
-const common_vendor = require("../../common/vendor.js"), state_modules_auth = require("../../state/modules/auth.js"), enums_routerEnum = require("../../enums/routerEnum.js");
-require("../../utils/cache/index.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/env.js"), require("../../utils/cipher.js"), require("../../utils/is.js"), require("../../enums/cacheEnum.js"), require("../../services/api/auth.js"), require("../../utils/http/index.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../utils/http/checkStatus.js"), require("../../utils/uniapi/prompt.js");
+const common_vendor = require("../../common/vendor.js"), state_modules_auth = require("../../state/modules/auth.js"), enums_routerEnum = require("../../enums/routerEnum.js"), services_api_user = require("../../services/api/user.js"), utils_cache_index = require("../../utils/cache/index.js"), enums_cacheEnum = require("../../enums/cacheEnum.js"), services_api_file = require("../../services/api/file.js"), utils_uniapi_prompt = require("../../utils/uniapi/prompt.js");
+require("../../services/api/auth.js"), require("../../utils/http/index.js"), require("../../utils/env.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../utils/http/checkStatus.js"), require("../../router/index.js"), require("../../router/guard.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/cipher.js"), require("../../utils/is.js");
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
-    common_vendor.H(() => {
-      console.log("about load");
+    const URL = "https://qmstest.golfun.cn/apis";
+    const { data: userInfo, send: isSend, onSuccess } = common_vendor.u(services_api_user.g(), {
+      initialData: []
     });
     const authStore = state_modules_auth.u();
-    const isLogin = common_vendor.v(false);
+    const isLogin = common_vendor.w(false);
     const router = common_vendor.T();
     common_vendor.l(() => {
       isLogin.value = authStore.isLogin;
+      isLogin.value && isSend();
+      isLogin.value && common_vendor.y();
     });
+    onSuccess(() => {
+      authStore.setUserInfo(userInfo.value);
+    });
+    const { send: isDelete } = common_vendor.u((url) => services_api_file.d({ fileUrl: url }), { immediate: false });
     const editAvatar = () => {
       if (!isLogin.value) {
         common_vendor.i.showModal({
@@ -32,7 +39,23 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
           sourceType: ["album", "camera"],
           //从相册选择
           success: function(res) {
-            console.log(JSON.stringify(res.tempFilePaths));
+            const tempFiles = res.tempFilePaths;
+            common_vendor.i.uploadFile({
+              url: URL + "/api/file/upload",
+              filePath: tempFiles[0],
+              name: "file",
+              header: {
+                "authorization": "Bearer " + utils_cache_index.g(enums_cacheEnum.T)
+              },
+              success: (uploadFileRes) => {
+                let result = JSON.parse(uploadFileRes.data);
+                if (result.code === 200) {
+                  utils_uniapi_prompt.T("头像上传成功！");
+                  onFinish(result.data);
+                } else
+                  utils_uniapi_prompt.T(result.message);
+              }
+            });
           }
         });
       }
@@ -41,22 +64,40 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       router.push("/pages/edit-info/password");
     };
     const handleLoginOut = () => {
-      authStore.loginOut().then(() => {
-        isLogin.value = false;
-      });
-      router.push("LOGIN_PAGE");
+      authStore.loginOut();
+      isLogin.value = false;
+      router.push(enums_routerEnum.L);
+      userInfo.value = null;
     };
     const handleLogin = () => {
       !isLogin.value && router.push(enums_routerEnum.L);
     };
+    const { send: upload, onSuccess: refreshProfle } = common_vendor.u((url) => services_api_user.p({ avatar: url }), { immediate: false });
+    const onFinish = (url) => {
+      var _a, _b;
+      ((_a = authStore.userinfo) == null ? void 0 : _a.avatar) && isDelete((_b = authStore.userinfo) == null ? void 0 : _b.avatar);
+      setTimeout(() => {
+        upload(url);
+      }, 200);
+    };
+    refreshProfle(() => {
+      isSend();
+      common_vendor.y(services_api_user.g());
+    });
     return (_ctx, _cache) => {
-      return {
-        a: common_vendor.F(!isLogin.value ? "登录/注册" : "13120760853"),
-        b: common_vendor.B(handleLogin),
-        c: common_vendor.B(editAvatar),
-        d: common_vendor.B(handleJump),
-        e: common_vendor.B(handleLoginOut)
-      };
+      var _a, _b, _c, _d, _e;
+      return common_vendor.z({
+        a: common_vendor.B(userInfo) && ((_a = common_vendor.B(userInfo)) == null ? void 0 : _a.avatar)
+      }, common_vendor.B(userInfo) && ((_b = common_vendor.B(userInfo)) == null ? void 0 : _b.avatar) ? {
+        b: (_c = common_vendor.B(userInfo)) == null ? void 0 : _c.avatar
+      } : {}, {
+        c: common_vendor.G(!isLogin.value ? "登录/注册" : (_d = common_vendor.B(userInfo)) == null ? void 0 : _d.loginName),
+        d: common_vendor.C(handleLogin),
+        e: common_vendor.C(editAvatar),
+        f: common_vendor.C(handleJump),
+        g: common_vendor.G((_e = common_vendor.B(userInfo)) == null ? void 0 : _e.nickname),
+        h: common_vendor.C(handleLoginOut)
+      });
     };
   }
 });

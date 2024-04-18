@@ -1,5 +1,7 @@
 {
   "navigationBarTitleText": "舱位详情",
   "navigationBarBackgroundColor": "#FFF",
-  "usingComponents": {}
+  "usingComponents": {
+    "custom-loading": "../../../components/Basic-loading/index"
+  }
 }

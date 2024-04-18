@@ -1,269 +1,266 @@
 <script lang="ts" setup>
-import { getCarrierList } from "@/services/api/freight";
-import { onLoad } from "@dcloudio/uni-app";
-import { useRequest } from "alova";
-import { reactive, ref } from "vue";
-import {
-  sortList,
-  ctnSortPrice,
-  dataSource,
-  transitType,
-  freightTestData,
-} from "./config";
-import FreightTable from "./component/freight-table/index";
-import { router } from "@/router";
+	import { getCarrierList, getFreightOptions } from "@/services/api/freight";
+	import { onLoad } from "@dcloudio/uni-app";
+	import { useRequest } from "alova";
+	import { reactive, ref } from "vue";
+	import {
+		sortList,
+		ctnSortPrice,
+		dataSource,
+		transitType
+	} from "./config";
+	import FreightTable from "./component/freight-table/index";
+	import { useRouter } from "uni-mini-router";
+	import CustomLoading from "@/components/Basic-loading/index.vue";
+	import { Toast } from "@/utils/uniapi/prompt";
 
-const locationInfo = ref<any>({});
 
-const current = ref<number>(0);
+	const loading = ref<boolean>(false)
 
-onLoad((options: any) => {
-  locationInfo.value = JSON.parse(options.info) || {};
-  uni.setNavigationBarTitle({
-    title:
-      locationInfo.value.por.localName + "-" + locationInfo.value.fnd.localName,
-  });
-});
+	const router = useRouter()
 
-// 船公司数据
-const { data: carrierLsit }: any = useRequest(getCarrierList(), {
-  initialData: [],
-});
+	const locationInfo = ref<any>({});
 
-// 运价数据
-const freightData = ref<any>([]);
-// 查询条件 && 筛选条件
-const freightParams = reactive<freightSearchParams>({
-  porCode: "",
-  fndCode: "",
-  sortField: "",
-  carriers: "",
-  dataSource: "",
-  transitNum: null,
-});
-console.log(sortList, "sortList");
+	const current = ref<number>(0);
 
-// 筛选切换回调
-const priceCtnShow = ref<boolean>(false);
-const changeCurrent = (index: number) => {
-  current.value = index;
-  if (index === 1) priceCtnShow.value = true;
-  else {
-    (sortList as any)[1]["name"] = "最便宜";
-    freightParams.sortField = (sortList as any)[current.value]["value"];
-  }
-  loadFreightData("sort");
-};
+	onLoad((options : any) => {
+		loading.value = true
+		// 按航线
+		if (options.routeId) {
+			freightParams.routeId = options.routeId
+			uni.setNavigationBarTitle({
+				title: options.routeName
+			})
+			isSend()
+		} else {
+			locationInfo.value = JSON.parse(options.info) || {};
+			let { porInfo, fndInfo } = locationInfo.value
+			uni.setNavigationBarTitle({
+				title:
+					(porInfo ? porInfo.split('-')[0] : locationInfo.value.porCnlName) + "-" + (fndInfo ? fndInfo.split('-')[0] : locationInfo.value.fndCnlName),
+			});
+			freightParams.por = locationInfo.value.porCode
+			freightParams.fnd = locationInfo.value.fndCode
+		}
+		freightParams.por && freightParams.fnd && isSend()
+		console.log(options, 'options', JSON.parse(options.info));
+	});
 
-const loadFreightData = (type: string) => {};
+	// 船公司数据
+	const { data: carrierList } : any = useRequest(getCarrierList(), {
+		initialData: [],
+	});
 
-// 选择箱型回调
-const changeCtnType = (ctn: any) => {
-  freightParams.sortField = ctn.value;
-  priceCtnShow.value = false;
-  (sortList as any)[current.value]["name"] = ctn.label;
-};
+	// 查询条件 && 筛选条件
+	const freightParams = reactive<freightSearchParams>({
+		por: '',
+		fnd: '',
+		carrier: '',
+		transit: '',
+		channel: '',
+		status: 1
+		// sortField: "",
+		// carriers: "",
+		// dataSource: "",
+		// transitNum: null,
+	});
+	// 运价数据
+	const { data: freightData, send: isSend, onSuccess } : any = useRequest(params => (getFreightOptions(freightParams)), { immediate: false })
 
-// 过滤popup
-const filterModalShow = ref<boolean>(false);
-const changeFilter = (item: any, type: string) => {
-  if (type === "carrier") {
-    let arr = freightParams.carriers ? freightParams.carriers.split(",") : [];
-    freightParams.carriers =
-      arr.length > 0 && arr.includes(item.carrierCode)
-        ? arr.filter((el: string) => el !== item.carrierCode).join(",")
-        : arr.concat([item.carrierCode]).join(",");
-  } else
-    freightParams[type] = freightParams[type] === item.value ? "" : item.value;
-};
-const reset = () => {
-  console.log(freightParams);
-  freightParams.carriers = "";
-  freightParams.dataSource = "";
-  freightParams.transitNum = null;
-};
-const confirm = () => {
-  filterModalShow.value = false;
-  console.log(freightParams);
-};
+	// 筛选切换回调
+	const priceCtnShow = ref<boolean>(false);
+	const changeCurrent = (index : number) => {
+		current.value = index;
+		if (index === 1) priceCtnShow.value = true;
+		else {
+			(sortList as any)[1]["name"] = "最便宜";
+			freightParams.sortField = (sortList as any)[current.value]["value"];
+		}
+		loadFreightData("sort");
+	};
 
-const jumpEither = (item: any, type?: string) => {
-  console.log(item, "jump", type);
-  router.push(
-    "/pagesA/freight/freight-detail/index?info=" + JSON.stringify(item)
-  );
-};
+	const loadFreightData = (type : string) => { };
+
+	onSuccess(() => {
+		loading.value = false
+	})
+
+	// 选择箱型回调
+	const changeCtnType = (ctn : any) => {
+		freightParams.sortField = ctn.value;
+		priceCtnShow.value = false;
+		(sortList as any)[current.value]["name"] = ctn.label;
+	};
+
+	// 过滤popup
+	const filterModalShow = ref<boolean>(false);
+	const changeFilter = (item : any, type : string) => {
+		if (type === "carrier") {
+			let arr = freightParams.carrier ? freightParams.carrier.split(",") : [];
+			freightParams.carrier =
+				arr.length > 0 && arr.includes(item.code)
+					? arr.filter((el : string) => el !== item.code).join(",")
+					: arr.concat([item.code]).join(",");
+		} else
+			freightParams[type] = freightParams[type] === item.value ? "" : item.value;
+	};
+	const reset = () => {
+		freightParams.carrier = "";
+		freightParams.channel = "";
+		freightParams.transit = '';
+		filterModalShow.value = false;
+		isSend()
+	};
+	const confirm = () => {
+		filterModalShow.value = false;
+		isSend()
+	};
+
+	const jumpEither = (item : any, type ?: string) => {
+		if (type) {
+			console.log(item, "jump", type);
+			Toast('在舱实时运价还未开放！')
+		} else router.push(
+			"/pagesA/freight/freight-detail/index?info=" + JSON.stringify(item)
+		);
+	};
 </script>
 
 <template>
-  <view class="freight">
-    <view class="py-12 px-20 bg-neutral flex align-center">
-      <view
-        v-for="(item, index) in sortList"
-        :key="index"
-        class="sort br8 py-8 font26 ml-12 relative"
-        :class="[
-          current === index
-            ? 'bg-light-red dull-red font-bolds'
-            : 'bg-light-grey grey',
-        ]"
-        @click.stop="changeCurrent(index)"
-      >
-        <view class="flex align-center flex-center"
-          >{{ item.name }}
-          <img
-            v-if="index === 1"
-            :src="
-              !priceCtnShow
-                ? '/static/images/freight/down.png'
-                : '/static/images/freight/down-select.png'
-            "
-            class="w-24 h-12 ml-2"
-          />
-        </view>
-        <view
-          class="absolute priceModal"
-          v-if="index === 1 && priceCtnShow && current === index"
-        >
-          <view class="priceModal-title relative"></view>
-          <view class="priceModal-content bg-neutral br8">
-            <view
-              v-for="(ctn, ctnIndex) in ctnSortPrice"
-              :key="ctnIndex"
-              class="flex flex-column px-12 font26 font400 py-24 text-center"
-              :class="[
-                freightParams.sortField === ctn.value
-                  ? 'dull-red'
-                  : 'dull-grey',
-              ]"
-              style="border-bottom: #edeff2 1px solid"
-              @click.stop="changeCtnType(ctn)"
-            >
-              {{ ctn.label }}
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class="ml-50 pl-30 icon">
-        <img
-          src="/static/images/freight/filter.png"
-          class="w-36 h-36"
-          @click="filterModalShow = true"
-        />
-      </view>
-    </view>
-    <FreightTable :data="freightTestData" @jumpEither="jumpEither" />
-    <!-- 过滤条件 -->
-    <u-popup
-      v-model="filterModalShow"
-      mode="top"
-      :custom-style="{ backgroundColor: '#F5F7FA' }"
-    >
-      <view class="py-32 px-24 bg-neutral font-bold">
-        <view class="mb-20">船公司</view>
-        <view class="flex align-center flex-wrap font28 font400 grid-4-1fr">
-          <view
-            v-for="item in carrierLsit"
-            :key="item.carrierCode"
-            @click="changeFilter(item, 'carrier')"
-            class="text-center w-166 py-18 bg-light-grey mr-15 br12 mb-10 relative"
-            :class="[
-              freightParams.carriers.split(',').includes(item.carrierCode)
-                ? 'bg-light-red dull-red'
-                : '',
-            ]"
-          >
-            {{ item.carrierCode }}
-            <img
-              v-if="
-                freightParams.carriers.split(',').includes(item.carrierCode)
-              "
-              src="/static/images/freight/selected.png"
-              class="absolute right-0 bottom-0 w-52 h-52"
-            />
-          </view>
-        </view>
-        <view class="mt-30 mb-20">数据来源</view>
-        <view class="flex align-center flex-wrap font28 font400">
-          <view
-            v-for="item in dataSource"
-            :key="item.label"
-            @click="changeFilter(item, 'dataSource')"
-            class="text-center w-166 py-18 bg-light-grey ml-15 br12"
-            :class="[
-              freightParams.dataSource === item.value
-                ? 'bg-light-red dull-red'
-                : '',
-            ]"
-          >
-            {{ item.label }}
-          </view>
-        </view>
-        <view class="mt-30 mb-20">直达中转</view>
-        <view class="flex align-center flex-wrap font28 font400">
-          <view
-            v-for="item in transitType"
-            :key="item.label"
-            @click="changeFilter(item, 'transitNum')"
-            class="text-center w-166 py-18 bg-light-grey ml-15 br12"
-            :class="[
-              freightParams.transitNum === item.value
-                ? 'bg-light-red dull-red'
-                : '',
-            ]"
-          >
-            {{ item.label }}
-          </view>
-        </view>
-      </view>
-      <view class="mt-20 bg-neutral p-20 flex align-center">
-        <button class="filter-reset-btn" @click="reset">重置</button>
-        <button class="filter-confirm-btn" @click="confirm">确定</button>
-      </view>
-    </u-popup>
-  </view>
+	<CustomLoading v-if="loading" iconType="annulus" position="fixed" :zIndex="9" :mask="false" :maskOpacity="1"
+		:maskMini="false" :maskDark="true" color="#0396FF" />
+	<!-- <view > -->
+	<view v-else class="freight">
+		<view class="py-12 px-20 bg-neutral flex align-center">
+			<view v-for="(item, index) in sortList" :key="index" class="sort br8 py-8 font26 ml-12 relative" :class="[
+		      current === index
+		        ? 'bg-light-red dull-red font-bolds'
+		        : 'bg-light-grey grey',
+		    ]" @click.stop="changeCurrent(index)">
+				<view class="flex align-center flex-center">{{ item.name }}
+					<img v-if="index === 1" :src="
+		          !priceCtnShow
+		            ? '/static/images/freight/down.png'
+		            : '/static/images/freight/down-select.png'
+		        " class="w-24 h-12 ml-2" />
+				</view>
+				<view class="absolute priceModal" v-if="index === 1 && priceCtnShow && current === index">
+					<view class="priceModal-title relative"></view>
+					<view class="priceModal-content bg-neutral br8">
+						<view v-for="(ctn, ctnIndex) in ctnSortPrice" :key="ctnIndex"
+							class="flex flex-column px-12 font26 font400 py-24 text-center" :class="[
+		            freightParams.sortField === ctn.value
+		              ? 'dull-red'
+		              : 'dull-grey',
+		          ]" style="border-bottom: #edeff2 1px solid" @click.stop="changeCtnType(ctn)">
+							{{ ctn.label }}
+						</view>
+					</view>
+				</view>
+			</view>
+			<view class="ml-50 pl-30 icon">
+				<img src="/static/images/freight/filter.png" class="w-36 h-36" @click="filterModalShow = true" />
+			</view>
+		</view>
+		<FreightTable v-if="freightData && freightData.length > 0" :data="freightData" @jumpEither="jumpEither" />
+		<view v-else style="margin: 250px auto;">
+			<u-empty mode="data"></u-empty>
+		</view>
+		<!-- 过滤条件 -->
+		<u-popup v-model="filterModalShow" mode="top" :custom-style="{ backgroundColor: '#F5F7FA' }">
+			<view class="py-32 px-24 bg-neutral font-bold">
+				<view class="mb-20">船公司</view>
+				<view class="flex align-center flex-wrap font28 font400 grid-4-1fr">
+					<view v-for="item in carrierList" :key="item.code" @click="changeFilter(item, 'carrier')"
+						class="text-center w-166 py-18 bg-light-grey mr-15 br12 mb-10 relative" :class="[
+		          freightParams.carrier.split(',').includes(item.code)
+		            ? 'bg-light-red dull-red'
+		            : '',
+		        ]">
+						{{ item.code }}
+						<img v-if="
+		            freightParams.carrier.split(',').includes(item.code)
+		          " src="/static/images/freight/selected.png" class="absolute right-0 bottom-0 w-52 h-52" />
+					</view>
+				</view>
+				<view class="mt-30 mb-20">数据来源</view>
+				<view class="flex align-center flex-wrap font28 font400">
+					<view v-for="item in dataSource" :key="item.label" @click="changeFilter(item, 'channel')"
+						class="text-center w-166 py-18 bg-light-grey ml-15 br12" :class="[
+		          freightParams.channel === item.value
+		            ? 'bg-light-red dull-red'
+		            : '',
+		        ]">
+						{{ item.label }}
+					</view>
+				</view>
+				<view class="mt-30 mb-20">直达中转</view>
+				<view class="flex align-center flex-wrap font28 font400">
+					<view v-for="item in transitType" :key="item.label" @click="changeFilter(item, 'transit')"
+						class="text-center w-166 py-18 bg-light-grey ml-15 br12" :class="[
+		          freightParams.transit === item.value
+		            ? 'bg-light-red dull-red'
+		            : '',
+		        ]">
+						{{ item.label }}
+					</view>
+				</view>
+			</view>
+			<view class="mt-20 bg-neutral p-20 flex align-center">
+				<button class="filter-reset-btn" @click="reset">重置</button>
+				<button class="filter-confirm-btn" @click="confirm">确定</button>
+			</view>
+		</u-popup>
+	</view>
+	<!-- </view> -->
 </template>
 
 <style lang="scss" scoped>
-.freight {
-  height: 100%;
+	.auto {
+		width: 100%;
+		margin: auto;
+		height: 100vh;
+	}
 
-  .sort {
-    width: 132rpx;
-  }
+	.freight {
+		height: 100%;
 
-  .icon {
-    box-shadow: -12rpx 0rpx 12rpx -10rpx rgba(0, 0, 0, 0.08);
-  }
+		.sort {
+			width: 132rpx;
+		}
 
-  .priceModal {
-    width: 120px;
-    top: 30px;
-    right: -22px;
+		.icon {
+			box-shadow: -12rpx 0rpx 12rpx -10rpx rgba(0, 0, 0, 0.08);
+		}
 
-    &-title {
-      width: 18px;
-      height: 13px;
-      overflow: hidden;
-      margin: 0 auto;
-    }
+		.priceModal {
+			width: 120px;
+			top: 30px;
+			right: -22px;
 
-    &-title::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: #fff;
-      transform-origin: left bottom;
-      transform: rotate(45deg);
-      box-shadow: 0px 2px 6px 0px rgba(51, 51, 51, 0.2);
-    }
+			&-title {
+				width: 18px;
+				height: 13px;
+				overflow: hidden;
+				margin: 0 auto;
+			}
 
-    &-content {
-      box-shadow: 0px 2px 6px 0px rgba(51, 51, 51, 0.2);
-    }
-  }
-}
+			&-title::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: #fff;
+				transform-origin: left bottom;
+				transform: rotate(45deg);
+				box-shadow: 0px 2px 6px 0px rgba(51, 51, 51, 0.2);
+			}
+
+			&-content {
+				box-shadow: 0px 2px 6px 0px rgba(51, 51, 51, 0.2);
+			}
+		}
+	}
 </style>

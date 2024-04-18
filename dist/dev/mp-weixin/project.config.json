@@ -18,8 +18,8 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.3.4",
-  "appid": "wx3f5e929c0e5e8189",
+  "libVersion": "2.32.2",
+  "appid": "wxd5c6e24c28695869",
   "projectname": "uniapp_vue3_vite_ts",
   "condition": {
     "search": {

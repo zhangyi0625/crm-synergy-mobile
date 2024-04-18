@@ -8,41 +8,62 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
   emits: ["jumpEither"],
   setup(__props, { emit }) {
     const props = __props;
-    const URL = "http://192.168.110.124:8885/apis";
+    const URL = "https://files.zaicang.net";
     const jump = (item, type) => {
       emit("jumpEither", item, type);
     };
+    const getPrice = (price) => {
+      let innerPrice = JSON.parse(price);
+      let ctnType = ["20GP", "40GP", "40HQ"];
+      let obj = {};
+      if (innerPrice) {
+        for (let i in innerPrice["normal"]) {
+          if (ctnType.includes(i))
+            obj[i] = innerPrice["normal"][i];
+        }
+        for (let i in innerPrice["special"]) {
+          if (ctnType.includes(i))
+            obj[i] = innerPrice["special"][i];
+        }
+      }
+      return obj;
+    };
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.C(props.data, (item, index, i0) => {
-          return common_vendor.y({
-            a: item.productType === common_vendor.z(enums_freight.P).CUSTOMER
-          }, item.productType === common_vendor.z(enums_freight.P).CUSTOMER ? {} : {}, {
-            b: common_vendor.z(URL) + "/carrier-logo/" + item.carrierCode + ".png",
-            c: common_vendor.F(common_vendor.z(utils_time.f)(item.validFrom, "M-D")),
-            d: common_vendor.F(common_vendor.z(utils_time.f)(item.validTo, "M-D")),
-            e: common_vendor.F(item.vesselName),
-            f: common_vendor.F(item.voyNo),
-            g: common_vendor.F(item.carrierRoute),
-            h: common_vendor.F(common_vendor.z(utils_time.f)(item.etd, "M-D")),
-            i: common_vendor.F(common_vendor.z(utils_time.f)(item.eta, "M-D")),
-            j: common_vendor.F(item.voyDays),
-            k: common_vendor.F(item.schedule),
-            l: common_vendor.F(item.transitNum > 0 ? "中转" : "直达"),
-            m: common_vendor.F(item.isSale ? "有" : "无"),
-            n: common_vendor.C(item.priceList, (price, priceIndex, i1) => {
+        a: common_vendor.D(props.data, (item, index, i0) => {
+          return common_vendor.z({
+            a: item.channel !== common_vendor.B(enums_freight.P).QMS
+          }, item.channel !== common_vendor.B(enums_freight.P).QMS ? {} : {}, {
+            b: common_vendor.B(URL) + "/carrier-logo/" + item.carrierCode + ".png",
+            c: common_vendor.G(common_vendor.B(utils_time.f)(item.validFrom, "M-D")),
+            d: common_vendor.G(common_vendor.B(utils_time.f)(item.validTo, "M-D")),
+            e: common_vendor.G(item.vesselName),
+            f: common_vendor.G(item.voyNo),
+            g: common_vendor.G(item.carrierRoute),
+            h: item.etd && item.eta
+          }, item.etd && item.eta ? {
+            i: common_vendor.G(common_vendor.B(utils_time.f)(item.etd, "M-D")),
+            j: common_vendor.G(common_vendor.B(utils_time.f)(item.eta, "M-D"))
+          } : {}, {
+            k: common_vendor.G(item.voyDays),
+            l: common_vendor.G(item.cutOffDay ? item.cutOffDay + "截" : "-"),
+            m: common_vendor.G(item.departureDay ? item.departureDay + "开" : "-"),
+            n: common_vendor.G(item.transit > 0 ? "中转" : "直达"),
+            o: common_vendor.G(item.isSale ? "有" : "无"),
+            p: common_vendor.D(getPrice(item.innerPrice ? item.innerPrice : item.outerPrice), (price, priceIndex, i1) => {
               return {
-                a: common_vendor.F(price.ctnType),
-                b: common_vendor.F(price.totalPrice),
+                a: common_vendor.G(priceIndex),
+                b: common_vendor.G(price ? "$" + price : "-"),
                 c: priceIndex
               };
             }),
-            o: item.productType === common_vendor.z(enums_freight.P).CARRIER
-          }, item.productType === common_vendor.z(enums_freight.P).CARRIER ? {
-            p: common_vendor.B(($event) => jump(item, "CARRIER"), index)
+            q: common_vendor.H(item.channel !== common_vendor.B(enums_freight.P).QMS ? "mt-24" : "my-24"),
+            r: item.channel === common_vendor.B(enums_freight.P).QMS
+          }, item.channel === common_vendor.B(enums_freight.P).QMS ? {
+            s: common_vendor.C(($event) => jump(item, "CARRIER"), index)
           } : {}, {
-            q: index,
-            r: common_vendor.B(($event) => jump(item), index)
+            t: index,
+            v: common_vendor.C(($event) => jump(item), index)
           });
         })
       };

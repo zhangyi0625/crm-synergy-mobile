@@ -1,5 +1,5 @@
 "use strict";
-const common_vendor = require("../../common/vendor.js"), utils_env = require("../env.js"), mock_index = require("../../mock/index.js"), state_modules_auth = require("../../state/modules/auth.js"), utils_http_checkStatus = require("./checkStatus.js"), enums_httpEnum = require("../../enums/httpEnum.js");
+const common_vendor = require("../../common/vendor.js"), utils_env = require("../env.js"), mock_index = require("../../mock/index.js"), state_modules_auth = require("../../state/modules/auth.js"), utils_http_checkStatus = require("./checkStatus.js"), enums_httpEnum = require("../../enums/httpEnum.js"), utils_uniapi_prompt = require("../uniapi/prompt.js"), router_index = require("../../router/index.js"), utils_cache_index = require("../cache/index.js"), enums_cacheEnum = require("../../enums/cacheEnum.js");
 const BASE_URL = utils_env.b();
 const HEADER = {
   "Content-Type": enums_httpEnum.C.JSON,
@@ -25,6 +25,8 @@ const alovaInstance = common_vendor.g({
       method.config.headers["Content-Type"] = enums_httpEnum.C.FORM_URLENCODED;
     } else if (method.url === "/api/customer/login/wxapp/phone") {
       method.config.headers["Content-Type"] = enums_httpEnum.C.FORM_URLENCODED;
+    } else if (method.url === "/api/app/my/phoneCode") {
+      method.config.headers["X-Captcha-Answer"] = "PEw4oT7PgtQRSc8MHibNC5lmT3sMjNfI";
     }
   },
   responsed: {
@@ -39,8 +41,6 @@ const alovaInstance = common_vendor.g({
       const { enableDownload, enableUpload } = config;
       const { statusCode, data: rawData } = response;
       const { code, message, data } = rawData;
-      console.log(rawData, statusCode, message, code, data);
-      console.log(enableDownload, "enableUpload", enableUpload);
       if (rawData.code === 200) {
         if (enableDownload) {
           return rawData;
@@ -51,9 +51,18 @@ const alovaInstance = common_vendor.g({
         if (code === enums_httpEnum.R.SUCCESS) {
           return data;
         }
+        message && message !== "success" && utils_uniapi_prompt.T(message);
         return rawData.data;
+      } else {
+        if (rawData.code === 401 || rawData.code === 402 || rawData.code === 403) {
+          utils_http_checkStatus.c(statusCode, message || "");
+          utils_cache_index.r(enums_cacheEnum.T);
+          router_index.r.push("/pages/login/index");
+          return;
+        } else if (rawData.code === 400) {
+          utils_uniapi_prompt.T(message);
+        }
       }
-      utils_http_checkStatus.c(rawData.code, rawData.message || "");
       return Promise.reject(rawData);
     },
     /**

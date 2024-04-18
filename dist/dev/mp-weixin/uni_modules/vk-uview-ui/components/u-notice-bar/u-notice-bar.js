@@ -138,8 +138,8 @@ const _sfc_main = {
   }
 };
 if (!Array) {
-  const _easycom_u_row_notice2 = common_vendor.u("u-row-notice");
-  const _easycom_u_column_notice2 = common_vendor.u("u-column-notice");
+  const _easycom_u_row_notice2 = common_vendor.v("u-row-notice");
+  const _easycom_u_column_notice2 = common_vendor.v("u-column-notice");
   (_easycom_u_row_notice2 + _easycom_u_column_notice2)();
 }
 const _easycom_u_row_notice = () => "../u-row-notice/u-row-notice.js";
@@ -148,15 +148,15 @@ if (!Math) {
   (_easycom_u_row_notice + _easycom_u_column_notice)();
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.y({
+  return common_vendor.z({
     a: $options.isShow
-  }, $options.isShow ? common_vendor.y({
+  }, $options.isShow ? common_vendor.z({
     b: $props.mode == "horizontal" && $props.isCircular
   }, $props.mode == "horizontal" && $props.isCircular ? {
-    c: common_vendor.B($options.getMore),
-    d: common_vendor.B($options.close),
-    e: common_vendor.B($options.click),
-    f: common_vendor.D({
+    c: common_vendor.C($options.getMore),
+    d: common_vendor.C($options.close),
+    e: common_vendor.C($options.click),
+    f: common_vendor.F({
       type: $props.type,
       color: $props.color,
       bgColor: $props.bgColor,
@@ -174,11 +174,11 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   } : {}, {
     g: $props.mode == "vertical" || $props.mode == "horizontal" && !$props.isCircular
   }, $props.mode == "vertical" || $props.mode == "horizontal" && !$props.isCircular ? {
-    h: common_vendor.B($options.getMore),
-    i: common_vendor.B($options.close),
-    j: common_vendor.B($options.click),
-    k: common_vendor.B($options.end),
-    l: common_vendor.D({
+    h: common_vendor.C($options.getMore),
+    i: common_vendor.C($options.close),
+    j: common_vendor.C($options.click),
+    k: common_vendor.C($options.end),
+    l: common_vendor.F({
       type: $props.type,
       color: $props.color,
       bgColor: $props.bgColor,

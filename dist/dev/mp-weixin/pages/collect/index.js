@@ -1,52 +1,33 @@
 "use strict";
-const common_vendor = require("../../common/vendor.js"), utils_time = require("../../utils/time.js");
+const common_vendor = require("../../common/vendor.js"), utils_time = require("../../utils/time.js"), services_api_freight_index = require("../../services/api/freight/index.js");
+require("../../utils/http/index.js"), require("../../utils/env.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../state/modules/auth.js"), require("../../utils/cache/index.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/cipher.js"), require("../../utils/is.js"), require("../../enums/cacheEnum.js"), require("../../services/api/auth.js"), require("../../services/api/user.js"), require("../../utils/http/checkStatus.js"), require("../../utils/uniapi/prompt.js"), require("../../router/index.js"), require("../../router/guard.js");
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
-    const collectData = common_vendor.v([
-      {
-        por: {
-          localName: "宁波",
-          name: "Ningbo"
-        },
-        fnd: {
-          localName: "鹿特丹",
-          name: "Rotterdam"
-        },
-        createdTime: "2024-04-10 19:34:57"
-      },
-      {
-        por: {
-          localName: "上海",
-          name: "Shanghai"
-        },
-        fnd: {
-          localName: "汉堡",
-          name: "Hamburg"
-        },
-        createdTime: "2024-04-06 23:31:41"
-      }
-    ]);
     common_vendor.l(() => {
-      init();
+      console.log("页面初始化");
+      isSend();
+      common_vendor.y(services_api_freight_index.c());
     });
-    const init = () => {
-    };
-    const cancelCollect = () => {
-    };
+    const { data: collectData, send: isSend } = common_vendor.u(services_api_freight_index.c(), { initialData: [] });
+    const { send: isDelete, onSuccess } = common_vendor.u((id) => services_api_freight_index.d(id), { immediate: false });
+    onSuccess(() => {
+      isSend();
+      common_vendor.y(services_api_freight_index.c());
+    });
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.C(collectData.value, (item, index, i0) => {
-          return common_vendor.y({
-            a: common_vendor.B(cancelCollect, index),
-            b: item.createdTime
-          }, item.createdTime ? {
-            c: common_vendor.F(common_vendor.z(utils_time.a)(item.createdTime, 10))
+        a: common_vendor.D(common_vendor.B(collectData), (item, index, i0) => {
+          return common_vendor.z({
+            a: common_vendor.C(($event) => common_vendor.B(isDelete)(item.id), index),
+            b: item.modified
+          }, item.modified ? {
+            c: common_vendor.G(common_vendor.B(utils_time.a)(item.modified, 10))
           } : {}, {
-            d: common_vendor.F(item.por.localName),
-            e: common_vendor.F(item.por.name),
-            f: common_vendor.F(item.fnd.localName),
-            g: common_vendor.F(item.fnd.name),
+            d: common_vendor.G(item.porCnlName),
+            e: common_vendor.G(item.porEnName),
+            f: common_vendor.G(item.fndCnlName),
+            g: common_vendor.G(item.fndEnName),
             h: index
           });
         })

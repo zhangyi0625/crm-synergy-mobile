@@ -206,27 +206,27 @@ const _sfc_main = {
   }
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.y({
+  return common_vendor.z({
     a: $options.isImg
   }, $options.isImg ? {
     b: $props.name,
     c: $props.imgMode,
     d: common_vendor.M($options.imgStyle)
-  } : common_vendor.y({
+  } : common_vendor.z({
     e: $props.showDecimalIcon
   }, $props.showDecimalIcon ? {
     f: common_vendor.M($options.decimalIconStyle),
-    g: common_vendor.G($options.decimalIconClass),
+    g: common_vendor.H($options.decimalIconClass),
     h: $props.hoverClass
   } : {}, {
-    i: common_vendor.G($options.customClass),
+    i: common_vendor.H($options.customClass),
     j: common_vendor.M($options.iconStyle),
     k: $props.hoverClass,
-    l: common_vendor.B((...args) => $options.touchstart && $options.touchstart(...args))
+    l: common_vendor.C((...args) => $options.touchstart && $options.touchstart(...args))
   }), {
     m: $props.label !== "" && $props.label !== null
   }, $props.label !== "" && $props.label !== null ? {
-    n: common_vendor.F($props.label),
+    n: common_vendor.G($props.label),
     o: $props.labelColor,
     p: _ctx.$u.addUnit($props.labelSize),
     q: $props.labelPos == "right" ? _ctx.$u.addUnit($props.marginLeft) : 0,
@@ -235,8 +235,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     t: $props.labelPos == "top" ? _ctx.$u.addUnit($props.marginBottom) : 0
   } : {}, {
     v: common_vendor.M($props.customStyle),
-    w: common_vendor.B((...args) => $options.click && $options.click(...args)),
-    x: common_vendor.G("u-icon--" + $props.labelPos)
+    w: common_vendor.C((...args) => $options.click && $options.click(...args)),
+    x: common_vendor.H("u-icon--" + $props.labelPos)
   });
 }
 const Component = /* @__PURE__ */ common_vendor.q(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-9ed067c3"], ["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system/src/uni_modules/vk-uview-ui/components/u-icon/u-icon.vue"]]);

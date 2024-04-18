@@ -6,14 +6,14 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
   setup(__props, { emit }) {
     const props = __props;
     common_vendor.N((_ctx) => ({
-      "0374ca5e": common_vendor.z(comColor)
+      "0374ca5e": common_vendor.B(comColor)
     }));
     const handleClick = () => {
       emit("handleClick");
     };
     const comColor = common_vendor.K(() => props.color);
     return (_ctx, _cache) => {
-      return common_vendor.y({
+      return common_vendor.z({
         a: props.iconType === "annulus"
       }, props.iconType === "annulus" ? {
         b: props.color
@@ -26,7 +26,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
           position: props.position
         }),
         e: common_vendor.M(_ctx.__cssVars()),
-        f: common_vendor.B(handleClick)
+        f: common_vendor.C(handleClick)
       });
     };
   }

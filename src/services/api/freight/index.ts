@@ -6,7 +6,7 @@ import { request } from "@/utils/http";
  * @returns
  */
 export function getSearchRecent() {
-  return request.Get("/api/customer/product/spot/search/recent", {});
+	return request.Get("/api/app/my/searchPortList");
 }
 
 /**
@@ -15,7 +15,7 @@ export function getSearchRecent() {
  * @returns
  */
 export function getAreaList() {
-  return request.Get("/api/base/route/list", {});
+	return request.Get("/api/base/route/list", {});
 }
 
 /**
@@ -23,10 +23,10 @@ export function getAreaList() {
  * @param {*} params
  * @returns
  */
-export function getRecommendByArea(params: any) {
-  return request.Get("/api/customer/product/suggested/zdp/page", {
-    params: params,
-  });
+export function getRecommendByArea(params : any) {
+	return request.Get("/api/customer/product/suggested/zdp/page", {
+		params: params,
+	});
 }
 
 /**
@@ -34,17 +34,8 @@ export function getRecommendByArea(params: any) {
  * @param {*} params
  * @returns
  */
-export function getLocationList(params: Partial<locationPort>) {
-  return request.Get("/api/base/port/getPor", { params: params });
-}
-
-/**
- * 运价查询 获取目的港
- * @param {*} params
- * @returns
- */
-export function getFndPortList(params: Partial<locationPort>) {
-  return request.Get("/api/base/port/getFnd", { params: params });
+export function getLocationList(params : Partial<locationPort>) {
+	return request.Get("/api/app/base/port/list", { params: params });
 }
 
 /**
@@ -53,5 +44,42 @@ export function getFndPortList(params: Partial<locationPort>) {
  * @returns
  */
 export function getCarrierList() {
-  return request.Get("/api/base/carrier/list");
+	return request.Get("/api/base/carrier/list");
+}
+
+/**
+ * 运价查询 获取运价列表
+ * @param
+ * @returns
+ */
+export function getFreightOptions(params : any) {
+	return request.Get("/api/app/frt/list", { params: params });
+}
+
+/**
+ * 运价查询 获取运价详情
+ * @param
+ * @returns
+ */
+export function getFreightDetail(id : string | number) {
+	return request.Get("/api/app/frt/detail/" + id);
+}
+
+
+/**
+ * 运价查询 获取收藏港口
+ * @param
+ * @returns
+ */
+export function getCollectPort() {
+	return request.Get("/api/app/my/getFavoritePortList");
+}
+
+/**
+ * 运价查询 删除收藏港口
+ * @param
+ * @returns
+ */
+export function deleteCollectPort(id : string | number) {
+	return request.Delete("/api/app/my/deleteFavoritePort/" + id);
 }

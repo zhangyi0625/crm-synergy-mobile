@@ -1,6 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js"), state_modules_auth = require("../../state/modules/auth.js"), utils_uniapi_prompt = require("../../utils/uniapi/prompt.js"), services_api_auth = require("../../services/api/auth.js");
-require("../../utils/cache/index.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/env.js"), require("../../utils/cipher.js"), require("../../utils/is.js"), require("../../enums/cacheEnum.js"), require("../../utils/http/index.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../utils/http/checkStatus.js");
+require("../../utils/cache/index.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/env.js"), require("../../utils/cipher.js"), require("../../utils/is.js"), require("../../enums/cacheEnum.js"), require("../../services/api/user.js"), require("../../utils/http/index.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../utils/http/checkStatus.js"), require("../../router/index.js"), require("../../router/guard.js");
 if (!Math) {
   DragCheck();
 }
@@ -8,27 +8,25 @@ const DragCheck = () => "../../components/Drag-check/index.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
-    const pageQuery = common_vendor.v(void 0);
-    common_vendor.H((query) => {
+    const pageQuery = common_vendor.w(void 0);
+    common_vendor.I((query) => {
       pageQuery.value = query;
     });
     const router = common_vendor.T();
     const authStore = state_modules_auth.u();
-    const { send: sendLogin } = common_vendor.x((params) => services_api_auth.a(params), {
+    const { send: sendLogin } = common_vendor.u((params) => services_api_auth.a(params), {
       immediate: false
     });
-    const loginForm = common_vendor.w({
+    const loginForm = common_vendor.x({
       phone: "",
       code: ""
-      // verifyCode: '',
-      // verifyKey: ''
     });
-    const { send: checkCodeIdentity } = common_vendor.x(
+    const { send: checkCodeIdentity } = common_vendor.u(
       (params) => services_api_auth.g({ phone: params.phone }),
       { immediate: false }
     );
     const regex = /^1[3-9]\d{9}$/;
-    const dragCheckShow = common_vendor.v(false);
+    const dragCheckShow = common_vendor.w(false);
     const sendCode = () => {
       if (!loginForm.phone) {
         utils_uniapi_prompt.T("请输入手机号!");
@@ -55,12 +53,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
               authStore.setToken(res.access_token);
               setTimeout(() => {
                 var _a, _b;
-                if ((_a = common_vendor.z(pageQuery)) == null ? void 0 : _a.redirect) {
-                  const params = common_vendor.I(common_vendor.z(pageQuery), ["redirect", "tabBar"]);
-                  if ((_b = common_vendor.z(pageQuery)) == null ? void 0 : _b.tabBar) {
-                    router.replaceAll({ name: common_vendor.z(pageQuery).redirect, params });
+                if ((_a = common_vendor.B(pageQuery)) == null ? void 0 : _a.redirect) {
+                  const params = common_vendor.J(common_vendor.B(pageQuery), ["redirect", "tabBar"]);
+                  if ((_b = common_vendor.B(pageQuery)) == null ? void 0 : _b.tabBar) {
+                    router.replaceAll({ name: common_vendor.B(pageQuery).redirect, params });
                   } else {
-                    router.replace({ name: common_vendor.z(pageQuery).redirect, params });
+                    router.replace({ name: common_vendor.B(pageQuery).redirect, params });
                   }
                 } else {
                   router.back();
@@ -71,7 +69,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         });
       }
     };
-    const maskClick = common_vendor.v(true);
+    const maskClick = common_vendor.w(true);
     const result = (e) => {
       dragCheckShow.value = false;
       checkCodeIdentity(loginForm).then(() => {
@@ -86,24 +84,24 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         }, 1e3);
       });
     };
-    const countdownNumber = common_vendor.v(60);
-    const isSendCheckCode = common_vendor.v(false);
+    const countdownNumber = common_vendor.w(60);
+    const isSendCheckCode = common_vendor.w(false);
     return (_ctx, _cache) => {
-      return common_vendor.y({
+      return common_vendor.z({
         a: loginForm.phone,
-        b: common_vendor.B(($event) => loginForm.phone = $event.detail.value),
+        b: common_vendor.C(($event) => loginForm.phone = $event.detail.value),
         c: loginForm.code,
-        d: common_vendor.B(($event) => loginForm.code = $event.detail.value),
+        d: common_vendor.C(($event) => loginForm.code = $event.detail.value),
         e: !isSendCheckCode.value
       }, !isSendCheckCode.value ? {
-        f: common_vendor.B(sendCode)
+        f: common_vendor.C(sendCode)
       } : {
-        g: common_vendor.F(countdownNumber.value)
+        g: common_vendor.G(countdownNumber.value)
       }, {
-        h: common_vendor.B(handleLogin),
-        i: common_vendor.B(($event) => dragCheckShow.value = $event),
-        j: common_vendor.B(result),
-        k: common_vendor.D({
+        h: common_vendor.C(handleLogin),
+        i: common_vendor.C(($event) => dragCheckShow.value = $event),
+        j: common_vendor.C(result),
+        k: common_vendor.F({
           visiable: dragCheckShow.value,
           title: "人工验证",
           minTitle: "滑动滑块，使图片显示角度为正",

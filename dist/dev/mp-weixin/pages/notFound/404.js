@@ -7,10 +7,10 @@ const BasicButton = () => "../../components/BasicButton/index.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "404",
   setup(__props) {
-    const go = common_vendor.v("");
+    const go = common_vendor.w("");
     const router = common_vendor.T();
-    const redirect = common_vendor.v("");
-    common_vendor.H((query) => {
+    const redirect = common_vendor.w("");
+    common_vendor.I((query) => {
       go.value = (query == null ? void 0 : query.go) || "";
       redirect.value = (query == null ? void 0 : query.redirect) || "";
     });
@@ -19,8 +19,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     };
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.F(go.value),
-        b: common_vendor.B(backHome)
+        a: common_vendor.G(go.value),
+        b: common_vendor.C(backHome)
       };
     };
   }

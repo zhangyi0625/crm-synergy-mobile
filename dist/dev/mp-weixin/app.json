@@ -14,7 +14,8 @@
       "root": "pagesA",
       "pages": [
         "freight/index",
-        "freight/freight-detail/index"
+        "freight/freight-detail/index",
+        "freight/quotation/index"
       ]
     },
     {
