@@ -28,7 +28,6 @@
 	onLoad((options : any) => {
 		loading.value = true
 		let info = JSON.parse(options.info)
-		console.log(info, 'infoinfo');
 		// 自有运价
 		if (info.channel === 'QMS') {
 			isSend(info.id)
@@ -36,7 +35,6 @@
 			// 电商运价
 			isSend(info.id)
 		}
-		// cabinDetail.value = options.info && JSON.parse(options.info);
 	});
 
 	// 运价详情成功回调
@@ -59,7 +57,6 @@
 		let prices = JSON.parse(price)
 		if (prices) {
 			let obj = assign({}, (isFullObject(prices.normal) ? prices.normal : {}), (isFullObject(prices.special) ? prices.special : {}))
-			console.log(obj, 'objobj');
 			ctnType.value = Object.keys(obj);
 			for (let i in obj) {
 				let index = arr.findIndex((el : any) => el.ctnType === i)
@@ -131,8 +128,8 @@
 					</view>
 					<view class="pl-30 pb-20 ml-20 font400 grey whitespace-nowrap"
 						style="border-left: 1px solid #edeff2">
-						<view>ETD：{{ formatTime(cabinDetail.etd, "M-D") }}</view>
-						<view>码头：{{cabinDetail.terminal?.name}}</view>
+						<view>ETD：{{ formatTime(cabinDetail.etd, "M-D") || '-' }}</view>
+						<view>码头：{{cabinDetail.terminal?.name || '-'}}</view>
 						<view class="mt-40 p-24 bg-light-grey br12">
 							<view class="flex flex-wrap">
 								<view>航程：{{ cabinDetail.voyDays }}天</view>
@@ -153,7 +150,7 @@
 				            cabinDetail.fnd?.enName
 				          }}</view>
 						</view>
-						<view class="ml-50">ETA：{{ formatTime(cabinDetail.eta, "M-D") }}</view>
+						<view class="ml-50 grey">ETA：{{ formatTime(cabinDetail.eta, "M-D") || '-' }}</view>
 						<!-- <view class="ml-50">码头：</view> -->
 					</view>
 				</view>
@@ -223,19 +220,19 @@
 			</view> -->
 			<!-- 备注 -->
 			<view class="p-24 bg-neutral flex flex-column mx-20 br12 mt-20" v-if="hasRemark">
-				<view v-if="cabinDetail.warnRemark">
+				<view v-if="cabinDetail.warnRemark" class="mb-40">
 					特别提醒
 					<view class="mt-10 light-grey">{{ cabinDetail.warnRemark }}</view>
 				</view>
-				<view v-if="cabinDetail.surchargeRemark" class="mt-40">
+				<view v-if="cabinDetail.surchargeRemark" class="mb-40">
 					附加费备注
 					<view class="mt-10 light-grey">{{ cabinDetail.surchargeRemark }}</view>
 				</view>
-				<view v-if="cabinDetail.demurrageRemark" class="mt-40">
+				<view v-if="cabinDetail.demurrageRemark" class="mb-40">
 					免用箱备注
 					<view class="mt-10 light-grey">{{ cabinDetail.demurrageRemark }}</view>
 				</view>
-				<view v-if="cabinDetail.remark" class="mt-40">
+				<view v-if="cabinDetail.remark">
 					其他备注
 					<view class="mt-10 light-grey">{{ cabinDetail.remark }}</view>
 				</view>

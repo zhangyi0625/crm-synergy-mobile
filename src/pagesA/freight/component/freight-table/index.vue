@@ -42,10 +42,10 @@
 				<view class="flex align-center">
 					<img :src="URL + '/carrier-logo/' + item.carrierCode + '.png'" class="w-68 h-68" />
 					<view class="flex flex-column font24 ml-24">
-						<view>运价有效期：{{ formatTime(item.validFrom, "M-D") }} 至
+						<view v-if="item.validFrom || item.validTo">运价有效期：{{ formatTime(item.validFrom, "M-D") }} 至
 							{{ formatTime(item.validTo, "M-D") }}
 						</view>
-						<view>{{ item.vesselName }}/{{ item.voyNo }}</view>
+						<view v-if="item.vesselName || item.voyNo">{{ item.vesselName }}/{{ item.voyNo }}</view>
 					</view>
 				</view>
 				<view class="flex align-center">

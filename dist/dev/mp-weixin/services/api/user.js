@@ -18,9 +18,13 @@ function postEditPwd(data) {
 function putAvatar(data) {
   return utils_http_index.r.Post("/api/app/my/updateAvatar", data);
 }
+function getQuotation(id) {
+  return utils_http_index.r.Get("/api/app/frt/getQuotationTemplate/" + id);
+}
 exports.a = getSysNotice;
 exports.b = getDictByTag;
 exports.c = getEditPwdByCode;
 exports.d = postEditPwd;
+exports.e = getQuotation;
 exports.g = getUserInfo;
 exports.p = putAvatar;

@@ -9,8 +9,8 @@ import { ContentTypeEnum, ResultEnum } from "@/enums/httpEnum";
 import { Toast } from "@/utils/uniapi/prompt";
 import { API } from "@/services/model/baseModel";
 import { router } from "@/router";
-import { removeCache } from "../cache";
-import { TOKEN_KEY } from "@/enums/cacheEnum";
+import { getCache, removeCache } from "../cache";
+import { TOKEN_KEY, USER_INFO_KEY } from "@/enums/cacheEnum";
 
 const BASE_URL = getBaseUrl();
 
@@ -34,20 +34,22 @@ const alovaInstance = createAlova({
 	timeout: 5000,
 	beforeRequest: (method) => {
 		const authStore = useAuthStore();
-		method.config.headers = assign(
-			method.config.headers,
-			HEADER,
-			authStore.getAuthorization
-		);
-		if (method.url === "/admin/login/sms/phone/code") {
-			method.config.headers["X-Captcha-Answer"] =
-				"PEw4oT7PgtQRSc8MHibNC5lmT3sMjNfI";
-			method.config.headers["Content-Type"] = ContentTypeEnum.FORM_URLENCODED;
-		} else if (method.url === "/api/customer/login/wxapp/phone") {
-			method.config.headers["Content-Type"] = ContentTypeEnum.FORM_URLENCODED;
-		} else if (method.url === '/api/app/my/phoneCode') {
-			method.config.headers["X-Captcha-Answer"] =
-				"PEw4oT7PgtQRSc8MHibNC5lmT3sMjNfI";
+		if (method.url !== '/api/app/login/wxAppCode') {
+			method.config.headers = assign(
+				method.config.headers,
+				HEADER,
+				authStore.getAuthorization
+			);
+			if (method.url === "/admin/login/sms/phone/code") {
+				method.config.headers["X-Captcha-Answer"] =
+					"PEw4oT7PgtQRSc8MHibNC5lmT3sMjNfI";
+				method.config.headers["Content-Type"] = ContentTypeEnum.FORM_URLENCODED;
+			} else if (method.url === "/api/customer/login/wxapp/phone") {
+				method.config.headers["Content-Type"] = ContentTypeEnum.FORM_URLENCODED;
+			} else if (method.url === '/api/app/my/phoneCode') {
+				method.config.headers["X-Captcha-Answer"] =
+					"PEw4oT7PgtQRSc8MHibNC5lmT3sMjNfI";
+			}
 		}
 	},
 	responsed: {
@@ -87,7 +89,9 @@ const alovaInstance = createAlova({
 				if (rawData.code === 401 || rawData.code === 402 || rawData.code === 403) {
 					checkStatus(statusCode, message || '');
 					removeCache(TOKEN_KEY)
-					router.push('/pages/login/index')
+					removeCache(USER_INFO_KEY)
+					router.replace('/pages/login/index')
+					console.log(getCache(TOKEN_KEY), 'token_key');
 					return
 				} else if (rawData.code === 400) {
 					Toast(message);

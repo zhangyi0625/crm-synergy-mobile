@@ -34,11 +34,15 @@ const ctnSortPrice = [
 const dataSource = [
   {
     label: "电商运价",
-    value: "OTHER"
+    value: "ZDP"
   },
   {
     label: "自有运价",
     value: "QMS"
+  },
+  {
+    label: "现舱",
+    value: "SPOT"
   }
 ];
 const transitType = [
@@ -51,34 +55,7 @@ const transitType = [
     value: 1
   }
 ];
-const quotationType = [
-  {
-    label: "起运港/目的港：",
-    key: "portInfo"
-  },
-  {
-    label: "船期/航程：",
-    key: "voyDaysInfo"
-  },
-  {
-    label: "船名航次：",
-    key: "vesselInfo"
-  },
-  {
-    label: "船公司：",
-    key: "carrier"
-  },
-  {
-    label: "箱型/海运费：",
-    key: "ctnTypePrice"
-  },
-  {
-    label: "附加费：",
-    key: "otherPrice"
-  }
-];
 exports.c = ctnSortPrice;
 exports.d = dataSource;
-exports.q = quotationType;
 exports.s = sortList;
 exports.t = transitType;

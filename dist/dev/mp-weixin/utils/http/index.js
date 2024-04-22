@@ -15,18 +15,20 @@ const alovaInstance = common_vendor.g({
   timeout: 5e3,
   beforeRequest: (method) => {
     const authStore = state_modules_auth.u();
-    method.config.headers = common_vendor.h(
-      method.config.headers,
-      HEADER,
-      authStore.getAuthorization
-    );
-    if (method.url === "/admin/login/sms/phone/code") {
-      method.config.headers["X-Captcha-Answer"] = "PEw4oT7PgtQRSc8MHibNC5lmT3sMjNfI";
-      method.config.headers["Content-Type"] = enums_httpEnum.C.FORM_URLENCODED;
-    } else if (method.url === "/api/customer/login/wxapp/phone") {
-      method.config.headers["Content-Type"] = enums_httpEnum.C.FORM_URLENCODED;
-    } else if (method.url === "/api/app/my/phoneCode") {
-      method.config.headers["X-Captcha-Answer"] = "PEw4oT7PgtQRSc8MHibNC5lmT3sMjNfI";
+    if (method.url !== "/api/app/login/wxAppCode") {
+      method.config.headers = common_vendor.h(
+        method.config.headers,
+        HEADER,
+        authStore.getAuthorization
+      );
+      if (method.url === "/admin/login/sms/phone/code") {
+        method.config.headers["X-Captcha-Answer"] = "PEw4oT7PgtQRSc8MHibNC5lmT3sMjNfI";
+        method.config.headers["Content-Type"] = enums_httpEnum.C.FORM_URLENCODED;
+      } else if (method.url === "/api/customer/login/wxapp/phone") {
+        method.config.headers["Content-Type"] = enums_httpEnum.C.FORM_URLENCODED;
+      } else if (method.url === "/api/app/my/phoneCode") {
+        method.config.headers["X-Captcha-Answer"] = "PEw4oT7PgtQRSc8MHibNC5lmT3sMjNfI";
+      }
     }
   },
   responsed: {
@@ -57,7 +59,9 @@ const alovaInstance = common_vendor.g({
         if (rawData.code === 401 || rawData.code === 402 || rawData.code === 403) {
           utils_http_checkStatus.c(statusCode, message || "");
           utils_cache_index.r(enums_cacheEnum.T);
-          router_index.r.push("/pages/login/index");
+          utils_cache_index.r(enums_cacheEnum.U);
+          router_index.r.replace("/pages/login/index");
+          console.log(utils_cache_index.g(enums_cacheEnum.T), "token_key");
           return;
         } else if (rawData.code === 400) {
           utils_uniapi_prompt.T(message);

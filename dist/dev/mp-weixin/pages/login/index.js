@@ -8,9 +8,20 @@ const DragCheck = () => "../../components/Drag-check/index.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
+    const { data: dataOptions, send: isSend, onSuccess } = common_vendor.u((loginRes) => services_api_auth.r({ jsCode: loginRes }), { immediate: false });
     const pageQuery = common_vendor.w(void 0);
     common_vendor.I((query) => {
+      common_vendor.i.login({
+        provider: "weixin",
+        //使用微信登录
+        success: function(loginRes) {
+          isSend(loginRes.code);
+        }
+      });
       pageQuery.value = query;
+    });
+    onSuccess(() => {
+      loginForm.aid = dataOptions.value.aid;
     });
     const router = common_vendor.T();
     const authStore = state_modules_auth.u();
@@ -19,7 +30,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     });
     const loginForm = common_vendor.x({
       phone: "",
-      code: ""
+      code: "",
+      aid: ""
     });
     const { send: checkCodeIdentity } = common_vendor.u(
       (params) => services_api_auth.g({ phone: params.phone }),

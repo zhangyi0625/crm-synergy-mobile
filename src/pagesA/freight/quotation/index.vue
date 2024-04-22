@@ -1,47 +1,52 @@
 <script lang="ts" setup>
 	import { onLoad } from '@dcloudio/uni-app';
-	import { ref, reactive } from 'vue';
-	import { formatTime } from '@/utils/time';
-	// import useClipboard from 'vue-clipboard3'
+	import { ref } from 'vue';
 	import { Toast } from '@/utils/uniapi/prompt';
-	import { quotationType } from '../config';
+	import { invalidateCache, useRequest } from 'alova';
+	import { getQuotation } from '@/services/api/user';
+	import { BasicArrItem } from '@/services/model/baseModel';
+	import CustomLoading from "@/components/Basic-loading/index.vue";
 
-	const quotationForm = reactive<any>({
-		portInfo: '',
-		voyDaysInfo: '',
-		vesselInfo: '',
-		carrier: '',
-		ctnTypePrice: '',
-		otherPrice: ''
-	})
+	const loading = ref<boolean>(false)
+
+	const { data: quotationInfo, send: isSend } : any = useRequest(id => getQuotation(id), { immediate: false })
+	const quotationData = ref([] as Array<BasicArrItem>)
 
 	onLoad((options : any) => {
+		loading.value = true;
 		let info = JSON.parse(options.item)
-		quotationForm.portInfo = info.por.cnName + ' - ' + info.fnd.cnName + info.fnd.enName;
-		quotationForm.voyDaysInfo = formatTime(info.etd, 'M-D') + ' — ' + formatTime(info.eta, 'M-D') + '/' + info.voyDays;
-		quotationForm.vesselInfo = info.vesselName || info.voyNo ? info.vesselName + '/' + info.voyNo : '';
-		quotationForm.carrier = info.carrierCode;
-		quotationForm.ctnTypePrice = '';
-		quotationForm.otherPrice = ''
+		isSend(info.id)
+		invalidateCache(getQuotation(info.id))
+		setTimeout(() => {
+			quotationInfo.value && init()
+		}, 200)
 	})
 
-	const getPriceSheet = (priceType : string) => {
-
+	// 页面初始化
+	const init = () => {
+		let arr = quotationInfo.value.split('\r\n')
+		quotationData.value = []
+		arr.map((item : any) => {
+			let ele = item.split(':')[0].split('：');
+			quotationData.value.push({
+				label: ele[0],
+				value: ele[1]
+			})
+		})
+		loading.value = false
 	}
 
 	const text = ref<string>('')
-
 	// 复制报价单
 	const handleClick = async () => {
 		let arr = [];
-		for (let i in quotationForm) {
+		for (let i in quotationData.value) {
 			arr.push({
-				name: quotationType.find((el : any) => el.key === i)?.label,
-				value: quotationForm[i],
+				name: quotationData.value[i]?.label,
+				value: quotationData.value[i]?.value,
 			});
 		}
 		text.value = `${arr.map((item : any) => `${item.name}：${item.value}`).join('\n')}`;
-		console.log(text.value);
 		uni.setClipboardData({
 			data: text.value,
 			success: () => {
@@ -55,42 +60,18 @@
 </script>
 
 <template>
-	<view class="quotation px-20">
+	<CustomLoading v-if="loading" iconType="annulus" position="fixed" :zIndex="9" :mask="false" :maskOpacity="1"
+		:maskMini="false" :maskDark="true" color="#0396FF" />
+	<view class="quotation px-20" v-else>
 		<view class="br12 bg-neutral mt-20 my-40">
-			<view class="flex align-center font400 font28 light-grey px-24 py-32"
-				style="border-bottom: 1rpx solid #f5f7fa">
-				<view class="mr-10">起运港/目的港：</view>
-				<input type="text" v-model="quotationForm.portInfo" class="dull-grey" />
-			</view>
-			<view class="flex align-center font400 font28 light-grey px-24 py-32"
-				style="border-bottom: 1rpx solid #f5f7fa">
-				<view class="mr-10">船期/航程：</view>
-				<input type="text" v-model="quotationForm.voyDaysInfo" class="dull-grey" />
-			</view>
-			<view class="flex align-center font400 font28 light-grey px-24 py-32"
-				style="border-bottom: 1rpx solid #f5f7fa">
-				<view class="mr-10">船名航次：</view>
-				<input type="text" v-model="quotationForm.vesselInfo" class="dull-grey" />
-			</view>
-			<view class="flex align-center font400 font28 light-grey px-24 py-32"
-				style="border-bottom: 1rpx solid #f5f7fa">
-				<view class="mr-10">船公司：</view>
-				<input type="text" v-model="quotationForm.carrier" class="dull-grey" />
-			</view>
-			<view class="flex align-center font400 font28 light-grey px-24 py-32"
-				style="border-bottom: 1rpx solid #f5f7fa">
-				<view class="mr-10">箱型/海运费：</view>
-				<input type="text" v-model="quotationForm.ctnTypePrice" class="dull-grey" />
-			</view>
-			<view class="flex align-center font400 font28 light-grey px-24 py-32"
-				style="border-bottom: 1rpx solid #f5f7fa">
-				<view class="mr-10">附加费：</view>
-				<input type="text" v-model="quotationForm.otherPrice" class="dull-grey" />
+			<view class="flex align-center font400 font28 light-grey px-24 py-32" v-for="(item,index) in quotationData"
+				:key="index" style="border-bottom: 1rpx solid #f5f7fa">
+				<view class="mr-10 whitespace-nowrap">{{item.label + ':'}}</view>
+				<input type="text" v-model="item.value" class="dull-grey w-full" />
 			</view>
 		</view>
 		<button class="quotation-btn" @click="handleClick">报价单</button>
 	</view>
 </template>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

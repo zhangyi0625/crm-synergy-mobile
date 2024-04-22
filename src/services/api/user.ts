@@ -30,8 +30,6 @@ export function getEditPwdByCode() {
 	return request.Get('/api/app/my/phoneCode');
 }
 
-
-
 /**
  * 修改密码
  */
@@ -44,4 +42,9 @@ export function postEditPwd(data : EditPassWord) {
  */
 export function putAvatar(data : any) {
 	return request.Post('/api/app/my/updateAvatar', data);
+}
+
+
+export function getQuotation(id : string | number) {
+	return request.Get('/api/app/frt/getQuotationTemplate/' + id);
 }

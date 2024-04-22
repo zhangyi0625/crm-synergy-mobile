@@ -19,9 +19,27 @@ if (!Math) {
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "App",
   setup(__props) {
+    const router = common_vendor.T();
     const { data: dataOptions, send: isSend, onSuccess } = common_vendor.u((loginRes) => services_api_auth.r({ jsCode: loginRes }), { immediate: false });
     common_vendor.o(() => {
       console.log("App Launch");
+      const updateManager = common_vendor.i.getUpdateManager();
+      updateManager.onCheckForUpdate(function(res) {
+        console.log(res.hasUpdate);
+      });
+      updateManager.onUpdateReady(function(res) {
+        common_vendor.i.showModal({
+          title: "更新提示",
+          content: "新版本已经准备好，是否重启应用？",
+          success(res2) {
+            if (res2.confirm) {
+              updateManager.applyUpdate();
+            }
+          }
+        });
+      });
+      updateManager.onUpdateFailed(function(res) {
+      });
     });
     common_vendor.l(() => {
       common_vendor.i.login({
@@ -40,6 +58,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       if (dataOptions.value.status) {
         authStore.setToken(dataOptions.value.accessToken);
         authStore.getProfile();
+      } else {
+        router.push("/pages/login/index");
       }
     });
     return () => {

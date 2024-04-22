@@ -4,7 +4,8 @@
 
 export enum ProductType {
 	QMS = "QMS",
-	OTHER = "OTHER",
+	ZDP = "ZDP",
+	SPOT = "SPOT"
 }
 
 export enum priceType {

@@ -35,35 +35,41 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
             a: item.channel !== common_vendor.B(enums_freight.P).QMS
           }, item.channel !== common_vendor.B(enums_freight.P).QMS ? {} : {}, {
             b: common_vendor.B(URL) + "/carrier-logo/" + item.carrierCode + ".png",
-            c: common_vendor.G(common_vendor.B(utils_time.f)(item.validFrom, "M-D")),
-            d: common_vendor.G(common_vendor.B(utils_time.f)(item.validTo, "M-D")),
-            e: common_vendor.G(item.vesselName),
-            f: common_vendor.G(item.voyNo),
-            g: common_vendor.G(item.carrierRoute),
-            h: item.etd && item.eta
-          }, item.etd && item.eta ? {
-            i: common_vendor.G(common_vendor.B(utils_time.f)(item.etd, "M-D")),
-            j: common_vendor.G(common_vendor.B(utils_time.f)(item.eta, "M-D"))
+            c: item.validFrom || item.validTo
+          }, item.validFrom || item.validTo ? {
+            d: common_vendor.G(common_vendor.B(utils_time.f)(item.validFrom, "M-D")),
+            e: common_vendor.G(common_vendor.B(utils_time.f)(item.validTo, "M-D"))
           } : {}, {
-            k: common_vendor.G(item.voyDays),
-            l: common_vendor.G(item.cutOffDay ? item.cutOffDay + "截" : "-"),
-            m: common_vendor.G(item.departureDay ? item.departureDay + "开" : "-"),
-            n: common_vendor.G(item.transit > 0 ? "中转" : "直达"),
-            o: common_vendor.G(item.isSale ? "有" : "无"),
-            p: common_vendor.D(getPrice(item.innerPrice ? item.innerPrice : item.outerPrice), (price, priceIndex, i1) => {
+            f: item.vesselName || item.voyNo
+          }, item.vesselName || item.voyNo ? {
+            g: common_vendor.G(item.vesselName),
+            h: common_vendor.G(item.voyNo)
+          } : {}, {
+            i: common_vendor.G(item.carrierRoute),
+            j: item.etd && item.eta
+          }, item.etd && item.eta ? {
+            k: common_vendor.G(common_vendor.B(utils_time.f)(item.etd, "M-D")),
+            l: common_vendor.G(common_vendor.B(utils_time.f)(item.eta, "M-D"))
+          } : {}, {
+            m: common_vendor.G(item.voyDays),
+            n: common_vendor.G(item.cutOffDay ? item.cutOffDay + "截" : "-"),
+            o: common_vendor.G(item.departureDay ? item.departureDay + "开" : "-"),
+            p: common_vendor.G(item.transit > 0 ? "中转" : "直达"),
+            q: common_vendor.G(item.isSale ? "有" : "无"),
+            r: common_vendor.D(getPrice(item.innerPrice ? item.innerPrice : item.outerPrice), (price, priceIndex, i1) => {
               return {
                 a: common_vendor.G(priceIndex),
                 b: common_vendor.G(price ? "$" + price : "-"),
                 c: priceIndex
               };
             }),
-            q: common_vendor.H(item.channel !== common_vendor.B(enums_freight.P).QMS ? "mt-24" : "my-24"),
-            r: item.channel === common_vendor.B(enums_freight.P).QMS
+            s: common_vendor.H(item.channel !== common_vendor.B(enums_freight.P).QMS ? "mt-24" : "my-24"),
+            t: item.channel === common_vendor.B(enums_freight.P).QMS
           }, item.channel === common_vendor.B(enums_freight.P).QMS ? {
-            s: common_vendor.C(($event) => jump(item, "CARRIER"), index)
+            v: common_vendor.C(($event) => jump(item, "CARRIER"), index)
           } : {}, {
-            t: index,
-            v: common_vendor.C(($event) => jump(item), index)
+            w: index,
+            x: common_vendor.C(($event) => jump(item), index)
           });
         })
       };

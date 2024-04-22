@@ -1,7 +1,8 @@
 "use strict";
 var ProductType = /* @__PURE__ */ ((ProductType2) => {
   ProductType2["QMS"] = "QMS";
-  ProductType2["OTHER"] = "OTHER";
+  ProductType2["ZDP"] = "ZDP";
+  ProductType2["SPOT"] = "SPOT";
   return ProductType2;
 })(ProductType || {});
 var priceType = /* @__PURE__ */ ((priceType2) => {

@@ -1,37 +1,48 @@
 "use strict";
-const common_vendor = require("../../../common/vendor.js"), utils_time = require("../../../utils/time.js"), utils_uniapi_prompt = require("../../../utils/uniapi/prompt.js"), pagesA_freight_config = require("../config.js");
+const common_vendor = require("../../../common/vendor.js"), utils_uniapi_prompt = require("../../../utils/uniapi/prompt.js"), services_api_user = require("../../../services/api/user.js");
+require("../../../utils/http/index.js"), require("../../../utils/env.js"), require("../../../mock/index.js"), require("../../../mock/v1/index.js"), require("../../../mock/v1/modules/auth.js"), require("../../../mock/utils.js"), require("../../../enums/httpEnum.js"), require("../../../state/modules/auth.js"), require("../../../utils/cache/index.js"), require("../../../utils/cache/storageCache.js"), require("../../../settings/encryptionSetting.js"), require("../../../utils/cipher.js"), require("../../../utils/is.js"), require("../../../enums/cacheEnum.js"), require("../../../services/api/auth.js"), require("../../../utils/http/checkStatus.js"), require("../../../router/index.js"), require("../../../router/guard.js");
+if (!Math) {
+  CustomLoading();
+}
+const CustomLoading = () => "../../../components/Basic-loading/index.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
-    const quotationForm = common_vendor.x({
-      portInfo: "",
-      voyDaysInfo: "",
-      vesselInfo: "",
-      carrier: "",
-      ctnTypePrice: "",
-      otherPrice: ""
-    });
+    const loading = common_vendor.w(false);
+    const { data: quotationInfo, send: isSend } = common_vendor.u((id) => services_api_user.e(id), { immediate: false });
+    const quotationData = common_vendor.w([]);
     common_vendor.I((options) => {
+      loading.value = true;
       let info = JSON.parse(options.item);
-      quotationForm.portInfo = info.por.cnName + " - " + info.fnd.cnName + info.fnd.enName;
-      quotationForm.voyDaysInfo = utils_time.f(info.etd, "M-D") + " — " + utils_time.f(info.eta, "M-D") + "/" + info.voyDays;
-      quotationForm.vesselInfo = info.vesselName || info.voyNo ? info.vesselName + "/" + info.voyNo : "";
-      quotationForm.carrier = info.carrierCode;
-      quotationForm.ctnTypePrice = "";
-      quotationForm.otherPrice = "";
+      isSend(info.id);
+      common_vendor.y(services_api_user.e(info.id));
+      setTimeout(() => {
+        quotationInfo.value && init();
+      }, 200);
     });
+    const init = () => {
+      let arr = quotationInfo.value.split("\r\n");
+      quotationData.value = [];
+      arr.map((item) => {
+        let ele = item.split(":")[0].split("：");
+        quotationData.value.push({
+          label: ele[0],
+          value: ele[1]
+        });
+      });
+      loading.value = false;
+    };
     const text = common_vendor.w("");
     const handleClick = async () => {
-      var _a;
+      var _a, _b;
       let arr = [];
-      for (let i in quotationForm) {
+      for (let i in quotationData.value) {
         arr.push({
-          name: (_a = pagesA_freight_config.q.find((el) => el.key === i)) == null ? void 0 : _a.label,
-          value: quotationForm[i]
+          name: (_a = quotationData.value[i]) == null ? void 0 : _a.label,
+          value: (_b = quotationData.value[i]) == null ? void 0 : _b.value
         });
       }
       text.value = `${arr.map((item) => `${item.name}：${item.value}`).join("\n")}`;
-      console.log(text.value);
       common_vendor.i.setClipboardData({
         data: text.value,
         success: () => {
@@ -43,21 +54,30 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       });
     };
     return (_ctx, _cache) => {
-      return {
-        a: quotationForm.portInfo,
-        b: common_vendor.C(($event) => quotationForm.portInfo = $event.detail.value),
-        c: quotationForm.voyDaysInfo,
-        d: common_vendor.C(($event) => quotationForm.voyDaysInfo = $event.detail.value),
-        e: quotationForm.vesselInfo,
-        f: common_vendor.C(($event) => quotationForm.vesselInfo = $event.detail.value),
-        g: quotationForm.carrier,
-        h: common_vendor.C(($event) => quotationForm.carrier = $event.detail.value),
-        i: quotationForm.ctnTypePrice,
-        j: common_vendor.C(($event) => quotationForm.ctnTypePrice = $event.detail.value),
-        k: quotationForm.otherPrice,
-        l: common_vendor.C(($event) => quotationForm.otherPrice = $event.detail.value),
-        m: common_vendor.C(handleClick)
-      };
+      return common_vendor.z({
+        a: loading.value
+      }, loading.value ? {
+        b: common_vendor.F({
+          iconType: "annulus",
+          position: "fixed",
+          zIndex: 9,
+          mask: false,
+          maskOpacity: 1,
+          maskMini: false,
+          maskDark: true,
+          color: "#0396FF"
+        })
+      } : {
+        c: common_vendor.D(quotationData.value, (item, index, i0) => {
+          return {
+            a: common_vendor.G(item.label + ":"),
+            b: item.value,
+            c: common_vendor.C(($event) => item.value = $event.detail.value, index),
+            d: index
+          };
+        }),
+        d: common_vendor.C(handleClick)
+      });
     };
   }
 });

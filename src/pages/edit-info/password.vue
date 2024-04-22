@@ -82,7 +82,7 @@
 			</view>
 		</view>
 		<DragCheck :visiable="dragCheckShow" title="人工验证" minTitle="滑动滑块，使图片显示角度为正" image="/static/logo.png"
-			icon="/static/images/icon/drag-check.png" :maskClick="maskClick" @upstate-visible="dragCheckShow = $event"
+			icon="/static/images/icon/drag-check.png" :maskClick="maskClick" @update:visible="dragCheckShow = $event"
 			@result="result" />
 		<button class="pwd-btn mt-40" @click="save">保存</button>
 	</view>

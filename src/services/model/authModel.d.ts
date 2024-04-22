@@ -12,6 +12,7 @@ declare interface LoginByVerifyCodeParams {
 	// verifyKey : string;
 	code : string;
 	wxCode ?: string;
+	aid ?: string
 }
 
 declare interface RegisterParams {

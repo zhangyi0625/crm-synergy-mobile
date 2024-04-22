@@ -3,10 +3,13 @@
 	import { formatUpdated } from "@/utils/time";
 	import { invalidateCache, useRequest } from "alova";
 	import { deleteCollectPort, getCollectPort } from "@/services/api/freight";
+	import { useRouter } from "uni-mini-router";
+
+
+	const router = useRouter()
 
 	// 页面初始化
 	onShow(() => {
-		console.log('页面初始化');
 		isSend()
 		invalidateCache(getCollectPort())
 	})
@@ -20,13 +23,21 @@
 		isSend()
 		invalidateCache(getCollectPort())
 	})
+
+	// 跳转运价列表
+	const jump = (item : any) => {
+		router.push({
+			path: "/pagesA/freight/index?info=" + JSON.stringify(item),
+		});
+	}
 </script>
 
 <template>
-	<view class="collect px-20">
-		<view class="p-24 bg-neutral br12 relative mt-20" v-for="(item, index) in collectData" :key="index">
+	<view class="collect px-20 pb-20">
+		<view class="p-24 bg-neutral br12 relative mt-20" v-for="(item, index) in collectData" :key="index"
+			@click.stop="jump(item)">
 			<view class="absolute right-0 top-0 py-12 px-18 flex align-center bg-light-red br12-sm"
-				@click="isDelete(item.id)">
+				@click.stop="isDelete(item.id)">
 				<img src="/static/images/collect/collect.png" class="w-32 h-32" />
 				<view class="ml-4 font26 font400 dull-red">取消收藏</view>
 			</view>

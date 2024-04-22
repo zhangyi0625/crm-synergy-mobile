@@ -5,14 +5,30 @@
 	import { Toast } from "@/utils/uniapi/prompt";
 	import { useRouter } from "uni-mini-router";
 	import { useRequest } from "alova";
-	import { getVerifyCode, login } from "@/services/api/auth";
+	import { getVerifyCode, login, refreshToken } from "@/services/api/auth";
 	import { omit } from "lodash-es";
 	import DragCheck from "@/components/Drag-check/index.vue";
 
+
+	const { data: dataOptions, send: isSend, onSuccess: onSuccess } : any = useRequest((loginRes) => refreshToken({ jsCode: loginRes }), { immediate: false });
+
 	const pageQuery = ref<Record<string, any> | undefined>(undefined);
 	onLoad((query) => {
+		uni.login({
+			provider: "weixin", //使用微信登录
+			success: function (loginRes) {
+				isSend(loginRes.code)
+			}
+		})
 		pageQuery.value = query;
 	});
+
+	onSuccess(() => {
+		// if (!uni.getStorageSync('AID')) {
+		// } else {
+		loginForm.aid = dataOptions.value.aid
+		// s}
+	})
 
 	const router = useRouter();
 
@@ -25,6 +41,7 @@
 	const loginForm = reactive<LoginByVerifyCodeParams>({
 		phone: "",
 		code: "",
+		aid: ""
 	});
 	const { send: checkCodeIdentity } = useRequest(
 		(params) => getVerifyCode({ phone: params.phone }),
@@ -115,7 +132,7 @@
 			<button class="pwd-btn mt-40" @click="handleLogin">登录</button>
 		</view>
 		<DragCheck :visiable="dragCheckShow" title="人工验证" minTitle="滑动滑块，使图片显示角度为正" image="/static/logo.png"
-			icon="/static/images/icon/drag-check.png" :maskClick="maskClick" @upstate-visible="dragCheckShow = $event"
+			icon="/static/images/icon/drag-check.png" :maskClick="maskClick" @update:visible="dragCheckShow = $event"
 			@result="result" />
 	</view>
 </template>

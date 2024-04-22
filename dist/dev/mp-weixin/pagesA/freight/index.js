@@ -55,7 +55,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       // dataSource: "",
       // transitNum: null,
     });
-    const { data: freightData, send: isSend, onSuccess } = common_vendor.u((params) => services_api_freight_index.b(freightParams), { immediate: false });
+    const { data: freightData, send: isSend, onSuccess } = common_vendor.u(services_api_freight_index.b(freightParams), { immediate: false });
     const priceCtnShow = common_vendor.w(false);
     const changeCurrent = (index) => {
       current.value = index;

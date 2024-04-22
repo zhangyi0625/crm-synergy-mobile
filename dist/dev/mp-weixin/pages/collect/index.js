@@ -4,8 +4,8 @@ require("../../utils/http/index.js"), require("../../utils/env.js"), require("..
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
+    const router = common_vendor.T();
     common_vendor.l(() => {
-      console.log("页面初始化");
       isSend();
       common_vendor.y(services_api_freight_index.c());
     });
@@ -15,6 +15,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       isSend();
       common_vendor.y(services_api_freight_index.c());
     });
+    const jump = (item) => {
+      router.push({
+        path: "/pagesA/freight/index?info=" + JSON.stringify(item)
+      });
+    };
     return (_ctx, _cache) => {
       return {
         a: common_vendor.D(common_vendor.B(collectData), (item, index, i0) => {
@@ -28,7 +33,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
             e: common_vendor.G(item.porEnName),
             f: common_vendor.G(item.fndCnlName),
             g: common_vendor.G(item.fndEnName),
-            h: index
+            h: index,
+            i: common_vendor.C(($event) => jump(item), index)
           });
         })
       };

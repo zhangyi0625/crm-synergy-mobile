@@ -6,7 +6,7 @@ function createRouterGuard(router) {
 }
 function createBeforeEachGuard(router) {
   router.beforeEach((to, _, next) => {
-    var _a;
+    var _a, _b;
     const authStore = state_modules_auth.u();
     console.log(
       authStore,
@@ -16,7 +16,11 @@ function createBeforeEachGuard(router) {
     if (to && ((_a = to == null ? void 0 : to.meta) == null ? void 0 : _a.ignoreAuth)) {
       next();
     } else if (!authStore.isLogin && to && to.name !== "Login") {
-      next();
+      next({
+        name: "Login",
+        params: { redirect: to.name, tabBar: (_b = to == null ? void 0 : to.meta) == null ? void 0 : _b.tabBar, ...to.query },
+        navType: "push"
+      });
     } else if (authStore.isLogin && to && to.name === "Login") {
       next({ name: "Home", navType: "replaceAll" });
     } else {

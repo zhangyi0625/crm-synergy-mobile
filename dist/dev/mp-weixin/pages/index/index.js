@@ -1,6 +1,6 @@
 "use strict";
-const common_vendor = require("../../common/vendor.js"), services_api_freight_index = require("../../services/api/freight/index.js"), utils_time = require("../../utils/time.js"), state_modules_auth = require("../../state/modules/auth.js"), services_api_user = require("../../services/api/user.js"), utils_cache_index = require("../../utils/cache/index.js"), enums_cacheEnum = require("../../enums/cacheEnum.js");
-require("../../utils/http/index.js"), require("../../utils/env.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../utils/http/checkStatus.js"), require("../../utils/uniapi/prompt.js"), require("../../router/index.js"), require("../../router/guard.js"), require("../../services/api/auth.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/cipher.js"), require("../../utils/is.js");
+const common_vendor = require("../../common/vendor.js"), services_api_freight_index = require("../../services/api/freight/index.js"), utils_time = require("../../utils/time.js"), state_modules_auth = require("../../state/modules/auth.js"), services_api_user = require("../../services/api/user.js"), utils_uniapi_prompt = require("../../utils/uniapi/prompt.js");
+require("../../utils/http/index.js"), require("../../utils/env.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../utils/http/checkStatus.js"), require("../../router/index.js"), require("../../router/guard.js"), require("../../utils/cache/index.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/cipher.js"), require("../../utils/is.js"), require("../../enums/cacheEnum.js"), require("../../services/api/auth.js");
 if (!Array) {
   const _easycom_u_notice_bar2 = common_vendor.v("u-notice-bar");
   _easycom_u_notice_bar2();
@@ -32,7 +32,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       let regx = /<\/?[a-zA-Z]+(\s+[a-zA-Z]+=".*")*>/g;
       noticeContent.value = value.replaceAll(regx, "");
     });
-    const { data: TagData, onSuccess: loadAreaLists } = common_vendor.u(() => services_api_user.b("标签"));
+    const { data: TagData, onSuccess: loadAreaLists, send: sendTags } = common_vendor.u(() => services_api_user.b("标签"), { immediate: false });
     common_vendor.l(() => {
       common_vendor.i.$off("update");
       common_vendor.i.$on("update", (data) => {
@@ -45,16 +45,22 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         }
       });
       setTimeout(() => {
-        isSend();
+        authStore.isLogin && isSend();
+        sendTags();
         noticeSend();
         common_vendor.y(services_api_freight_index.g());
-      }, 1e3);
-      console.log(authStore.token, "authStore.isLogin", utils_cache_index.g(enums_cacheEnum.T), "zzz");
+      }, 1500);
     });
-    const { data: historySearchOptions, send: isSend } = common_vendor.u(
+    const { data: historySearchOptions, send: isSend, onSuccess: historySuccess } = common_vendor.u(
       services_api_freight_index.g,
       { immediate: false }
     );
+    historySuccess(() => {
+      if (historySearchOptions.value.length > 0) {
+        searchForm.porCode = historySearchOptions.value[0].porCode;
+        searchForm.porInfo = historySearchOptions.value[0].porCnlName + "-" + historySearchOptions.value[0].porEnName;
+      }
+    });
     const { data: areaList, onSuccess: loadAreaList, send: judgeArea } = common_vendor.u(services_api_freight_index.a, { immediate: false });
     const { data: recommendOptions, send: sendRecommendOptions } = common_vendor.u(
       (params) => services_api_freight_index.b(
@@ -118,9 +124,14 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     };
     const router = common_vendor.T();
     const onSearch = () => {
-      router.push({
-        path: "/pagesA/freight/index?info=" + JSON.stringify(searchForm)
-      });
+      if (!searchForm.porCode) {
+        utils_uniapi_prompt.T("请选择起运港！");
+      } else if (!searchForm.fndCode) {
+        utils_uniapi_prompt.T("请选择目的港！");
+      } else
+        router.push({
+          path: "/pagesA/freight/index?info=" + JSON.stringify(searchForm)
+        });
     };
     const goDetail = (item) => {
       router.push(
@@ -146,11 +157,13 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         d: common_vendor.C(($event) => jumpSelected("POR")),
         e: searchForm.porInfo,
         f: common_vendor.C(($event) => searchForm.porInfo = $event.detail.value),
-        g: common_vendor.C(($event) => jumpSelected("FND")),
-        h: searchForm.fndInfo,
-        i: common_vendor.C(($event) => searchForm.fndInfo = $event.detail.value),
-        j: common_vendor.C(onSearch),
-        k: common_vendor.D(common_vendor.B(historySearchOptions), (item, index, i0) => {
+        g: common_vendor.C(($event) => jumpSelected("POR")),
+        h: common_vendor.C(($event) => jumpSelected("FND")),
+        i: searchForm.fndInfo,
+        j: common_vendor.C(($event) => searchForm.fndInfo = $event.detail.value),
+        k: common_vendor.C(($event) => jumpSelected("FND")),
+        l: common_vendor.C(onSearch),
+        m: common_vendor.D(common_vendor.B(historySearchOptions), (item, index, i0) => {
           return {
             a: common_vendor.G(item.porCnlName),
             b: common_vendor.G(item.fndCnlName),
@@ -158,7 +171,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
             d: common_vendor.C(($event) => searchHistory(item), index)
           };
         }),
-        l: common_vendor.D(common_vendor.B(areaList), (item, index, i0) => {
+        n: common_vendor.D(common_vendor.B(areaList), (item, index, i0) => {
           return {
             a: common_vendor.G(item.name),
             b: common_vendor.H(areaCurrent.value === item.code ? "neutral bg-dull-red" : "bg-neutral dull-red active"),
@@ -166,21 +179,21 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
             d: index
           };
         }),
-        m: common_vendor.D(getRecommendOptions(common_vendor.B(recommendOptions)), (item, index, i0) => {
+        o: common_vendor.D(getRecommendOptions(common_vendor.B(recommendOptions)), (item, index, i0) => {
           return {
             a: common_vendor.G(item.por.cnName),
             b: common_vendor.G(item.fnd.cnName),
-            c: common_vendor.G(common_vendor.B(utils_time.f)(item.etd, "Y-M-D")),
+            c: common_vendor.G(common_vendor.B(utils_time.f)(item.etd, "M-D")),
             d: common_vendor.G(getPriceJson(item.innerPrice) ? "$" + getPriceJson(item.innerPrice) : "-"),
             e: common_vendor.C(($event) => goDetail(item), index),
             f: index
           };
         }),
-        n: ((_a = common_vendor.B(recommendOptions)) == null ? void 0 : _a.length) > 0 && areaCurrent.value
+        p: ((_a = common_vendor.B(recommendOptions)) == null ? void 0 : _a.length) > 0 && areaCurrent.value
       }, ((_b = common_vendor.B(recommendOptions)) == null ? void 0 : _b.length) > 0 && areaCurrent.value ? {
-        o: common_vendor.C(loadMore)
-      } : ((_c = common_vendor.B(recommendOptions)) == null ? void 0 : _c.length) === 0 && areaCurrent.value ? {} : {}, {
-        p: ((_d = common_vendor.B(recommendOptions)) == null ? void 0 : _d.length) === 0 && areaCurrent.value
+        q: common_vendor.C(loadMore)
+      } : ((_c = common_vendor.B(recommendOptions)) == null ? void 0 : _c.length) === 0 ? {} : {}, {
+        r: ((_d = common_vendor.B(recommendOptions)) == null ? void 0 : _d.length) === 0
       });
     };
   }

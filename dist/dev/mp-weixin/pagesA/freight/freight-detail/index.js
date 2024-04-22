@@ -18,7 +18,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     common_vendor.I((options) => {
       loading.value = true;
       let info = JSON.parse(options.info);
-      console.log(info, "infoinfo");
       if (info.channel === "QMS") {
         isSend(info.id);
       } else {
@@ -43,7 +42,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       let prices = JSON.parse(price);
       if (prices) {
         let obj = common_vendor.h({}, utils_index.i(prices.normal) ? prices.normal : {}, utils_index.i(prices.special) ? prices.special : {});
-        console.log(obj, "objobj");
         ctnType.value = Object.keys(obj);
         for (let i in obj) {
           let index = arr.findIndex((el) => el.ctnType === i);
@@ -98,8 +96,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         g: common_vendor.G(cabinDetail.value.transit > 0 ? "中转" : "直达"),
         h: common_vendor.G((_a = cabinDetail.value.por) == null ? void 0 : _a.cnName),
         i: common_vendor.G((_b = cabinDetail.value.por) == null ? void 0 : _b.enName),
-        j: common_vendor.G(common_vendor.B(utils_time.f)(cabinDetail.value.etd, "M-D")),
-        k: common_vendor.G((_c = cabinDetail.value.terminal) == null ? void 0 : _c.name),
+        j: common_vendor.G(common_vendor.B(utils_time.f)(cabinDetail.value.etd, "M-D") || "-"),
+        k: common_vendor.G(((_c = cabinDetail.value.terminal) == null ? void 0 : _c.name) || "-"),
         l: common_vendor.G(cabinDetail.value.voyDays),
         m: common_vendor.G(cabinDetail.value.carrierRoute),
         n: common_vendor.G(cabinDetail.value.cutOffDay ? cabinDetail.value.cutOffDay + "截" : ""),
@@ -108,7 +106,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         q: common_vendor.G(cabinDetail.value.voyNo ? cabinDetail.value.voyNo : ""),
         r: common_vendor.G((_d = cabinDetail.value.fnd) == null ? void 0 : _d.cnName),
         s: common_vendor.G((_e = cabinDetail.value.fnd) == null ? void 0 : _e.enName),
-        t: common_vendor.G(common_vendor.B(utils_time.f)(cabinDetail.value.eta, "M-D")),
+        t: common_vendor.G(common_vendor.B(utils_time.f)(cabinDetail.value.eta, "M-D") || "-"),
         v: common_vendor.G(cabinDetail.value.isSale ? "有库存" : "无库存"),
         w: common_vendor.H(cabinDetail.value.isSale ? "active" : "light-grey"),
         x: isCtnPrice("costPrice")

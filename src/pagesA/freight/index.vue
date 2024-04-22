@@ -33,6 +33,7 @@
 			})
 			isSend()
 		} else {
+			// 按起运港、目的港
 			locationInfo.value = JSON.parse(options.info) || {};
 			let { porInfo, fndInfo } = locationInfo.value
 			uni.setNavigationBarTitle({
@@ -65,7 +66,7 @@
 		// transitNum: null,
 	});
 	// 运价数据
-	const { data: freightData, send: isSend, onSuccess } : any = useRequest(params => (getFreightOptions(freightParams)), { immediate: false })
+	const { data: freightData, send: isSend, onSuccess } : any = useRequest((getFreightOptions(freightParams)), { immediate: false })
 
 	// 筛选切换回调
 	const priceCtnShow = ref<boolean>(false);
@@ -105,8 +106,8 @@
 			freightParams[type] = freightParams[type] === item.value ? "" : item.value;
 	};
 	const reset = () => {
-		freightParams.carrier = "";
-		freightParams.channel = "";
+		freightParams.carrier = '';
+		freightParams.channel = '';
 		freightParams.transit = '';
 		filterModalShow.value = false;
 		isSend()
@@ -129,7 +130,6 @@
 <template>
 	<CustomLoading v-if="loading" iconType="annulus" position="fixed" :zIndex="9" :mask="false" :maskOpacity="1"
 		:maskMini="false" :maskDark="true" color="#0396FF" />
-	<!-- <view > -->
 	<view v-else class="freight">
 		<view class="py-12 px-20 bg-neutral flex align-center">
 			<view v-for="(item, index) in sortList" :key="index" class="sort br8 py-8 font26 ml-12 relative" :class="[
@@ -212,7 +212,6 @@
 			</view>
 		</u-popup>
 	</view>
-	<!-- </view> -->
 </template>
 
 <style lang="scss" scoped>
