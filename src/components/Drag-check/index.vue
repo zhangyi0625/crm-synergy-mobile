@@ -53,7 +53,6 @@
 
 	// 关闭
 	const close = () => {
-		console.log('aaaa', props.maskClick);
 		if (!props.maskClick) return;
 		emit("update:visible", false);
 		disabled.value = false;

@@ -45,7 +45,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     };
     const x = common_vendor.w(0);
     const close = () => {
-      console.log("aaaa", props.maskClick);
       if (!props.maskClick)
         return;
       emit("update:visible", false);

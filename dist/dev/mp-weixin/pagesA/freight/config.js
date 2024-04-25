@@ -37,7 +37,7 @@ const dataSource = [
     value: "ZDP"
   },
   {
-    label: "自有运价",
+    label: "线下运价",
     value: "QMS"
   },
   {
@@ -55,6 +55,8 @@ const transitType = [
     value: 1
   }
 ];
+const basicCarriers = ["QMS", "MSK", "CMA", "COSCO", "HPL", "EMC", "ONE", "OOCL", "MSC", "ZIM"];
+exports.b = basicCarriers;
 exports.c = ctnSortPrice;
 exports.d = dataSource;
 exports.s = sortList;

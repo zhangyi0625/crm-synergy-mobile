@@ -1,0 +1,36 @@
+view.data-v-5cf5aad8,
+scroll-view.data-v-5cf5aad8 {
+  box-sizing: border-box;
+}
+.data-v-5cf5aad8::-webkit-scrollbar,.data-v-5cf5aad8::-webkit-scrollbar,.data-v-5cf5aad8::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.u-scroll-box.data-v-5cf5aad8 {
+  position: relative;
+}
+.u-scroll-view.data-v-5cf5aad8 {
+  width: 100%;
+  white-space: nowrap;
+  position: relative;
+}
+.u-tab-item.data-v-5cf5aad8 {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  transition-property: background-color, color;
+}
+.u-tab-bar.data-v-5cf5aad8 {
+  position: absolute;
+  bottom: 0;
+}
+.u-tabs-scroll-flex.data-v-5cf5aad8 {
+
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+}

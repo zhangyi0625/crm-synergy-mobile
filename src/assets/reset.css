@@ -35,6 +35,10 @@
 	width: 68rpx;
 }
 
+.w-60 {
+	width: 60rpx;
+}
+
 .w-52 {
 	width: 52rpx;
 }
@@ -81,6 +85,10 @@
 
 .h-68 {
 	height: 68rpx;
+}
+
+.h-60 {
+	height: 60rpx;
 }
 
 .h-52 {
@@ -198,6 +206,10 @@
 
 .bg-light-red {
 	background: #fde8ea;
+}
+
+.bg-light-blue {
+	background: #EBF3FF;
 }
 
 .bg-dull-red {

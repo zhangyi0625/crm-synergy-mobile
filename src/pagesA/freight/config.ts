@@ -38,7 +38,7 @@ export const dataSource = [
 		value: "ZDP",
 	},
 	{
-		label: "自有运价",
+		label: "线下运价",
 		value: "QMS",
 	},
 	{
@@ -84,3 +84,5 @@ export const quotationType = [
 		key: 'otherPrice'
 	}
 ]
+
+export const basicCarriers = ['QMS', 'MSK', 'CMA', 'COSCO', 'HPL', 'EMC', 'ONE', 'OOCL', 'MSC', 'ZIM']

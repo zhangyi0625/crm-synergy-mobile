@@ -7,12 +7,14 @@
 		sortList,
 		ctnSortPrice,
 		dataSource,
-		transitType
+		transitType,
+		basicCarriers
 	} from "./config";
 	import FreightTable from "./component/freight-table/index";
 	import { useRouter } from "uni-mini-router";
 	import CustomLoading from "@/components/Basic-loading/index.vue";
 	import { Toast } from "@/utils/uniapi/prompt";
+	import { ProductType } from "@/enums/freight";
 
 
 	const loading = ref<boolean>(false)
@@ -26,11 +28,17 @@
 	onLoad((options : any) => {
 		loading.value = true
 		// 按航线
-		if (options.routeId) {
-			freightParams.routeId = options.routeId
+		if (options.TABS) {
+			TABS.value = JSON.parse(options.TABS)
+			freightParams.routeId = options.routeId ? options.routeId : '';
+			freightParams.tagId = options.routeId ? '' : TABS.value[0].value;
+			tabIndex.value = freightParams.routeId ? TABS.value.findIndex((el : any) => el.id === freightParams.routeId) : 0;
+			locationInfo.value = null;
 			uni.setNavigationBarTitle({
 				title: options.routeName
 			})
+			freightParams.channel = "QMS"
+			console.log(options, 'options');
 			isSend()
 		} else {
 			// 按起运港、目的港
@@ -44,7 +52,6 @@
 			freightParams.fnd = locationInfo.value.fndCode
 		}
 		freightParams.por && freightParams.fnd && isSend()
-		console.log(options, 'options', JSON.parse(options.info));
 	});
 
 	// 船公司数据
@@ -59,13 +66,12 @@
 		carrier: '',
 		transit: '',
 		channel: '',
-		status: 1
-		// sortField: "",
-		// carriers: "",
-		// dataSource: "",
-		// transitNum: null,
+		status: 1,
+		tagId: '',
+		routeId: ''
 	});
 	// 运价数据
+	const freightNewData = ref<any>([])
 	const { data: freightData, send: isSend, onSuccess } : any = useRequest((getFreightOptions(freightParams)), { immediate: false })
 
 	// 筛选切换回调
@@ -75,22 +81,36 @@
 		if (index === 1) priceCtnShow.value = true;
 		else {
 			(sortList as any)[1]["name"] = "最便宜";
-			freightParams.sortField = (sortList as any)[current.value]["value"];
+			freightParams.sort = (sortList as any)[current.value]["value"];
 		}
-		loadFreightData("sort");
+		loading.value = true
+		isSend()
 	};
 
-	const loadFreightData = (type : string) => { };
-
 	onSuccess(() => {
+		let arr : any = basicCarriers.map((item : any) => {
+			return {
+				carrierCode: item,
+				products: [],
+			};
+		});
+		for (let i in freightData.value) {
+			arr.forEach((item : any) => {
+				if (item.carrierCode === freightData.value[i].carrierCode && freightData.value[i].channel !== ProductType.QMS) item.products.push(freightData.value[i]);
+			});
+		}
+		arr[0].products = freightData.value.filter((el : any) => el.channel === ProductType.QMS)
+		freightNewData.value = freightParams.sort ? freightData.value : arr
 		loading.value = false
 	})
 
 	// 选择箱型回调
 	const changeCtnType = (ctn : any) => {
-		freightParams.sortField = ctn.value;
+		freightParams.sort = ctn.value;
 		priceCtnShow.value = false;
 		(sortList as any)[current.value]["name"] = ctn.label;
+		loading.value = true
+		isSend()
 	};
 
 	// 过滤popup
@@ -125,13 +145,38 @@
 			"/pagesA/freight/freight-detail/index?info=" + JSON.stringify(item)
 		);
 	};
+
+	const tabIndex = ref<number>(0)
+	const TABS = ref<any>([])
+	const tabChange = (val : number) => {
+		current.value = val
+		if (current.value === 0 || current.value === 1) {
+			freightParams.routeId = ''
+			freightParams.tagId = TABS.value[current.value].value
+		} else {
+			freightParams.tagId = ''
+			freightParams.routeId = TABS.value[current.value].id
+		}
+		// loading.value = true
+		isSend()
+	}
+
+	// 判断船公司数据是否为空
+	const isEmpty = (arr : Array<any>) => {
+		return arr.filter((el : any) => (freightParams.sort ? el : el.products.length > 0)).length > 0
+	}
+
+	// 刷新船公司数据(ZDP)
+	const carrierRefresh = (carrierCode : string) => {
+		Toast('在舱实时运价还未开放！')
+	}
 </script>
 
 <template>
 	<CustomLoading v-if="loading" iconType="annulus" position="fixed" :zIndex="9" :mask="false" :maskOpacity="1"
 		:maskMini="false" :maskDark="true" color="#0396FF" />
 	<view v-else class="freight">
-		<view class="py-12 px-20 bg-neutral flex align-center">
+		<view class="py-12 px-20 bg-neutral flex align-center" v-if="locationInfo">
 			<view v-for="(item, index) in sortList" :key="index" class="sort br8 py-8 font26 ml-12 relative" :class="[
 		      current === index
 		        ? 'bg-light-red dull-red font-bolds'
@@ -149,7 +194,7 @@
 					<view class="priceModal-content bg-neutral br8">
 						<view v-for="(ctn, ctnIndex) in ctnSortPrice" :key="ctnIndex"
 							class="flex flex-column px-12 font26 font400 py-24 text-center" :class="[
-		            freightParams.sortField === ctn.value
+		            freightParams.sort === ctn.value
 		              ? 'dull-red'
 		              : 'dull-grey',
 		          ]" style="border-bottom: #edeff2 1px solid" @click.stop="changeCtnType(ctn)">
@@ -162,7 +207,11 @@
 				<img src="/static/images/freight/filter.png" class="w-36 h-36" @click="filterModalShow = true" />
 			</view>
 		</view>
-		<FreightTable v-if="freightData && freightData.length > 0" :data="freightData" @jumpEither="jumpEither" />
+		<view v-else>
+			<u-tabs :list="TABS" v-model="tabIndex" active-color="#EE2233" @change="tabChange"></u-tabs>
+		</view>
+		<FreightTable v-if="isEmpty(freightNewData)" :data="freightNewData" @jumpEither="jumpEither"
+			:isSort="freightParams.sort" :isRoute="!locationInfo" @refresh="carrierRefresh" />
 		<view v-else style="margin: 250px auto;">
 			<u-empty mode="data"></u-empty>
 		</view>
@@ -236,6 +285,7 @@
 			width: 120px;
 			top: 30px;
 			right: -22px;
+			z-index: 9999;
 
 			&-title {
 				width: 18px;

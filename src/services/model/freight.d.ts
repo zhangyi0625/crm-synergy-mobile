@@ -28,13 +28,7 @@ declare interface freightSearchParams {
 	routeId ?: string;
 	/** 状态 */
 	status ?: number;
-	/** 筛选条件 */
-	// sortField : string;
-	/** 船公司 */
-	// carriers : string;
-	/** 数据来源 */
-	// dataSource : string;
-	/** 中转直达 */
-	// transitNum : number | null;
+	/** 排序 */
+	sort ?: string
 	[key : string] : any;
 }

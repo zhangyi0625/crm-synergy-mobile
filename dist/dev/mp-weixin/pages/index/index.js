@@ -56,7 +56,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       { immediate: false }
     );
     historySuccess(() => {
-      if (historySearchOptions.value.length > 0) {
+      if (historySearchOptions.value.length > 0 && !searchForm.porCode) {
         searchForm.porCode = historySearchOptions.value[0].porCode;
         searchForm.porInfo = historySearchOptions.value[0].porCnlName + "-" + historySearchOptions.value[0].porEnName;
       }
@@ -72,6 +72,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       judgeArea();
     });
     loadAreaList(() => {
+      areaCurrent.value = "";
+      concatTabs();
       areaList.value = [
         {
           code: "",
@@ -85,6 +87,20 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         sendRecommendOptions(recommendParams);
       }, 1e3);
     });
+    const tabs = common_vendor.w([]);
+    const concatTabs = () => {
+      tabs.value = [
+        {
+          name: "强推",
+          value: TagData.value.find((el) => el.label === "强推").value
+        },
+        {
+          name: "优势",
+          value: TagData.value.find((el) => el.label === "优势").value
+        },
+        ...areaList.value.filter((el) => !el.parentId)
+      ];
+    };
     const areaCurrent = common_vendor.w("");
     const changeArea = (item) => {
       areaCurrent.value = item.code;
@@ -93,9 +109,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       sendRecommendOptions(recommendParams);
     };
     const loadMore = () => {
-      let id = areaList.value.find((item) => item.code === areaCurrent.value).id;
-      let name = areaList.value.find((item) => item.code === areaCurrent.value).name;
-      router.push("/pagesA/freight/index?routeId=" + id + "&routeName=" + name);
+      let id = areaCurrent.value ? areaList.value.find((item) => item.code === areaCurrent.value).id : "";
+      let name = areaCurrent.value ? areaList.value.find((item) => item.code === areaCurrent.value).name : "";
+      router.push("/pagesA/freight/index?routeId=" + id + "&routeName=" + name + "&TABS=" + JSON.stringify(tabs.value));
     };
     const jumpSelected = (type) => {
       jumpType.value = type;
@@ -171,7 +187,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
             d: common_vendor.C(($event) => searchHistory(item), index)
           };
         }),
-        n: common_vendor.D(common_vendor.B(areaList), (item, index, i0) => {
+        n: common_vendor.C(loadMore),
+        o: common_vendor.D(common_vendor.B(areaList), (item, index, i0) => {
           return {
             a: common_vendor.G(item.name),
             b: common_vendor.H(areaCurrent.value === item.code ? "neutral bg-dull-red" : "bg-neutral dull-red active"),
@@ -179,7 +196,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
             d: index
           };
         }),
-        o: common_vendor.D(getRecommendOptions(common_vendor.B(recommendOptions)), (item, index, i0) => {
+        p: common_vendor.D(getRecommendOptions(common_vendor.B(recommendOptions)), (item, index, i0) => {
           return {
             a: common_vendor.G(item.por.cnName),
             b: common_vendor.G(item.fnd.cnName),
@@ -189,11 +206,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
             f: index
           };
         }),
-        p: ((_a = common_vendor.B(recommendOptions)) == null ? void 0 : _a.length) > 0 && areaCurrent.value
-      }, ((_b = common_vendor.B(recommendOptions)) == null ? void 0 : _b.length) > 0 && areaCurrent.value ? {
-        q: common_vendor.C(loadMore)
+        q: ((_a = common_vendor.B(recommendOptions)) == null ? void 0 : _a.length) > 0
+      }, ((_b = common_vendor.B(recommendOptions)) == null ? void 0 : _b.length) > 0 ? {
+        r: common_vendor.C(loadMore)
       } : ((_c = common_vendor.B(recommendOptions)) == null ? void 0 : _c.length) === 0 ? {} : {}, {
-        r: ((_d = common_vendor.B(recommendOptions)) == null ? void 0 : _d.length) === 0
+        s: ((_d = common_vendor.B(recommendOptions)) == null ? void 0 : _d.length) === 0
       });
     };
   }

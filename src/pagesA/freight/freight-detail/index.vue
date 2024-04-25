@@ -164,7 +164,7 @@
 				<view class="flex align-center flex-between font28 font500 light-grey pt-16 pb-24"
 					style="border-bottom: 1px solid #F5F7FA;">
 					<view>箱型</view>
-					<view class="ml-50" v-if="isCtnPrice('costPrice')">底价</view>
+					<view class="ml-50" v-if="isCtnPrice('costPrice')">成本价</view>
 					<view class="ml-10" v-if="isCtnPrice('innerPrice')">内部价</view>
 					<view v-if="isCtnPrice('outerPrice')">外部价</view>
 				</view>
