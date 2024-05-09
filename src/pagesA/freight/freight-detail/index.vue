@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 	import { formatTime } from "@/utils/time";
 	import { onLoad } from "@dcloudio/uni-app";
-	import { useRequest } from "alova";
+	import { invalidateCache, useRequest } from "alova";
 	import { useRouter } from "uni-mini-router";
 	import { computed, ref } from "vue";
 	import { getFreightDetail } from "@/services/api/freight";
@@ -31,9 +31,11 @@
 		// 自有运价
 		if (info.channel === 'QMS') {
 			isSend(info.id)
+			invalidateCache(getFreightDetail(info.id))
 		} else {
 			// 电商运价
 			isSend(info.id)
+			invalidateCache(getFreightDetail(info.id))
 		}
 	});
 
@@ -79,10 +81,13 @@
 	// 判断备注信息
 	const hasRemark = computed(
 		() =>
+			cabinDetail.value.amsRemark ||
+			cabinDetail.value.amsPrice ||
 			cabinDetail.value.surchargeRemark ||
 			cabinDetail.value.warnRemark ||
 			cabinDetail.value.demurrageRemark ||
-			cabinDetail.value.remark
+			cabinDetail.value.remark ||
+			cabinDetail.value.innerRemark
 	);
 
 	const getRMBPrice = (info : any) => {
@@ -108,23 +113,35 @@
 			<view class="p-24 bg-neutral mx-20 mt-20 br12">
 				<view class="flex align-center flex-between">
 					<view class="flex align-center">
-						<img :src="URL + '/carrier-logo/' + cabinDetail.carrierCode + '.png'" class="w-68 h-68" />
+						<img v-if="cabinDetail.carrierCode"
+							:src="URL + '/carrier-logo/' + cabinDetail.carrierCode + '.png'" class="w-68 h-68" />
 						<view class="flex flex-column font24 ml-12">
 							<view class="font-bold">{{ cabinDetail.carrierCode }}</view>
-							<view class="font24">运价有效期：{{ formatTime(cabinDetail.validFrom, "M-D") }} 至
-								{{ formatTime(cabinDetail.validTo, "M-D") }}
-							</view>
+							<view class="font24 grey">最近更新：{{ cabinDetail.modified }}</view>
 						</view>
 					</view>
-					<view class="transitNum br8 dull-red font22 text-center">{{ cabinDetail.transit > 0 ? "中转" : "直达" }}
+					<view class="flex align-center">
+						<view v-if="cabinDetail.tag"
+							:style="[cabinDetail.tag === '强推' ? 'background: #FF844A' : 'background: #FFB23F']"
+							class="font22 font400 neutral px-12 py-2 br8">{{cabinDetail.tag}}
+						</view>
+						<view class="transitNum br8 dull-red font22 text-center ml-12">
+							{{ cabinDetail.transit > 0 ? "中转" : "直达" }}
+						</view>
 					</view>
 				</view>
 				<view class="mt-40">
-					<view class="flex align-center">
-						<img src="/static/images/collect/por.png" class="mr-5 w-48 h-48" />
-						<view class="font-bold">{{ cabinDetail.por?.cnName }}-{{
-				          cabinDetail.por?.enName
-				        }}</view>
+					<view class="flex align-center flex-between">
+						<view class="flex align-center">
+							<img src="/static/images/collect/por.png" class="mr-5 w-48 h-48" />
+							<view class="font-bold">{{ cabinDetail.por?.cnName }}-{{
+							  cabinDetail.por?.enName
+							}}</view>
+						</view>
+						<view class="font24 grey" v-if="cabinDetail.validFrom && cabinDetail.validTo">
+							运价有效期：{{ formatTime(cabinDetail.validFrom, "M-D") }} 至
+							{{ formatTime(cabinDetail.validTo, "M-D") }}
+						</view>
 					</view>
 					<view class="pl-30 pb-20 ml-20 font400 grey whitespace-nowrap"
 						style="border-left: 1px solid #edeff2">
@@ -134,13 +151,19 @@
 							<view class="flex flex-wrap">
 								<view>航程：{{ cabinDetail.voyDays }}天</view>
 								<view class="mx-40">航线：{{ cabinDetail.carrierRoute }}</view>
-								<view>船期：{{ cabinDetail.cutOffDay ? cabinDetail.cutOffDay + '截' : ''}}
-									{{cabinDetail.departureDay ? cabinDetail.departureDay + '开' : ''}}
+								<view>船期：{{ cabinDetail.cutOffDay ? cabinDetail.cutOffDay : ''}}
+									/ {{cabinDetail.departureDay ? cabinDetail.departureDay : ''}}
 								</view>
 							</view>
 							<view>船名航次：{{ cabinDetail.vesselName ? cabinDetail.vesselName : '' }}/{{
 				            cabinDetail.voyNo ? cabinDetail.voyNo : ''
 				          }}</view>
+						</view>
+					</view>
+					<view class="flex flex-column" v-if="cabinDetail.transit > 0">
+						<view class="flex align-center font28 dull-grey font500">
+							<img src="/static/images/collect/transit.png" class="mr-5 w-48 h-48" />
+							<view>中转港：{{cabinDetail.transitPorts}}</view>
 						</view>
 					</view>
 					<view class="flex flex-column">
@@ -151,7 +174,6 @@
 				          }}</view>
 						</view>
 						<view class="ml-50 grey">ETA：{{ formatTime(cabinDetail.eta, "M-D") || '-' }}</view>
-						<!-- <view class="ml-50">码头：</view> -->
 					</view>
 				</view>
 			</view>
@@ -206,7 +228,7 @@
 					</view>
 					<view class="flex flex-column mt-28" v-for="(item,index) in cabinDetail.localPriceInfo"
 						:key="index">
-						<view>{{item.nameEn}}</view>
+						<view>{{item.name}}</view>
 						<view class="flex align-center flex-between">
 							<view class="light-grey">{{item.currency}}/{{item.qtyType === 'BL' ? '票' :'箱型'}}</view>
 							<view>{{item.qtyType === 'BL' ? item.price : getRMBPrice(JSON.parse(item.ctnPrice))}}</view>
@@ -214,12 +236,12 @@
 					</view>
 				</view>
 			</view>
-			<!-- D&D -->
-			<!-- 			<view class="p-24 bg-neutral mx-20 mt-20 br12" v-if="cabinDetail.channel !== 'QMS'">
-				<view>D&D</view>
-			</view> -->
-			<!-- 备注 -->
 			<view class="p-24 bg-neutral flex flex-column mx-20 br12 mt-20" v-if="hasRemark">
+				<view v-if="cabinDetail.amsPrice || cabinDetail.amsRemark" class="mb-40">
+					AMS/ENS
+					<view class="mt-10 light-grey">{{ cabinDetail.amsPrice }}&nbsp;&nbsp;{{cabinDetail.amsRemark}}
+					</view>
+				</view>
 				<view v-if="cabinDetail.warnRemark" class="mb-40">
 					特别提醒
 					<view class="mt-10 light-grey">{{ cabinDetail.warnRemark }}</view>
@@ -232,9 +254,13 @@
 					免用箱备注
 					<view class="mt-10 light-grey">{{ cabinDetail.demurrageRemark }}</view>
 				</view>
-				<view v-if="cabinDetail.remark">
+				<view v-if="cabinDetail.remark" class="mb-40">
 					其他备注
 					<view class="mt-10 light-grey">{{ cabinDetail.remark }}</view>
+				</view>
+				<view v-if="!!cabinDetail.innerRemark">
+					代理信息
+					<view class="mt-10 light-grey">{{ cabinDetail.innerRemark }}</view>
 				</view>
 			</view>
 		</view>

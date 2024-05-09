@@ -34,6 +34,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     });
     const { data: TagData, onSuccess: loadAreaLists, send: sendTags } = common_vendor.u(() => services_api_user.b("标签"), { immediate: false });
     common_vendor.l(() => {
+      setTimeout(() => {
+        authStore.isLogin && isSend();
+        common_vendor.y(services_api_freight_index.g());
+      }, 1500);
+    });
+    common_vendor.z(() => {
       common_vendor.i.$off("update");
       common_vendor.i.$on("update", (data) => {
         if (jumpType.value === "POR") {
@@ -45,10 +51,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         }
       });
       setTimeout(() => {
-        authStore.isLogin && isSend();
         sendTags();
         noticeSend();
-        common_vendor.y(services_api_freight_index.g());
       }, 1500);
     });
     const { data: historySearchOptions, send: isSend, onSuccess: historySuccess } = common_vendor.u(
@@ -72,7 +76,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       judgeArea();
     });
     loadAreaList(() => {
-      areaCurrent.value = "";
       concatTabs();
       areaList.value = [
         {
@@ -85,7 +88,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       recommendParams.tagId = TagData.value.find((el) => el.label === "强推").value || "";
       setTimeout(() => {
         sendRecommendOptions(recommendParams);
-      }, 1e3);
+      }, 500);
     });
     const tabs = common_vendor.w([]);
     const concatTabs = () => {
@@ -159,58 +162,58 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     };
     return (_ctx, _cache) => {
       var _a, _b, _c, _d;
-      return common_vendor.z({
+      return common_vendor.B({
         a: noticeShow.value
       }, noticeShow.value ? {
-        b: common_vendor.C(($event) => noticeShow.value = false),
-        c: common_vendor.F({
+        b: common_vendor.D(($event) => noticeShow.value = false),
+        c: common_vendor.G({
           ["close-icon"]: true,
           list: [noticeContent.value],
           ["bg-color"]: "#FFFAE7",
           color: "#FF6400"
         })
       } : {}, {
-        d: common_vendor.C(($event) => jumpSelected("POR")),
+        d: common_vendor.D(($event) => jumpSelected("POR")),
         e: searchForm.porInfo,
-        f: common_vendor.C(($event) => searchForm.porInfo = $event.detail.value),
-        g: common_vendor.C(($event) => jumpSelected("POR")),
-        h: common_vendor.C(($event) => jumpSelected("FND")),
+        f: common_vendor.D(($event) => searchForm.porInfo = $event.detail.value),
+        g: common_vendor.D(($event) => jumpSelected("POR")),
+        h: common_vendor.D(($event) => jumpSelected("FND")),
         i: searchForm.fndInfo,
-        j: common_vendor.C(($event) => searchForm.fndInfo = $event.detail.value),
-        k: common_vendor.C(($event) => jumpSelected("FND")),
-        l: common_vendor.C(onSearch),
-        m: common_vendor.D(common_vendor.B(historySearchOptions), (item, index, i0) => {
+        j: common_vendor.D(($event) => searchForm.fndInfo = $event.detail.value),
+        k: common_vendor.D(($event) => jumpSelected("FND")),
+        l: common_vendor.D(onSearch),
+        m: common_vendor.F(common_vendor.C(historySearchOptions), (item, index, i0) => {
           return {
-            a: common_vendor.G(item.porCnlName),
-            b: common_vendor.G(item.fndCnlName),
+            a: common_vendor.H(item.porCnlName),
+            b: common_vendor.H(item.fndCnlName),
             c: index,
-            d: common_vendor.C(($event) => searchHistory(item), index)
+            d: common_vendor.D(($event) => searchHistory(item), index)
           };
         }),
-        n: common_vendor.C(loadMore),
-        o: common_vendor.D(common_vendor.B(areaList), (item, index, i0) => {
+        n: common_vendor.D(loadMore),
+        o: common_vendor.F(common_vendor.C(areaList), (item, index, i0) => {
           return {
-            a: common_vendor.G(item.name),
-            b: common_vendor.H(areaCurrent.value === item.code ? "neutral bg-dull-red" : "bg-neutral dull-red active"),
-            c: common_vendor.C(($event) => changeArea(item), index),
+            a: common_vendor.H(item.name),
+            b: common_vendor.I(areaCurrent.value === item.code ? "neutral bg-dull-red" : "bg-neutral dull-red active"),
+            c: common_vendor.D(($event) => changeArea(item), index),
             d: index
           };
         }),
-        p: common_vendor.D(getRecommendOptions(common_vendor.B(recommendOptions)), (item, index, i0) => {
+        p: common_vendor.F(getRecommendOptions(common_vendor.C(recommendOptions)), (item, index, i0) => {
           return {
-            a: common_vendor.G(item.por.cnName),
-            b: common_vendor.G(item.fnd.cnName),
-            c: common_vendor.G(common_vendor.B(utils_time.f)(item.etd, "M-D")),
-            d: common_vendor.G(getPriceJson(item.innerPrice) ? "$" + getPriceJson(item.innerPrice) : "-"),
-            e: common_vendor.C(($event) => goDetail(item), index),
+            a: common_vendor.H(item.por.cnName),
+            b: common_vendor.H(item.fnd.cnName),
+            c: common_vendor.H(common_vendor.C(utils_time.f)(item.etd, "M-D")),
+            d: common_vendor.H(getPriceJson(item.innerPrice) ? "$" + getPriceJson(item.innerPrice) : "-"),
+            e: common_vendor.D(($event) => goDetail(item), index),
             f: index
           };
         }),
-        q: ((_a = common_vendor.B(recommendOptions)) == null ? void 0 : _a.length) > 0
-      }, ((_b = common_vendor.B(recommendOptions)) == null ? void 0 : _b.length) > 0 ? {
-        r: common_vendor.C(loadMore)
-      } : ((_c = common_vendor.B(recommendOptions)) == null ? void 0 : _c.length) === 0 ? {} : {}, {
-        s: ((_d = common_vendor.B(recommendOptions)) == null ? void 0 : _d.length) === 0
+        q: ((_a = common_vendor.C(recommendOptions)) == null ? void 0 : _a.length) > 0
+      }, ((_b = common_vendor.C(recommendOptions)) == null ? void 0 : _b.length) > 0 ? {
+        r: common_vendor.D(loadMore)
+      } : ((_c = common_vendor.C(recommendOptions)) == null ? void 0 : _c.length) === 0 ? {} : {}, {
+        s: ((_d = common_vendor.C(recommendOptions)) == null ? void 0 : _d.length) === 0
       });
     };
   }

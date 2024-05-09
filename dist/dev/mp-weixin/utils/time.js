@@ -44,5 +44,12 @@ function formatUpdated(data, num) {
     return "";
   }
 }
+function getDateStr(addDayCount) {
+  let dd = /* @__PURE__ */ new Date();
+  dd.setDate(dd.getDate() + addDayCount);
+  let ms = dd.getTime();
+  return new Date(ms).toJSON().replace(/T.*/, "");
+}
 exports.a = formatUpdated;
 exports.f = formatTime;
+exports.g = getDateStr;

@@ -29,7 +29,7 @@
 			"name": "Profile",
 			"path": "pages/profile/index",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "关于",
 				"navigationStyle": "custom"
 			},
 			"meta": {

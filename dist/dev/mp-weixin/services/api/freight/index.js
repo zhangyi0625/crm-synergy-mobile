@@ -24,6 +24,12 @@ function getCollectPort() {
 function deleteCollectPort(id) {
   return utils_http_index.r.Delete("/api/app/my/deleteFavoritePort/" + id);
 }
+function postCreateTaskFreight(data) {
+  return utils_http_index.r.Post("/api/zc/createTask", data);
+}
+function getNewFreight(taskId) {
+  return utils_http_index.r.Get("/api/zc/taskResult/" + taskId);
+}
 exports.a = getAreaList;
 exports.b = getFreightOptions;
 exports.c = getCollectPort;
@@ -31,4 +37,6 @@ exports.d = deleteCollectPort;
 exports.e = getLocationList;
 exports.f = getCarrierList;
 exports.g = getSearchRecent;
-exports.h = getFreightDetail;
+exports.h = getNewFreight;
+exports.i = getFreightDetail;
+exports.p = postCreateTaskFreight;

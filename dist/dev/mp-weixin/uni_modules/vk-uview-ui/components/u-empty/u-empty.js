@@ -138,10 +138,10 @@ if (!Math) {
   _easycom_u_icon();
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.z({
+  return common_vendor.B({
     a: $props.show
   }, $props.show ? {
-    b: common_vendor.F({
+    b: common_vendor.G({
       name: $props.src ? $props.src : "empty-" + $props.mode,
       ["custom-style"]: $props.iconStyle,
       label: $props.text ? $props.text : $data.icons[$props.mode],

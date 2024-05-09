@@ -172,33 +172,33 @@ if (!Math) {
   _easycom_u_icon();
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.z({
+  return common_vendor.B({
     a: $props.volumeIcon
   }, $props.volumeIcon ? {
-    b: common_vendor.F({
+    b: common_vendor.G({
       name: "volume-fill",
       size: $props.volumeSize,
       color: $options.computeColor
     })
   } : {}, {
-    c: common_vendor.D($props.list, (item, index, i0) => {
+    c: common_vendor.F($props.list, (item, index, i0) => {
       return {
-        a: common_vendor.G(item),
-        b: common_vendor.C(($event) => $options.click(index), index),
+        a: common_vendor.H(item),
+        b: common_vendor.D(($event) => $options.click(index), index),
         c: index
       };
     }),
-    d: common_vendor.M($options.textStyle),
-    e: common_vendor.H("u-type-" + $props.type),
+    d: common_vendor.L($options.textStyle),
+    e: common_vendor.I("u-type-" + $props.type),
     f: $props.disableTouch,
-    g: common_vendor.C((...args) => $options.change && $options.change(...args)),
+    g: common_vendor.D((...args) => $options.change && $options.change(...args)),
     h: $props.autoplay && $props.playState == "play",
     i: $options.vertical,
     j: $props.duration,
     k: $props.moreIcon
   }, $props.moreIcon ? {
-    l: common_vendor.C($options.getMore),
-    m: common_vendor.F({
+    l: common_vendor.D($options.getMore),
+    m: common_vendor.G({
       name: "arrow-right",
       size: 26,
       color: $options.computeColor
@@ -206,8 +206,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   } : {}, {
     n: $props.closeIcon
   }, $props.closeIcon ? {
-    o: common_vendor.C($options.close),
-    p: common_vendor.F({
+    o: common_vendor.D($options.close),
+    p: common_vendor.G({
       name: "close",
       size: 24,
       color: $options.computeColor
@@ -215,7 +215,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   } : {}, {
     q: $options.computeBgColor,
     r: $props.padding,
-    s: common_vendor.H($props.type ? `u-type-${$props.type}-light-bg` : "")
+    s: common_vendor.I($props.type ? `u-type-${$props.type}-light-bg` : "")
   });
 }
 const Component = /* @__PURE__ */ common_vendor.q(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-394754c5"], ["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system/src/uni_modules/vk-uview-ui/components/u-column-notice/u-column-notice.vue"]]);

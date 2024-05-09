@@ -156,6 +156,7 @@
 					class="bg-neutral px-32 py-30 font26 font400 dull-grey" style="border: 1px solid #f5f7fa"
 					@click="onClick(item)">
 					{{ item.cnName }} - {{ item.enName }}
+					<view class="light-grey font24">{{item.countryLocalName}} - {{item.countryName}}</view>
 				</view>
 			</view>
 			<view v-else-if="type === 'FND'" class="content flex mt-20 font28 font400">

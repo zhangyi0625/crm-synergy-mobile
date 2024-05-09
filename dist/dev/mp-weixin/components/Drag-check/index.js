@@ -13,7 +13,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const imgUrl = common_vendor.w("");
     const disabled = common_vendor.w(false);
     const result = common_vendor.w("");
-    common_vendor.L(props, () => {
+    common_vendor.M(props, () => {
       if (props.visiable) {
         result.value = "";
         toStart();
@@ -60,28 +60,28 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       return Math.floor(Math.random() * (max - min)) + min;
     };
     return (_ctx, _cache) => {
-      return common_vendor.z({
+      return common_vendor.B({
         a: props.visiable
-      }, props.visiable ? common_vendor.z({
-        b: common_vendor.G(props.title),
-        c: common_vendor.G(props.minTitle),
-        d: common_vendor.G(result.value ? result.value : ""),
+      }, props.visiable ? common_vendor.B({
+        b: common_vendor.H(props.title),
+        c: common_vendor.H(props.minTitle),
+        d: common_vendor.H(result.value ? result.value : ""),
         e: result.value == "验证失败，请重试" ? 1 : "",
         f: imgUrl.value
       }, imgUrl.value ? {
         g: imgUrl.value
       } : {}, {
-        h: common_vendor.M("transform:rotate(" + deg.value + "deg)"),
+        h: common_vendor.L("transform:rotate(" + deg.value + "deg)"),
         i: props.icon,
         j: disabled.value,
         k: x.value,
-        l: common_vendor.C(onChange),
-        m: common_vendor.C(touchEnd)
+        l: common_vendor.D(onChange),
+        m: common_vendor.D(touchEnd)
       }) : {}, {
-        n: common_vendor.C(close),
-        o: common_vendor.C(() => {
+        n: common_vendor.D(close),
+        o: common_vendor.D(() => {
         }),
-        p: common_vendor.H(props.visiable ? "pupop-model" : "pupop-models")
+        p: common_vendor.I(props.visiable ? "pupop-model" : "pupop-models")
       });
     };
   }

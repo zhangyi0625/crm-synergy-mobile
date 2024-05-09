@@ -194,6 +194,10 @@
 	padding-bottom: 10rpx;
 }
 
+.pb-0 {
+	padding-bottom: 0rpx;
+}
+
 .pt-60 {
 	padding-top: 60rpx;
 }

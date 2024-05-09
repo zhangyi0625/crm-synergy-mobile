@@ -3,20 +3,23 @@
 	import { ref } from 'vue';
 	import { Toast } from '@/utils/uniapi/prompt';
 	import { invalidateCache, useRequest } from 'alova';
-	import { getQuotation } from '@/services/api/user';
+	import { getQuotation, postQuotation } from '@/services/api/user';
 	import { BasicArrItem } from '@/services/model/baseModel';
 	import CustomLoading from "@/components/Basic-loading/index.vue";
 
 	const loading = ref<boolean>(false)
 
 	const { data: quotationInfo, send: isSend } : any = useRequest(id => getQuotation(id), { immediate: false })
+	const { send: onSave } : any = useRequest(params => postQuotation(params), { immediate: false })
+
 	const quotationData = ref([] as Array<BasicArrItem>)
+	const info = ref({} as any)
 
 	onLoad((options : any) => {
 		loading.value = true;
-		let info = JSON.parse(options.item)
-		isSend(info.id)
-		invalidateCache(getQuotation(info.id))
+		info.value = JSON.parse(options.item);
+		isSend(info.value.id)
+		invalidateCache(getQuotation(info.value.id))
 		setTimeout(() => {
 			quotationInfo.value && init()
 		}, 200)
@@ -51,6 +54,15 @@
 			data: text.value,
 			success: () => {
 				Toast('复制成功')
+				let params = {
+					freightId: info.value.id,
+					freightInfo: quotationInfo.value,
+					porCode: info.value.por.code,
+					fndCode: info.value.fnd.code,
+					carrierCode: info.value.carrierCode,
+					carrierRoute: info.value.carrierRoute
+				}
+				onSave(params)
 			},
 			fail: () => {
 				Toast('复制失败')
@@ -60,7 +72,7 @@
 </script>
 
 <template>
-	<CustomLoading v-if="loading" iconType="annulus" position="fixed" :zIndex="9" :mask="false" :maskOpacity="1"
+	<CustomLoading v-if="loading" iconType="sword" position="fixed" :zIndex="9" :mask="false" :maskOpacity="1"
 		:maskMini="false" :maskDark="true" color="#0396FF" />
 	<view class="quotation px-20" v-else>
 		<view class="br12 bg-neutral mt-20 my-40">

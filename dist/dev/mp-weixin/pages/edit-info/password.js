@@ -54,22 +54,22 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       }
     };
     return (_ctx, _cache) => {
-      return common_vendor.z({
+      return common_vendor.B({
         a: pwdForm.phone,
-        b: common_vendor.C(($event) => pwdForm.phone = $event.detail.value),
+        b: common_vendor.D(($event) => pwdForm.phone = $event.detail.value),
         c: pwdForm.code,
-        d: common_vendor.C(($event) => pwdForm.code = $event.detail.value),
+        d: common_vendor.D(($event) => pwdForm.code = $event.detail.value),
         e: !isSendCheckCode.value
       }, !isSendCheckCode.value ? {
-        f: common_vendor.C(sendCode)
+        f: common_vendor.D(sendCode)
       } : {
-        g: common_vendor.G(countdownNumber.value)
+        g: common_vendor.H(countdownNumber.value)
       }, {
         h: pwdForm.password,
-        i: common_vendor.C(($event) => pwdForm.password = $event.detail.value),
-        j: common_vendor.C(($event) => dragCheckShow.value = $event),
-        k: common_vendor.C(result),
-        l: common_vendor.F({
+        i: common_vendor.D(($event) => pwdForm.password = $event.detail.value),
+        j: common_vendor.D(($event) => dragCheckShow.value = $event),
+        k: common_vendor.D(result),
+        l: common_vendor.G({
           visiable: dragCheckShow.value,
           title: "人工验证",
           minTitle: "滑动滑块，使图片显示角度为正",
@@ -77,7 +77,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
           icon: "/static/images/icon/drag-check.png",
           maskClick: maskClick.value
         }),
-        m: common_vendor.C(save)
+        m: common_vendor.D(save)
       });
     };
   }

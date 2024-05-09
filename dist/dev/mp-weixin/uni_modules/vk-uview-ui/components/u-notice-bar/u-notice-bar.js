@@ -148,15 +148,15 @@ if (!Math) {
   (_easycom_u_row_notice + _easycom_u_column_notice)();
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.z({
+  return common_vendor.B({
     a: $options.isShow
-  }, $options.isShow ? common_vendor.z({
+  }, $options.isShow ? common_vendor.B({
     b: $props.mode == "horizontal" && $props.isCircular
   }, $props.mode == "horizontal" && $props.isCircular ? {
-    c: common_vendor.C($options.getMore),
-    d: common_vendor.C($options.close),
-    e: common_vendor.C($options.click),
-    f: common_vendor.F({
+    c: common_vendor.D($options.getMore),
+    d: common_vendor.D($options.close),
+    e: common_vendor.D($options.click),
+    f: common_vendor.G({
       type: $props.type,
       color: $props.color,
       bgColor: $props.bgColor,
@@ -174,11 +174,11 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   } : {}, {
     g: $props.mode == "vertical" || $props.mode == "horizontal" && !$props.isCircular
   }, $props.mode == "vertical" || $props.mode == "horizontal" && !$props.isCircular ? {
-    h: common_vendor.C($options.getMore),
-    i: common_vendor.C($options.close),
-    j: common_vendor.C($options.click),
-    k: common_vendor.C($options.end),
-    l: common_vendor.F({
+    h: common_vendor.D($options.getMore),
+    i: common_vendor.D($options.close),
+    j: common_vendor.D($options.click),
+    k: common_vendor.D($options.end),
+    l: common_vendor.G({
       type: $props.type,
       color: $props.color,
       bgColor: $props.bgColor,

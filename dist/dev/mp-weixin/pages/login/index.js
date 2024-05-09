@@ -10,7 +10,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
   setup(__props) {
     const { data: dataOptions, send: isSend, onSuccess } = common_vendor.u((loginRes) => services_api_auth.r({ jsCode: loginRes }), { immediate: false });
     const pageQuery = common_vendor.w(void 0);
-    common_vendor.I((query) => {
+    common_vendor.z((query) => {
       common_vendor.i.login({
         provider: "weixin",
         //使用微信登录
@@ -65,12 +65,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
               authStore.setToken(res.access_token);
               setTimeout(() => {
                 var _a, _b;
-                if ((_a = common_vendor.B(pageQuery)) == null ? void 0 : _a.redirect) {
-                  const params = common_vendor.J(common_vendor.B(pageQuery), ["redirect", "tabBar"]);
-                  if ((_b = common_vendor.B(pageQuery)) == null ? void 0 : _b.tabBar) {
-                    router.replaceAll({ name: common_vendor.B(pageQuery).redirect, params });
+                if ((_a = common_vendor.C(pageQuery)) == null ? void 0 : _a.redirect) {
+                  const params = common_vendor.J(common_vendor.C(pageQuery), ["redirect", "tabBar"]);
+                  if ((_b = common_vendor.C(pageQuery)) == null ? void 0 : _b.tabBar) {
+                    router.replaceAll({ name: common_vendor.C(pageQuery).redirect, params });
                   } else {
-                    router.replace({ name: common_vendor.B(pageQuery).redirect, params });
+                    router.replace({ name: common_vendor.C(pageQuery).redirect, params });
                   }
                 } else {
                   router.back();
@@ -99,21 +99,21 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const countdownNumber = common_vendor.w(60);
     const isSendCheckCode = common_vendor.w(false);
     return (_ctx, _cache) => {
-      return common_vendor.z({
+      return common_vendor.B({
         a: loginForm.phone,
-        b: common_vendor.C(($event) => loginForm.phone = $event.detail.value),
+        b: common_vendor.D(($event) => loginForm.phone = $event.detail.value),
         c: loginForm.code,
-        d: common_vendor.C(($event) => loginForm.code = $event.detail.value),
+        d: common_vendor.D(($event) => loginForm.code = $event.detail.value),
         e: !isSendCheckCode.value
       }, !isSendCheckCode.value ? {
-        f: common_vendor.C(sendCode)
+        f: common_vendor.D(sendCode)
       } : {
-        g: common_vendor.G(countdownNumber.value)
+        g: common_vendor.H(countdownNumber.value)
       }, {
-        h: common_vendor.C(handleLogin),
-        i: common_vendor.C(($event) => dragCheckShow.value = $event),
-        j: common_vendor.C(result),
-        k: common_vendor.F({
+        h: common_vendor.D(handleLogin),
+        i: common_vendor.D(($event) => dragCheckShow.value = $event),
+        j: common_vendor.D(result),
+        k: common_vendor.G({
           visiable: dragCheckShow.value,
           title: "人工验证",
           minTitle: "滑动滑块，使图片显示角度为正",

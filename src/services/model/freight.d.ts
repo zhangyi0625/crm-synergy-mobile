@@ -32,3 +32,11 @@ declare interface freightSearchParams {
 	sort ?: string
 	[key : string] : any;
 }
+
+declare interface FreightTask {
+	carrierList : Array<string>;
+	porCode : string;
+	fndCode : string;
+	etdStart : string;
+	etdEnd : string;
+}

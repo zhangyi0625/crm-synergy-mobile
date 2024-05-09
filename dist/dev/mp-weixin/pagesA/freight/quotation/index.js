@@ -10,12 +10,14 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
   setup(__props) {
     const loading = common_vendor.w(false);
     const { data: quotationInfo, send: isSend } = common_vendor.u((id) => services_api_user.e(id), { immediate: false });
+    const { send: onSave } = common_vendor.u((params) => services_api_user.f(params), { immediate: false });
     const quotationData = common_vendor.w([]);
-    common_vendor.I((options) => {
+    const info = common_vendor.w({});
+    common_vendor.z((options) => {
       loading.value = true;
-      let info = JSON.parse(options.item);
-      isSend(info.id);
-      common_vendor.y(services_api_user.e(info.id));
+      info.value = JSON.parse(options.item);
+      isSend(info.value.id);
+      common_vendor.y(services_api_user.e(info.value.id));
       setTimeout(() => {
         quotationInfo.value && init();
       }, 200);
@@ -47,6 +49,15 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         data: text.value,
         success: () => {
           utils_uniapi_prompt.T("复制成功");
+          let params = {
+            freightId: info.value.id,
+            freightInfo: quotationInfo.value,
+            porCode: info.value.por.code,
+            fndCode: info.value.fnd.code,
+            carrierCode: info.value.carrierCode,
+            carrierRoute: info.value.carrierRoute
+          };
+          onSave(params);
         },
         fail: () => {
           utils_uniapi_prompt.T("复制失败");
@@ -54,11 +65,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       });
     };
     return (_ctx, _cache) => {
-      return common_vendor.z({
+      return common_vendor.B({
         a: loading.value
       }, loading.value ? {
-        b: common_vendor.F({
-          iconType: "annulus",
+        b: common_vendor.G({
+          iconType: "sword",
           position: "fixed",
           zIndex: 9,
           mask: false,
@@ -68,15 +79,15 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
           color: "#0396FF"
         })
       } : {
-        c: common_vendor.D(quotationData.value, (item, index, i0) => {
+        c: common_vendor.F(quotationData.value, (item, index, i0) => {
           return {
-            a: common_vendor.G(item.label + ":"),
+            a: common_vendor.H(item.label + ":"),
             b: item.value,
-            c: common_vendor.C(($event) => item.value = $event.detail.value, index),
+            c: common_vendor.D(($event) => item.value = $event.detail.value, index),
             d: index
           };
         }),
-        d: common_vendor.C(handleClick)
+        d: common_vendor.D(handleClick)
       });
     };
   }

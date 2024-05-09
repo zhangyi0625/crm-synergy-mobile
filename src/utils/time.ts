@@ -59,3 +59,16 @@ export function formatUpdated(data : any, num : number) {
 		return "";
 	}
 }
+
+
+/**
+ * 获取addDayCount天以后的日期
+ * @param {number} addDayCount 
+ * @return 
+ */
+export function getDateStr(addDayCount : number) {
+	let dd = new Date();
+	dd.setDate(dd.getDate() + addDayCount);
+	let ms = dd.getTime();
+	return new Date(ms).toJSON().replace(/T.*/, '');
+}

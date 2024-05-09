@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-	import { getCarrierList, getFreightOptions } from "@/services/api/freight";
+	import { getCarrierList, getFreightOptions, getNewFreight, postCreateTaskFreight } from "@/services/api/freight";
 	import { onLoad } from "@dcloudio/uni-app";
-	import { useRequest } from "alova";
+	import { invalidateCache, useRequest } from "alova";
 	import { reactive, ref } from "vue";
 	import {
 		sortList,
@@ -15,6 +15,8 @@
 	import CustomLoading from "@/components/Basic-loading/index.vue";
 	import { Toast } from "@/utils/uniapi/prompt";
 	import { ProductType } from "@/enums/freight";
+	import { getDateStr } from "@/utils/time";
+	import { freightDataTranslate } from '@/utils/translation'
 
 
 	const loading = ref<boolean>(false)
@@ -27,6 +29,7 @@
 
 	onLoad((options : any) => {
 		loading.value = true
+		console.log(options, 'options');
 		// 按航线
 		if (options.TABS) {
 			TABS.value = JSON.parse(options.TABS)
@@ -38,8 +41,8 @@
 				title: options.routeName
 			})
 			freightParams.channel = "QMS"
-			console.log(options, 'options');
 			isSend()
+			invalidateCache(getFreightOptions(freightParams))
 		} else {
 			// 按起运港、目的港
 			locationInfo.value = JSON.parse(options.info) || {};
@@ -52,6 +55,7 @@
 			freightParams.fnd = locationInfo.value.fndCode
 		}
 		freightParams.por && freightParams.fnd && isSend()
+		freightParams.por && freightParams.fnd && invalidateCache(getFreightOptions(freightParams))
 	});
 
 	// 船公司数据
@@ -96,10 +100,10 @@
 		});
 		for (let i in freightData.value) {
 			arr.forEach((item : any) => {
-				if (item.carrierCode === freightData.value[i].carrierCode && freightData.value[i].channel !== ProductType.QMS) item.products.push(freightData.value[i]);
+				if (item.carrierCode === freightData.value[i].carrierCode && freightData.value[i].channel !== ProductType.QMS && freightData.value[i].channel !== ProductType.SPOT) item.products.push(freightData.value[i]);
 			});
 		}
-		arr[0].products = freightData.value.filter((el : any) => el.channel === ProductType.QMS)
+		arr[0].products = freightData.value.filter((el : any) => el.channel === ProductType.QMS || el.channel === ProductType.SPOT)
 		freightNewData.value = freightParams.sort ? freightData.value : arr
 		loading.value = false
 	})
@@ -163,12 +167,89 @@
 
 	// 判断船公司数据是否为空
 	const isEmpty = (arr : Array<any>) => {
-		return arr.filter((el : any) => (freightParams.sort ? el : el.products.length > 0)).length > 0
+		return arr.filter((el : any) => (freightParams.sort ? el : el.products.length >= 0)).length >= 0
 	}
+
+	const { data: taskData, send: createTask, onSuccess: createTaskSuccess, onError: createTaskError } : any = useRequest((params) => postCreateTaskFreight(params), { immediate: false })
+	const { data: freightNewOptions, send: refreshFreight, onSuccess: refreshFreightSuccess, onError: refreshFreightError } : any = useRequest(id => getNewFreight(id), { immediate: false })
 
 	// 刷新船公司数据(ZDP)
 	const carrierRefresh = (carrierCode : string) => {
-		Toast('在舱实时运价还未开放！')
+		console.log(freightNewData.value, 'freightNewData.value ', getDateStr(3));
+		freightNewData.value.map((item : any) => {
+			if (item.carrierCode === carrierCode) item.searchstate = '正在更新....'
+		})
+		let params = {
+			carrierList: [carrierCode],
+			porCode: freightParams.por,
+			fndCode: freightParams.fnd,
+			etdStart: getDateStr(3) + ' 00:00:00',
+			etdEnd: ''
+		}
+		createTask(params)
+	}
+
+	const taskID = ref<string>('');
+	// 创建实时运价任务成功回调
+	createTaskSuccess(() => {
+		if (taskData.value) taskID.value = taskData.value
+		taskData.value && refreshFreight(taskData.value)
+	})
+	// 创建实时运价任务失败回调
+	createTaskError(() => {
+		setTimeout(() => {
+			freightNewData.value.map((item : any) => {
+				item.searchstate = ''
+			})
+		}, 300)
+	})
+	const timer = ref<any>(null);
+	// 轮训接口
+	refreshFreightSuccess(() => {
+		if (timer.value) {
+			clearInterval(timer.value);
+			timer.value = null;
+		}
+		timer.value = setInterval(() => {
+			if (freightNewOptions.value.taskStatus === 'SUCCESS') {
+				clearInterval(timer.value);
+				console.log('success', freightNewOptions.value);
+				if (freightNewOptions.value.productList && freightNewOptions.value.productList.length > 0) {
+					let carrierCode = freightNewOptions.value.productList[0].carrierCode;
+					freightNewData.value.map((el : any) => {
+						if (el.carrierCode === carrierCode) {
+							el.products = freightNewOptions.value.productList;
+							el.searchstate = ''
+						}
+					})
+				} else {
+					freightNewData.value.map((item : any) => {
+						item.searchstate = ''
+					})
+					// Toast('实时运价查询完成！')
+				}
+				console.log(freightNewData.value, 'freightNewData.value');
+			} else if (freightNewOptions.value.taskStatus === 'PENDING') {
+				if (freightNewOptions.value.productList && freightNewOptions.value.productList.length > 0) {
+					let carrierCode = freightNewOptions.value.productList[0].carrierCode;
+					freightNewData.value.map((el : any) => {
+						if (el.carrierCode === carrierCode) el.products = freightNewOptions.value.productList
+					})
+				}
+				refreshFreight(taskID.value)
+				invalidateCache(refreshFreight(taskID.value))
+			} else clearInterval(timer.value);
+		}, 2000);
+	})
+	refreshFreightError(() => {
+		clearInterval(timer.value);
+	})
+
+
+	const openShrink = (carrierCode : string) => {
+		freightNewData.value.map((el : any) => {
+			if (el.carrierCode === carrierCode && !el.searchstate) el.isShrink = !el.isShrink ? true : false
+		})
 	}
 </script>
 
@@ -210,8 +291,8 @@
 		<view v-else>
 			<u-tabs :list="TABS" v-model="tabIndex" active-color="#EE2233" @change="tabChange"></u-tabs>
 		</view>
-		<FreightTable v-if="isEmpty(freightNewData)" :data="freightNewData" @jumpEither="jumpEither"
-			:isSort="freightParams.sort" :isRoute="!locationInfo" @refresh="carrierRefresh" />
+		<FreightTable v-if="isEmpty(freightNewData)" :data="freightNewData" :isSort="freightParams.sort"
+			:isRoute="!locationInfo" @refresh="carrierRefresh" @jumpEither="jumpEither" @openShrink="openShrink" />
 		<view v-else style="margin: 250px auto;">
 			<u-empty mode="data"></u-empty>
 		</view>

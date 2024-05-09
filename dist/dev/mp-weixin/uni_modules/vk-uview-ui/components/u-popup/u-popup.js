@@ -280,11 +280,11 @@ if (!Math) {
   (_easycom_u_mask + _easycom_u_icon)();
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.z({
+  return common_vendor.B({
     a: $data.visibleSync
-  }, $data.visibleSync ? common_vendor.z({
-    b: common_vendor.C($options.maskClick),
-    c: common_vendor.F({
+  }, $data.visibleSync ? common_vendor.B({
+    b: common_vendor.D($options.maskClick),
+    c: common_vendor.G({
       blur: $props.blur,
       duration: $props.duration,
       ["custom-style"]: $props.maskCustomStyle,
@@ -293,43 +293,43 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       show: $data.showDrawer && $props.mask
     }),
     d: $props.mode == "center"
-  }, $props.mode == "center" ? common_vendor.z({
+  }, $props.mode == "center" ? common_vendor.B({
     e: $props.closeable
   }, $props.closeable ? {
-    f: common_vendor.C($options.close),
-    g: common_vendor.H("u-close--" + $props.closeIconPos),
-    h: common_vendor.F({
+    f: common_vendor.D($options.close),
+    g: common_vendor.I("u-close--" + $props.closeIconPos),
+    h: common_vendor.G({
       name: $props.closeIcon,
       color: $props.closeIconColor,
       size: $props.closeIconSize
     })
   } : {}, {
-    i: common_vendor.C(() => {
+    i: common_vendor.D(() => {
     }),
-    j: common_vendor.C(() => {
+    j: common_vendor.D(() => {
     }),
-    k: common_vendor.M($options.centerStyle)
+    k: common_vendor.L($options.centerStyle)
   }) : {}, {
     l: $props.mode != "center" && $props.closeable
   }, $props.mode != "center" && $props.closeable ? {
-    m: common_vendor.F({
+    m: common_vendor.G({
       name: $props.closeIcon,
       color: $props.closeIconColor,
       size: $props.closeIconSize
     })
   } : {}, {
-    n: common_vendor.C((...args) => $options.close && $options.close(...args)),
-    o: common_vendor.H("u-close--" + $props.closeIconPos),
-    p: common_vendor.C(($event) => $options.modeCenterClose($props.mode)),
-    q: common_vendor.H($props.safeAreaInsetBottom ? "safe-area-inset-bottom" : ""),
-    r: common_vendor.H("u-drawer-" + $props.mode),
-    s: common_vendor.H($data.showDrawer ? "u-drawer-content-visible" : ""),
-    t: common_vendor.H($props.zoom && $props.mode == "center" ? "u-animation-zoom" : ""),
-    v: common_vendor.C(() => {
+    n: common_vendor.D((...args) => $options.close && $options.close(...args)),
+    o: common_vendor.I("u-close--" + $props.closeIconPos),
+    p: common_vendor.D(($event) => $options.modeCenterClose($props.mode)),
+    q: common_vendor.I($props.safeAreaInsetBottom ? "safe-area-inset-bottom" : ""),
+    r: common_vendor.I("u-drawer-" + $props.mode),
+    s: common_vendor.I($data.showDrawer ? "u-drawer-content-visible" : ""),
+    t: common_vendor.I($props.zoom && $props.mode == "center" ? "u-animation-zoom" : ""),
+    v: common_vendor.D(() => {
     }),
-    w: common_vendor.M($options.style),
-    x: common_vendor.M($props.customStyle),
-    y: common_vendor.M({
+    w: common_vendor.L($options.style),
+    x: common_vendor.L($props.customStyle),
+    y: common_vendor.L({
       zIndex: $options.uZindex - 1
     })
   }) : {});

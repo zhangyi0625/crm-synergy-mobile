@@ -114,7 +114,7 @@
 			<img v-if="userInfo && userInfo?.avatar" :src="userInfo?.avatar" class="w-112 h-112 br-half" />
 			<img v-else src="/static/images/avatar.png" class="w-112 h-112 br-half" />
 			<view class="ml-20 font500 font40 neutral" @click="handleLogin">
-				{{ !isLogin ? "登录/注册" : userInfo?.loginName }}
+				{{ !isLogin ? "登录/注册" : userInfo?.nickname }}
 			</view>
 		</view>
 		<view class="profile-content px-24">
@@ -136,9 +136,9 @@
 					</view>
 				</view>
 				<view class="flex align-center flex-between font400 font28 dull-grey px-24 py-32">
-					<view class="">公司管理员</view>
+					<view class="">绑定手机号</view>
 					<view class="flex align-center">
-						<view class="font26 light-grey">{{userInfo?.nickname}}</view>
+						<view class="font26 light-grey">{{userInfo?.phone}}</view>
 					</view>
 				</view>
 			</view>

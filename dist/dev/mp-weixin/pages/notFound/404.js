@@ -10,7 +10,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const go = common_vendor.w("");
     const router = common_vendor.T();
     const redirect = common_vendor.w("");
-    common_vendor.I((query) => {
+    common_vendor.z((query) => {
       go.value = (query == null ? void 0 : query.go) || "";
       redirect.value = (query == null ? void 0 : query.redirect) || "";
     });
@@ -19,8 +19,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     };
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.G(go.value),
-        b: common_vendor.C(backHome)
+        a: common_vendor.H(go.value),
+        b: common_vendor.D(backHome)
       };
     };
   }

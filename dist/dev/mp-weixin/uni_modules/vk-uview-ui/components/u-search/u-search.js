@@ -230,46 +230,46 @@ if (!Math) {
   _easycom_u_icon();
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.z({
-    a: common_vendor.F({
+  return common_vendor.B({
+    a: common_vendor.G({
       size: 30,
       name: $props.searchIcon,
       color: $props.searchIconColor ? $props.searchIconColor : $props.color
     }),
-    b: common_vendor.C((...args) => $options.blur && $options.blur(...args)),
+    b: common_vendor.D((...args) => $options.blur && $options.blur(...args)),
     c: $options.valueCom,
-    d: common_vendor.C((...args) => $options.search && $options.search(...args)),
-    e: common_vendor.C((...args) => $options.inputChange && $options.inputChange(...args)),
+    d: common_vendor.D((...args) => $options.search && $options.search(...args)),
+    e: common_vendor.D((...args) => $options.inputChange && $options.inputChange(...args)),
     f: $props.disabled,
-    g: common_vendor.C((...args) => $options.getFocus && $options.getFocus(...args)),
+    g: common_vendor.D((...args) => $options.getFocus && $options.getFocus(...args)),
     h: $props.focus,
     i: $props.maxlength,
     j: $props.placeholder,
     k: `color: ${$props.placeholderColor}`,
-    l: common_vendor.M({
+    l: common_vendor.L({
       textAlign: $props.inputAlign,
       color: $props.color,
       backgroundColor: $props.bgColor
     }),
-    m: common_vendor.M($props.inputStyle),
+    m: common_vendor.L($props.inputStyle),
     n: $data.keyword && $props.clearabled && $data.focused
   }, $data.keyword && $props.clearabled && $data.focused ? {
-    o: common_vendor.F({
+    o: common_vendor.G({
       name: "close-circle-fill",
       size: "34",
       color: "#c0c4cc"
     }),
-    p: common_vendor.C((...args) => $options.clear && $options.clear(...args))
+    p: common_vendor.D((...args) => $options.clear && $options.clear(...args))
   } : {}, {
     q: $props.bgColor,
     r: $props.shape == "round" ? "100rpx" : "10rpx",
     s: $options.borderStyle,
     t: $props.height + "rpx",
-    v: common_vendor.G($props.actionText),
-    w: common_vendor.M($props.actionStyle),
-    x: common_vendor.H($options.showActionBtn || $data.show ? "u-action-active" : ""),
-    y: common_vendor.C((...args) => $options.custom && $options.custom(...args)),
-    z: common_vendor.C((...args) => $options.clickHandler && $options.clickHandler(...args)),
+    v: common_vendor.H($props.actionText),
+    w: common_vendor.L($props.actionStyle),
+    x: common_vendor.I($options.showActionBtn || $data.show ? "u-action-active" : ""),
+    y: common_vendor.D((...args) => $options.custom && $options.custom(...args)),
+    z: common_vendor.D((...args) => $options.clickHandler && $options.clickHandler(...args)),
     A: $props.margin
   });
 }

@@ -276,25 +276,25 @@ if (!Math) {
   _easycom_u_badge();
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.z({
-    a: common_vendor.D($props.list, (item, index, i0) => {
+  return common_vendor.B({
+    a: common_vendor.F($props.list, (item, index, i0) => {
       return {
         a: "5cf5aad8-0-" + i0,
-        b: common_vendor.F({
+        b: common_vendor.G({
           count: item[$props.count] || item["count"] || 0,
           offset: $props.offset,
           size: "mini"
         }),
-        c: common_vendor.G(item[$props.name] || item["name"]),
+        c: common_vendor.H(item[$props.name] || item["name"]),
         d: "u-tab-item-" + index,
         e: index,
-        f: common_vendor.C(($event) => $options.clickTab(index), index),
-        g: common_vendor.M($options.tabItemStyle(index))
+        f: common_vendor.D(($event) => $options.clickTab(index), index),
+        g: common_vendor.L($options.tabItemStyle(index))
       };
     }),
     b: $props.showBar
   }, $props.showBar ? {
-    c: common_vendor.M($options.tabBarStyle)
+    c: common_vendor.L($options.tabBarStyle)
   } : {}, {
     d: $data.id,
     e: !$props.isScroll ? 1 : "",

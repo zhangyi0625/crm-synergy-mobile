@@ -86,17 +86,17 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     });
     return (_ctx, _cache) => {
       var _a, _b, _c, _d, _e;
-      return common_vendor.z({
-        a: common_vendor.B(userInfo) && ((_a = common_vendor.B(userInfo)) == null ? void 0 : _a.avatar)
-      }, common_vendor.B(userInfo) && ((_b = common_vendor.B(userInfo)) == null ? void 0 : _b.avatar) ? {
-        b: (_c = common_vendor.B(userInfo)) == null ? void 0 : _c.avatar
+      return common_vendor.B({
+        a: common_vendor.C(userInfo) && ((_a = common_vendor.C(userInfo)) == null ? void 0 : _a.avatar)
+      }, common_vendor.C(userInfo) && ((_b = common_vendor.C(userInfo)) == null ? void 0 : _b.avatar) ? {
+        b: (_c = common_vendor.C(userInfo)) == null ? void 0 : _c.avatar
       } : {}, {
-        c: common_vendor.G(!isLogin.value ? "登录/注册" : (_d = common_vendor.B(userInfo)) == null ? void 0 : _d.loginName),
-        d: common_vendor.C(handleLogin),
-        e: common_vendor.C(editAvatar),
-        f: common_vendor.C(handleJump),
-        g: common_vendor.G((_e = common_vendor.B(userInfo)) == null ? void 0 : _e.nickname),
-        h: common_vendor.C(handleLoginOut)
+        c: common_vendor.H(!isLogin.value ? "登录/注册" : (_d = common_vendor.C(userInfo)) == null ? void 0 : _d.nickname),
+        d: common_vendor.D(handleLogin),
+        e: common_vendor.D(editAvatar),
+        f: common_vendor.D(handleJump),
+        g: common_vendor.H((_e = common_vendor.C(userInfo)) == null ? void 0 : _e.phone),
+        h: common_vendor.D(handleLoginOut)
       });
     };
   }

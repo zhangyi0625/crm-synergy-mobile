@@ -44,7 +44,16 @@ export function putAvatar(data : any) {
 	return request.Post('/api/app/my/updateAvatar', data);
 }
 
-
+/**
+ * 获取快速报价
+ */
 export function getQuotation(id : string | number) {
 	return request.Get('/api/app/frt/getQuotationTemplate/' + id);
+}
+
+/**
+ * 保存报价单
+ */
+export function postQuotation(data : any) {
+	return request.Post('/api/app/frt/saveQuotation', data);
 }

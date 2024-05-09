@@ -2,3 +2,12 @@
   border-left: 1px solid #edeff2;
   border-right: 1px solid #edeff2;
 }
+.freight-table .update.data-v-3134b717 {
+  transition: opacity 1s ease 0s;
+  opacity: 1;
+}
+.freight-table .shrink.data-v-3134b717 {
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease 0s;
+}

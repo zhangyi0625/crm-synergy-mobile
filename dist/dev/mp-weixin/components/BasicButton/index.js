@@ -12,7 +12,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     return (_ctx, _cache) => {
       return {
         a: props.disabled,
-        b: common_vendor.C(click)
+        b: common_vendor.D(click)
       };
     };
   }

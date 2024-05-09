@@ -186,27 +186,27 @@ if (!Math) {
   _easycom_u_icon();
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.z({
+  return common_vendor.B({
     a: $props.show
-  }, $props.show ? common_vendor.z({
+  }, $props.show ? common_vendor.B({
     b: $props.volumeIcon
   }, $props.volumeIcon ? {
-    c: common_vendor.F({
+    c: common_vendor.G({
       name: "volume-fill",
       size: $props.volumeSize,
       color: $options.computeColor
     })
   } : {}, {
-    d: common_vendor.G($data.showText),
-    e: common_vendor.C((...args) => $options.click && $options.click(...args)),
-    f: common_vendor.M($options.textStyle),
-    g: common_vendor.H("u-type-" + $props.type),
+    d: common_vendor.H($data.showText),
+    e: common_vendor.D((...args) => $options.click && $options.click(...args)),
+    f: common_vendor.L($options.textStyle),
+    g: common_vendor.I("u-type-" + $props.type),
     h: $data.animationDuration,
     i: $data.animationPlayState,
     j: $props.moreIcon
   }, $props.moreIcon ? {
-    k: common_vendor.C($options.getMore),
-    l: common_vendor.F({
+    k: common_vendor.D($options.getMore),
+    l: common_vendor.G({
       name: "arrow-right",
       size: 26,
       color: $options.computeColor
@@ -214,8 +214,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   } : {}, {
     m: $props.closeIcon
   }, $props.closeIcon ? {
-    n: common_vendor.C($options.close),
-    o: common_vendor.F({
+    n: common_vendor.D($options.close),
+    o: common_vendor.G({
       name: "close",
       size: 24,
       color: $options.computeColor
@@ -223,7 +223,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   } : {}, {
     p: $options.computeBgColor,
     q: $props.padding,
-    r: common_vendor.H($props.type ? `u-type-${$props.type}-light-bg` : "")
+    r: common_vendor.I($props.type ? `u-type-${$props.type}-light-bg` : "")
   }) : {});
 }
 const Component = /* @__PURE__ */ common_vendor.q(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-9f60c390"], ["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system/src/uni_modules/vk-uview-ui/components/u-row-notice/u-row-notice.vue"]]);

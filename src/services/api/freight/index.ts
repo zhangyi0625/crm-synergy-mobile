@@ -83,3 +83,22 @@ export function getCollectPort() {
 export function deleteCollectPort(id : string | number) {
 	return request.Delete("/api/app/my/deleteFavoritePort/" + id);
 }
+
+
+/**
+ * 运价查询 创建运价实时任务
+ * @param
+ * @returns
+ */
+export function postCreateTaskFreight(data : FreightTask) {
+	return request.Post("/api/zc/createTask", data);
+}
+
+/**
+ * 运价查询 获取运价实时数据
+ * @param
+ * @returns
+ */
+export function getNewFreight(taskId : string | number) {
+	return request.Get("/api/zc/taskResult/" + taskId);
+}
