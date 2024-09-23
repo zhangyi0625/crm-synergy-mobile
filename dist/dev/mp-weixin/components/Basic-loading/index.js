@@ -5,7 +5,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
   emits: ["handleClick"],
   setup(__props, { emit }) {
     const props = __props;
-    common_vendor.N((_ctx) => ({
+    common_vendor.P((_ctx) => ({
       "0374ca5e": common_vendor.C(comColor)
     }));
     const handleClick = () => {
@@ -22,12 +22,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       }, props.iconType === "triangle" ? {} : {}, {
         d: props.iconType === "sword"
       }, props.iconType === "sword" ? {} : {}, {
-        e: common_vendor.L({
+        e: common_vendor.N({
           "z-index": props.zIndex,
           "opacity": props.maskOpacity,
           "position": props.position
         }),
-        f: common_vendor.L(_ctx.__cssVars()),
+        f: common_vendor.N(_ctx.__cssVars()),
         g: common_vendor.D(handleClick)
       });
     };

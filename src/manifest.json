@@ -15,7 +15,9 @@
 			"autoclose": true,
 			"delay": 0
 		},
-		"modules": {},
+		"modules": {
+			"Share": {}
+		},
 		"optimization": {
 			"subPackages": true
 		},
@@ -44,7 +46,13 @@
 				"dSYMs": false
 			},
 			"sdkConfigs": {
-				"ad": {}
+				"ad": {},
+				"share": {
+					"weixin": {
+						"appid": "",
+						"UniversalLinks": ""
+					}
+				}
 			},
 			"splashscreen": {
 				"useOriginalMsgbox": true

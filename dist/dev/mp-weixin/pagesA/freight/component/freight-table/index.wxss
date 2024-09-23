@@ -1,3 +1,6 @@
+.freight-table.data-v-3134b717 {
+  height: calc(100% - 140rpx);
+}
 .freight-table .schedule.data-v-3134b717 {
   border-left: 1px solid #edeff2;
   border-right: 1px solid #edeff2;
@@ -10,4 +13,8 @@
   opacity: 0;
   overflow: hidden;
   transition: opacity 0.5s ease 0s;
+}
+.freight-table .freight-logo.data-v-3134b717 {
+  width: 264rpx;
+  height: 128rpx;
 }

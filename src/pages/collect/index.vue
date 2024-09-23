@@ -26,8 +26,11 @@
 
 	// 跳转运价列表
 	const jump = (item : any) => {
+		let porInfo = item.porCnlName + '-' + item.porEnName
+		let fndInfo = item.fndCnlName + '-' + item.fndEnName
 		router.push({
-			path: "/pagesA/freight/index?info=" + JSON.stringify(item),
+			// path: "/pagesA/freight/index?info=" + JSON.stringify(item),
+			path: `/pagesA/freight/index?porCode=${item.porCode}&fndCode=${item.fndCode}&porInfo=${porInfo}&fndInfo=${fndInfo}`
 		});
 	}
 </script>

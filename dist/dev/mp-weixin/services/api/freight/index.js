@@ -30,6 +30,12 @@ function postCreateTaskFreight(data) {
 function getNewFreight(taskId) {
   return utils_http_index.r.Get("/api/zc/taskResult/" + taskId);
 }
+function getFreightByShare(key) {
+  return utils_http_index.r.Get("/api/app/share/freight/" + key);
+}
+function postFreightByShare(data) {
+  return utils_http_index.r.Post("/api/app/share/freight", data);
+}
 exports.a = getAreaList;
 exports.b = getFreightOptions;
 exports.c = getCollectPort;
@@ -37,6 +43,8 @@ exports.d = deleteCollectPort;
 exports.e = getLocationList;
 exports.f = getCarrierList;
 exports.g = getSearchRecent;
-exports.h = getNewFreight;
-exports.i = getFreightDetail;
-exports.p = postCreateTaskFreight;
+exports.h = getFreightByShare;
+exports.i = postCreateTaskFreight;
+exports.j = getNewFreight;
+exports.k = getFreightDetail;
+exports.p = postFreightByShare;

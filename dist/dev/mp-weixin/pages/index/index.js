@@ -28,7 +28,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const noticeContent = common_vendor.w("");
     const { data: notice, send: noticeSend, onSuccess: changeNoticeContent } = common_vendor.u(services_api_user.a(), { immediate: false });
     changeNoticeContent(() => {
-      let value = notice.value ? notice.value[0].content : "";
+      let value = notice.value && notice.value.length > 0 ? notice.value[0].content : "";
       let regx = /<\/?[a-zA-Z]+(\s+[a-zA-Z]+=".*")*>/g;
       noticeContent.value = value.replaceAll(regx, "");
     });
@@ -37,6 +37,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       setTimeout(() => {
         authStore.isLogin && isSend();
         common_vendor.y(services_api_freight_index.g());
+        common_vendor.y(services_api_user.a());
       }, 1500);
     });
     common_vendor.z(() => {
@@ -138,7 +139,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       searchForm.porInfo = item.porCnlName + "-" + item.porEnName;
       searchForm.fndInfo = item.fndCnlName + "-" + item.fndEnName;
       router.push({
-        path: "/pagesA/freight/index?info=" + JSON.stringify(searchForm)
+        // path: "/pagesA/freight/index?info=" + JSON.stringify(searchForm),
+        path: `/pagesA/freight/index?porCode=${searchForm.porCode}&fndCode=${searchForm.fndCode}&porInfo=${searchForm.porInfo}&fndInfo=${searchForm.fndInfo}`
       });
     };
     const router = common_vendor.T();
@@ -149,12 +151,13 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         utils_uniapi_prompt.T("请选择目的港！");
       } else
         router.push({
-          path: "/pagesA/freight/index?info=" + JSON.stringify(searchForm)
+          // path: "/pagesA/freight/index?info=" + JSON.stringify(searchForm),
+          path: `/pagesA/freight/index?porCode=${searchForm.porCode}&fndCode=${searchForm.fndCode}&porInfo=${searchForm.porInfo}&fndInfo=${searchForm.fndInfo}`
         });
     };
     const goDetail = (item) => {
       router.push(
-        "/pagesA/freight/freight-detail/index?info=" + JSON.stringify(item)
+        "/pagesA/freight/freight-detail/index?info=" + item.id
       );
     };
     const getRecommendOptions = (arr) => {

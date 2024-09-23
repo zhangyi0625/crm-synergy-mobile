@@ -6965,6 +6965,8 @@ const onShow = /* @__PURE__ */ createHook(ON_SHOW);
 const onHide = /* @__PURE__ */ createHook(ON_HIDE);
 const onLaunch = /* @__PURE__ */ createHook(ON_LAUNCH);
 const onLoad = /* @__PURE__ */ createHook(ON_LOAD);
+const onShareTimeline = /* @__PURE__ */ createHook(ON_SHARE_TIMELINE);
+const onShareAppMessage = /* @__PURE__ */ createHook(ON_SHARE_APP_MESSAGE);
 var isVue2 = false;
 function set(target, key2, val) {
   if (Array.isArray(target)) {
@@ -12229,9 +12231,11 @@ exports.H = t;
 exports.I = n;
 exports.J = omit$1;
 exports.K = computed;
-exports.L = s$1;
-exports.M = watch;
-exports.N = useCssVars;
+exports.L = onShareAppMessage;
+exports.M = onShareTimeline;
+exports.N = s$1;
+exports.O = watch;
+exports.P = useCssVars;
 exports.T = T;
 exports.U = UTF8;
 exports._ = _;

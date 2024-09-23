@@ -188,7 +188,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         c: index
       };
     }),
-    d: common_vendor.L($options.textStyle),
+    d: common_vendor.N($options.textStyle),
     e: common_vendor.I("u-type-" + $props.type),
     f: $props.disableTouch,
     g: common_vendor.D((...args) => $options.change && $options.change(...args)),

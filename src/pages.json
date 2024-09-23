@@ -97,6 +97,9 @@
 					}
 				},
 				{
+					"path": "freight/component/freight-table/index"
+				},
+				{
 					// "name": 'FreightDetail',
 					"path": "freight/freight-detail/index",
 					"style": {
@@ -109,6 +112,14 @@
 					"path": "freight/quotation/index",
 					"style": {
 						"navigationBarTitleText": "报价单",
+						"navigationBarBackgroundColor": "#FFF"
+					}
+				},
+				{
+					// "name":'friehgt'
+					"path": "freight/actual/index",
+					"style": {
+						"navigationBarTitleText": "实时运价查询",
 						"navigationBarBackgroundColor": "#FFF"
 					}
 				}

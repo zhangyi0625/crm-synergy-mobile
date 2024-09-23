@@ -1,6 +1,6 @@
 "use strict";
-const common_vendor = require("../../common/vendor.js"), services_api_freight_index = require("../../services/api/freight/index.js"), pagesA_freight_config = require("./config.js"), utils_uniapi_prompt = require("../../utils/uniapi/prompt.js"), enums_freight = require("../../enums/freight.js"), utils_time = require("../../utils/time.js");
-require("../../utils/http/index.js"), require("../../utils/env.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../state/modules/auth.js"), require("../../utils/cache/index.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/cipher.js"), require("../../utils/is.js"), require("../../enums/cacheEnum.js"), require("../../services/api/auth.js"), require("../../services/api/user.js"), require("../../utils/http/checkStatus.js"), require("../../router/index.js"), require("../../router/guard.js");
+const common_vendor = require("../../common/vendor.js"), services_api_freight_index = require("../../services/api/freight/index.js"), pagesA_freight_config = require("./config.js"), enums_freight = require("../../enums/freight.js"), utils_time = require("../../utils/time.js");
+require("../../utils/http/index.js"), require("../../utils/env.js"), require("../../mock/index.js"), require("../../mock/v1/index.js"), require("../../mock/v1/modules/auth.js"), require("../../mock/utils.js"), require("../../enums/httpEnum.js"), require("../../state/modules/auth.js"), require("../../utils/cache/index.js"), require("../../utils/cache/storageCache.js"), require("../../settings/encryptionSetting.js"), require("../../utils/cipher.js"), require("../../utils/is.js"), require("../../enums/cacheEnum.js"), require("../../services/api/auth.js"), require("../../services/api/user.js"), require("../../utils/http/checkStatus.js"), require("../../utils/uniapi/prompt.js"), require("../../router/index.js"), require("../../router/guard.js");
 if (!Array) {
   const _easycom_u_tabs2 = common_vendor.v("u-tabs");
   const _easycom_u_empty2 = common_vendor.v("u-empty");
@@ -13,18 +13,104 @@ const _easycom_u_popup = () => "../../uni_modules/vk-uview-ui/components/u-popup
 if (!Math) {
   (CustomLoading + _easycom_u_tabs + common_vendor.C(FreightTable) + _easycom_u_empty + _easycom_u_popup)();
 }
-const FreightTable = () => "./component/freight-table/index.js";
+const FreightTable = () => "./component/freight-table/index2.js";
 const CustomLoading = () => "../../components/Basic-loading/index.js";
-const _sfc_main = /* @__PURE__ */ common_vendor.k({
+const _sfc_defineComponent = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
+    const freightParams = common_vendor.x({
+      por: "",
+      fnd: "",
+      carrier: "",
+      transit: "",
+      channel: "",
+      status: 1,
+      tagId: "",
+      routeId: ""
+    });
     const loading = common_vendor.w(false);
     const router = common_vendor.T();
     const locationInfo = common_vendor.w({});
     const current = common_vendor.w(0);
+    const shareMsg = common_vendor.w({});
+    common_vendor.x({});
+    const Key = common_vendor.w("");
+    common_vendor.i.showShareMenu();
+    common_vendor.L(() => {
+      let info = {
+        freightParam: freightParams,
+        shareMsg: shareMsg.value,
+        freightData: freightNewData.value,
+        type: "分享"
+      };
+      postShare(info);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(
+            {
+              title: "运价列表",
+              path: `/pagesA/freight/index?key=${shareKey.value}`
+            }
+          );
+        }, 500);
+      });
+    });
+    common_vendor.M(() => {
+      let info = {
+        freightParam: freightParams,
+        shareMsg: shareMsg.value,
+        freightData: freightNewData.value,
+        type: "分享"
+      };
+      postShare(info);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(
+            {
+              title: "运价列表",
+              path: `/pagesA/freight/index?key=${shareKey.value}`
+            }
+          );
+        }, 500);
+      });
+    });
+    const { data: shareKey, send: postShare, onSuccess: success } = common_vendor.u((info) => services_api_freight_index.p({ data: info }), { immediate: false });
+    success(() => {
+    });
+    const { data: showData, send: getShare, onSuccess: getShareSuccess } = common_vendor.u((key) => services_api_freight_index.h(key), { immediate: false });
+    getShareSuccess(async () => {
+      let info = JSON.parse(showData.value);
+      console.log(info, showData.value);
+      await init(info);
+    });
+    const init = (info) => {
+      let {
+        freightParam,
+        shareMsg: shareMsg2,
+        freightData: freightData2,
+        type
+      } = info;
+      Object.assign(freightParams, freightParam);
+      shareMsg2.value = shareMsg2;
+      freightNewData.value = freightData2;
+      locationInfo.value = shareMsg2;
+      let { porInfo, fndInfo } = locationInfo.value;
+      console.log(porInfo, fndInfo);
+      common_vendor.i.setNavigationBarTitle({
+        title: (porInfo ? porInfo.split("-")[0] : locationInfo.value.porCnlName) + "-" + (fndInfo ? fndInfo.split("-")[0] : locationInfo.value.fndCnlName)
+      });
+      console.log(freightNewData.value, freightParams);
+      loading.value = false;
+    };
     common_vendor.z((options) => {
       loading.value = true;
       console.log(options, "options");
+      if (!!options.key) {
+        Key.value = options.key;
+        getShare(options.key);
+        return;
+      }
+      shareMsg.value = options;
       if (options.TABS) {
         TABS.value = JSON.parse(options.TABS);
         freightParams.routeId = options.routeId ? options.routeId : "";
@@ -38,7 +124,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         isSend();
         common_vendor.y(services_api_freight_index.b(freightParams));
       } else {
-        locationInfo.value = JSON.parse(options.info) || {};
+        locationInfo.value = options || shareMsg.value;
         let { porInfo, fndInfo } = locationInfo.value;
         common_vendor.i.setNavigationBarTitle({
           title: (porInfo ? porInfo.split("-")[0] : locationInfo.value.porCnlName) + "-" + (fndInfo ? fndInfo.split("-")[0] : locationInfo.value.fndCnlName)
@@ -51,16 +137,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     });
     const { data: carrierList } = common_vendor.u(services_api_freight_index.f(), {
       initialData: []
-    });
-    const freightParams = common_vendor.x({
-      por: "",
-      fnd: "",
-      carrier: "",
-      transit: "",
-      channel: "",
-      status: 1,
-      tagId: "",
-      routeId: ""
     });
     const freightNewData = common_vendor.w([]);
     const { data: freightData, send: isSend, onSuccess } = common_vendor.u(services_api_freight_index.b(freightParams), { immediate: false });
@@ -91,6 +167,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       }
       arr[0].products = freightData.value.filter((el) => el.channel === enums_freight.P.QMS || el.channel === enums_freight.P.SPOT);
       freightNewData.value = freightParams.sort ? freightData.value : arr;
+      if (!freightParams.sort) {
+        freightNewData.value = freightNewData.value.sort((a, b) => a.carrierCode !== enums_freight.P.QMS && b.carrierCode !== enums_freight.P.QMS && b.products.length - a.products.length);
+      }
       loading.value = false;
     });
     const changeCtnType = (ctn) => {
@@ -122,10 +201,10 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const jumpEither = (item, type) => {
       if (type) {
         console.log(item, "jump", type);
-        utils_uniapi_prompt.T("在舱实时运价还未开放！");
+        router.push(`/pagesA/freight/actual/index?porCode=${freightParams.por}&fndCode=${freightParams.fnd}&info=${JSON.stringify(locationInfo.value)}`);
       } else
         router.push(
-          "/pagesA/freight/freight-detail/index?info=" + JSON.stringify(item)
+          "/pagesA/freight/freight-detail/index?info=" + item.id
         );
     };
     const tabIndex = common_vendor.w(0);
@@ -144,10 +223,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const isEmpty = (arr) => {
       return arr.filter((el) => freightParams.sort ? el : el.products.length >= 0).length >= 0;
     };
-    const { data: taskData, send: createTask, onSuccess: createTaskSuccess, onError: createTaskError } = common_vendor.u((params) => services_api_freight_index.p(params), { immediate: false });
-    const { data: freightNewOptions, send: refreshFreight, onSuccess: refreshFreightSuccess, onError: refreshFreightError } = common_vendor.u((id) => services_api_freight_index.h(id), { immediate: false });
+    const { data: taskData, send: createTask, onSuccess: createTaskSuccess, onError: createTaskError } = common_vendor.u((params) => services_api_freight_index.i(params), { immediate: false });
+    const { data: freightNewOptions, send: refreshFreight, onSuccess: refreshFreightSuccess, onError: refreshFreightError } = common_vendor.u((id) => services_api_freight_index.j(id), { immediate: false });
     const carrierRefresh = (carrierCode) => {
-      console.log(freightNewData.value, "freightNewData.value ", utils_time.g(3));
       freightNewData.value.map((item) => {
         if (item.carrierCode === carrierCode)
           item.searchstate = "正在更新....";
@@ -183,7 +261,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       timer.value = setInterval(() => {
         if (freightNewOptions.value.taskStatus === "SUCCESS") {
           clearInterval(timer.value);
-          console.log("success", freightNewOptions.value);
           if (freightNewOptions.value.productList && freightNewOptions.value.productList.length > 0) {
             let carrierCode = freightNewOptions.value.productList[0].carrierCode;
             freightNewData.value.map((el) => {
@@ -197,7 +274,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
               item.searchstate = "";
             });
           }
-          console.log(freightNewData.value, "freightNewData.value");
         } else if (freightNewOptions.value.taskStatus === "PENDING") {
           if (freightNewOptions.value.productList && freightNewOptions.value.productList.length > 0) {
             let carrierCode = freightNewOptions.value.productList[0].carrierCode;
@@ -236,8 +312,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
           color: "#0396FF"
         })
       } : common_vendor.B({
-        c: locationInfo.value
-      }, locationInfo.value ? {
+        c: Object.keys(locationInfo.value)
+      }, Object.keys(locationInfo.value) ? {
         d: common_vendor.F(common_vendor.C(pagesA_freight_config.s), (item, index, i0) => {
           return common_vendor.B({
             a: common_vendor.H(item.name),
@@ -326,5 +402,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     };
   }
 });
-const MiniProgramPage = /* @__PURE__ */ common_vendor.q(_sfc_main, [["__scopeId", "data-v-b05ec43e"], ["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system/src/pagesA/freight/index.vue"]]);
+_sfc_defineComponent.__runtimeHooks = 6;
+const MiniProgramPage = /* @__PURE__ */ common_vendor.q(_sfc_defineComponent, [["__scopeId", "data-v-b05ec43e"], ["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system/src/pagesA/freight/index.vue"]]);
 wx.createPage(MiniProgramPage);

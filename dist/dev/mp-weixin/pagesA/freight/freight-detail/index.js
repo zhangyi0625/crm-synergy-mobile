@@ -5,7 +5,7 @@ if (!Math) {
   CustomLoading();
 }
 const CustomLoading = () => "../../../components/Basic-loading/index.js";
-const _sfc_main = /* @__PURE__ */ common_vendor.k({
+const _sfc_defineComponent = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
     const router = common_vendor.T();
@@ -13,17 +13,73 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const loading = common_vendor.w(false);
     const cabinDetail = common_vendor.w({});
     const ctnType = common_vendor.w([]);
+    const Key = common_vendor.w("");
     const ctnTypeList = common_vendor.w([]);
-    const { data: freightDetail, send: isSend, onSuccess } = common_vendor.u((id) => services_api_freight_index.i(id), { immediate: false });
+    common_vendor.i.showShareMenu();
+    const { data: shareKey, send: postShare, onSuccess: success } = common_vendor.u((info) => services_api_freight_index.p({ data: info }), { immediate: false });
+    const { data: showData, send: getShare, onSuccess: getShareSuccess } = common_vendor.u((key) => services_api_freight_index.h(key), { immediate: false });
+    getShareSuccess(() => {
+      let info = JSON.parse(showData.value);
+      let {
+        detail,
+        ctn,
+        type
+      } = info;
+      cabinDetail.value = detail;
+      ctnType.value = ctn;
+      loading.value = false;
+    });
+    common_vendor.L(() => {
+      let info = {
+        detail: cabinDetail.value,
+        ctn: ctnType.value,
+        type: "分享"
+      };
+      postShare(info);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(
+            {
+              title: "运价详情",
+              path: `/pagesA/freight/freight-detail/index?key=${shareKey.value}`
+            }
+          );
+        }, 500);
+      });
+    });
+    success(() => {
+    });
+    common_vendor.M(() => {
+      let info = {
+        detail: cabinDetail.value,
+        ctn: ctnType.value,
+        type: "分享"
+      };
+      postShare(info);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(
+            {
+              title: "运价详情",
+              path: `/pagesA/freight/freight-detail/index?key=${shareKey.value}`
+            }
+          );
+        }, 500);
+      });
+    });
+    const { data: freightDetail, send: isSend, onSuccess } = common_vendor.u((id) => services_api_freight_index.k(id), { immediate: false, force: true });
     common_vendor.z((options) => {
       loading.value = true;
-      let info = JSON.parse(options.info);
+      if (!!options.key) {
+        Key.value = options.key;
+        getShare(options.key);
+        return;
+      }
+      let info = options.info;
       if (info.channel === "QMS") {
-        isSend(info.id);
-        common_vendor.y(services_api_freight_index.i(info.id));
+        isSend(info);
       } else {
-        isSend(info.id);
-        common_vendor.y(services_api_freight_index.i(info.id));
+        isSend(info);
       }
     });
     onSuccess(() => {
@@ -32,7 +88,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       for (let i in freightDetail.value) {
         if (i === enums_freight.p.COST || i === enums_freight.p.INNER || i === enums_freight.p.OUTER) {
           getCtnTypePrice(i, freightDetail.value[i], ctnTypeList.value);
-          console.log(ctnType.value, "freight", ctnTypeList.value);
         }
       }
       setTimeout(() => {
@@ -100,7 +155,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         g: cabinDetail.value.tag
       }, cabinDetail.value.tag ? {
         h: common_vendor.H(cabinDetail.value.tag),
-        i: common_vendor.L(cabinDetail.value.tag === "强推" ? "background: #FF844A" : "background: #FFB23F")
+        i: common_vendor.N(cabinDetail.value.tag === "强推" ? "background: #FF844A" : "background: #FFB23F")
       } : {}, {
         j: common_vendor.H(cabinDetail.value.transit > 0 ? "中转" : "直达"),
         k: common_vendor.H((_a = cabinDetail.value.por) == null ? void 0 : _a.cnName),
@@ -110,30 +165,28 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         n: common_vendor.H(common_vendor.C(utils_time.f)(cabinDetail.value.validFrom, "M-D")),
         o: common_vendor.H(common_vendor.C(utils_time.f)(cabinDetail.value.validTo, "M-D"))
       } : {}, {
-        p: common_vendor.H(common_vendor.C(utils_time.f)(cabinDetail.value.etd, "M-D") || "-"),
-        q: common_vendor.H(((_c = cabinDetail.value.terminal) == null ? void 0 : _c.name) || "-"),
-        r: common_vendor.H(cabinDetail.value.voyDays),
-        s: common_vendor.H(cabinDetail.value.carrierRoute),
-        t: common_vendor.H(cabinDetail.value.cutOffDay ? cabinDetail.value.cutOffDay : ""),
-        v: common_vendor.H(cabinDetail.value.departureDay ? cabinDetail.value.departureDay : ""),
-        w: common_vendor.H(cabinDetail.value.vesselName ? cabinDetail.value.vesselName : ""),
-        x: common_vendor.H(cabinDetail.value.voyNo ? cabinDetail.value.voyNo : ""),
-        y: cabinDetail.value.transit > 0
+        p: common_vendor.H(((_c = cabinDetail.value.terminal) == null ? void 0 : _c.name) || "-"),
+        q: common_vendor.H(cabinDetail.value.voyDays),
+        r: common_vendor.H(cabinDetail.value.carrierRoute),
+        s: common_vendor.H(cabinDetail.value.cutOffDay ? cabinDetail.value.cutOffDay : ""),
+        t: common_vendor.H(cabinDetail.value.departureDay ? cabinDetail.value.departureDay : ""),
+        v: common_vendor.H(cabinDetail.value.vesselName ? cabinDetail.value.vesselName : ""),
+        w: common_vendor.H(cabinDetail.value.voyNo ? cabinDetail.value.voyNo : ""),
+        x: cabinDetail.value.transit > 0
       }, cabinDetail.value.transit > 0 ? {
-        z: common_vendor.H(cabinDetail.value.transitPorts)
+        y: common_vendor.H(cabinDetail.value.transitPorts)
       } : {}, {
-        A: common_vendor.H((_d = cabinDetail.value.fnd) == null ? void 0 : _d.cnName),
-        B: common_vendor.H((_e = cabinDetail.value.fnd) == null ? void 0 : _e.enName),
-        C: common_vendor.H(common_vendor.C(utils_time.f)(cabinDetail.value.eta, "M-D") || "-"),
-        D: common_vendor.H(cabinDetail.value.isSale ? "有库存" : "无库存"),
-        E: common_vendor.I(cabinDetail.value.isSale ? "active" : "light-grey"),
-        F: isCtnPrice("costPrice")
+        z: common_vendor.H((_d = cabinDetail.value.fnd) == null ? void 0 : _d.cnName),
+        A: common_vendor.H((_e = cabinDetail.value.fnd) == null ? void 0 : _e.enName),
+        B: common_vendor.H(cabinDetail.value.isSale ? "有库存" : "无库存"),
+        C: common_vendor.I(cabinDetail.value.isSale ? "active" : "light-grey"),
+        D: isCtnPrice("costPrice")
       }, isCtnPrice("costPrice") ? {} : {}, {
-        G: isCtnPrice("innerPrice")
+        E: isCtnPrice("innerPrice")
       }, isCtnPrice("innerPrice") ? {} : {}, {
-        H: isCtnPrice("outerPrice")
+        F: isCtnPrice("outerPrice")
       }, isCtnPrice("outerPrice") ? {} : {}, {
-        I: common_vendor.F(ctnTypeList.value, (price, index, i0) => {
+        G: common_vendor.F(ctnTypeList.value, (price, index, i0) => {
           return common_vendor.B({
             a: common_vendor.H(price.ctnType)
           }, isCtnPrice("costPrice") ? {
@@ -146,13 +199,13 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
             e: index
           });
         }),
-        J: isCtnPrice("costPrice"),
-        K: isCtnPrice("innerPrice"),
-        L: isCtnPrice("outerPrice"),
-        M: common_vendor.H(ctnType.value.join("/")),
-        N: cabinDetail.value.extraPriceInfo
+        H: isCtnPrice("costPrice"),
+        I: isCtnPrice("innerPrice"),
+        J: isCtnPrice("outerPrice"),
+        K: common_vendor.H(ctnType.value.join("/")),
+        L: cabinDetail.value.extraPriceInfo
       }, cabinDetail.value.extraPriceInfo ? {
-        O: common_vendor.F(cabinDetail.value.extraPriceInfo, (item, index, i0) => {
+        M: common_vendor.F(cabinDetail.value.extraPriceInfo, (item, index, i0) => {
           return {
             a: common_vendor.H(item.name),
             b: common_vendor.H(item.currency),
@@ -162,10 +215,10 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
           };
         })
       } : {}, {
-        P: cabinDetail.value.localPriceInfo
+        N: cabinDetail.value.localPriceInfo
       }, cabinDetail.value.localPriceInfo ? {
-        Q: common_vendor.H(cabinDetail.value.channel === common_vendor.C(enums_freight.P).QMS ? "人民币费用" : "起运港费用"),
-        R: common_vendor.F(cabinDetail.value.localPriceInfo, (item, index, i0) => {
+        O: common_vendor.H(cabinDetail.value.channel === common_vendor.C(enums_freight.P).QMS ? "人民币费用" : "起运港费用"),
+        P: common_vendor.F(cabinDetail.value.localPriceInfo, (item, index, i0) => {
           return {
             a: common_vendor.H(item.name),
             b: common_vendor.H(item.currency),
@@ -175,37 +228,38 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
           };
         })
       } : {}, {
-        S: common_vendor.C(hasRemark)
+        Q: common_vendor.C(hasRemark)
       }, common_vendor.C(hasRemark) ? common_vendor.B({
-        T: cabinDetail.value.amsPrice || cabinDetail.value.amsRemark
+        R: cabinDetail.value.amsPrice || cabinDetail.value.amsRemark
       }, cabinDetail.value.amsPrice || cabinDetail.value.amsRemark ? {
-        U: common_vendor.H(cabinDetail.value.amsPrice),
-        V: common_vendor.H(cabinDetail.value.amsRemark)
+        S: common_vendor.H(cabinDetail.value.amsPrice),
+        T: common_vendor.H(cabinDetail.value.amsRemark)
       } : {}, {
-        W: cabinDetail.value.warnRemark
+        U: cabinDetail.value.warnRemark
       }, cabinDetail.value.warnRemark ? {
-        X: common_vendor.H(cabinDetail.value.warnRemark)
+        V: common_vendor.H(cabinDetail.value.warnRemark)
       } : {}, {
-        Y: cabinDetail.value.surchargeRemark
+        W: cabinDetail.value.surchargeRemark
       }, cabinDetail.value.surchargeRemark ? {
-        Z: common_vendor.H(cabinDetail.value.surchargeRemark)
+        X: common_vendor.H(cabinDetail.value.surchargeRemark)
       } : {}, {
-        aa: cabinDetail.value.demurrageRemark
+        Y: cabinDetail.value.demurrageRemark
       }, cabinDetail.value.demurrageRemark ? {
-        ab: common_vendor.H(cabinDetail.value.demurrageRemark)
+        Z: common_vendor.H(cabinDetail.value.demurrageRemark)
       } : {}, {
-        ac: cabinDetail.value.remark
+        aa: cabinDetail.value.remark
       }, cabinDetail.value.remark ? {
-        ad: common_vendor.H(cabinDetail.value.remark)
+        ab: common_vendor.H(cabinDetail.value.remark)
       } : {}, {
-        ae: !!cabinDetail.value.innerRemark
+        ac: !!cabinDetail.value.innerRemark
       }, !!cabinDetail.value.innerRemark ? {
-        af: common_vendor.H(cabinDetail.value.innerRemark)
+        ad: common_vendor.H(cabinDetail.value.innerRemark)
       } : {}) : {}, {
-        ag: common_vendor.D(jumpQuotation)
+        ae: common_vendor.D(jumpQuotation)
       }));
     };
   }
 });
-const MiniProgramPage = /* @__PURE__ */ common_vendor.q(_sfc_main, [["__scopeId", "data-v-e0edbedd"], ["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system/src/pagesA/freight/freight-detail/index.vue"]]);
+_sfc_defineComponent.__runtimeHooks = 6;
+const MiniProgramPage = /* @__PURE__ */ common_vendor.q(_sfc_defineComponent, [["__scopeId", "data-v-e0edbedd"], ["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system/src/pagesA/freight/freight-detail/index.vue"]]);
 wx.createPage(MiniProgramPage);

@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-	import { getCarrierList, getFreightOptions, getNewFreight, postCreateTaskFreight } from "@/services/api/freight";
-	import { onLoad } from "@dcloudio/uni-app";
+	import { getCarrierList, getFreightByShare, getFreightOptions, getNewFreight, postCreateTaskFreight, postFreightByShare } from "@/services/api/freight";
+	import { onLoad, onShareAppMessage, onShareTimeline } from "@dcloudio/uni-app";
 	import { invalidateCache, useRequest } from "alova";
-	import { reactive, ref } from "vue";
+	import { reactive, ref, watchEffect } from "vue";
 	import {
 		sortList,
 		ctnSortPrice,
@@ -13,10 +13,21 @@
 	import FreightTable from "./component/freight-table/index";
 	import { useRouter } from "uni-mini-router";
 	import CustomLoading from "@/components/Basic-loading/index.vue";
-	import { Toast } from "@/utils/uniapi/prompt";
+	// import { Toast } from "@/utils/uniapi/prompt";
 	import { ProductType } from "@/enums/freight";
 	import { getDateStr } from "@/utils/time";
-	import { freightDataTranslate } from '@/utils/translation'
+
+	// 查询条件 && 筛选条件
+	const freightParams = reactive<freightSearchParams>({
+		por: '',
+		fnd: '',
+		carrier: '',
+		transit: '',
+		channel: '',
+		status: 1,
+		tagId: '',
+		routeId: ''
+	});
 
 
 	const loading = ref<boolean>(false)
@@ -27,9 +38,105 @@
 
 	const current = ref<number>(0);
 
+	const shareMsg = ref({} as any)
+
+	const shareData = reactive({} as any)
+
+	const Key = ref<string>('')
+
+	uni.showShareMenu()
+	onShareAppMessage(() => {
+		let info = {
+			freightParam: freightParams,
+			shareMsg: shareMsg.value,
+			freightData: freightNewData.value,
+			type: '分享'
+		}
+		postShare(info)
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve(
+					{
+						title: '运价列表',
+						path: `/pagesA/freight/index?key=${shareKey.value}`
+					})
+			}, 500)
+		})
+	})
+
+	onShareTimeline(() => {
+		let info = {
+			freightParam: freightParams,
+			shareMsg: shareMsg.value,
+			freightData: freightNewData.value,
+			type: '分享'
+		}
+		postShare(info)
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve(
+					{
+						title: '运价列表',
+						path: `/pagesA/freight/index?key=${shareKey.value}`
+					})
+			}, 500)
+		})
+	})
+
+	// 发送
+	const { data: shareKey, send: postShare, onSuccess: success } : any = useRequest((info) => (postFreightByShare({ data: info })), { immediate: false })
+	success(() => {
+		// return {
+		// 	title: '运价列表',
+		// 	path: `/pagesA/freight/index?key=${shareKey.value}`
+		// }
+	})
+	//回显
+	const { data: showData, send: getShare, onSuccess: getShareSuccess } : any = useRequest((key) => (getFreightByShare(key)), { immediate: false })
+	getShareSuccess(async () => {
+		let info : any = JSON.parse(showData.value)
+		console.log(info, showData.value);
+		await init(info)
+	})
+
+	const init = (info : any) => {
+		let { freightParam,
+			shareMsg,
+			freightData,
+			type } = info
+		Object.assign(freightParams, freightParam)
+		shareMsg.value = shareMsg
+		freightNewData.value = freightData
+		locationInfo.value = shareMsg
+		let { porInfo, fndInfo } = locationInfo.value
+		console.log(porInfo, fndInfo);
+		uni.setNavigationBarTitle({
+			title:
+				(porInfo ? porInfo.split('-')[0] : locationInfo.value.porCnlName) + "-" + (fndInfo ? fndInfo.split('-')[0] : locationInfo.value.fndCnlName),
+		});
+		console.log(freightNewData.value, freightParams);
+		loading.value = false
+	}
+
+	// shareSuccess(() => {
+	// 	console.log('ssss')
+	// 	// return {
+	// 	// 	title: '运价列表',
+	// 	// 	path: `/pagesA/freight/index?key=${shareKey}`
+	// 	// }
+	// })
+
+
 	onLoad((options : any) => {
 		loading.value = true
+		// 从分享进来时读取缓存数据
 		console.log(options, 'options');
+		if (!!options.key) {
+			Key.value = options.key
+			getShare(options.key)
+			return
+		}
+		shareMsg.value = options
 		// 按航线
 		if (options.TABS) {
 			TABS.value = JSON.parse(options.TABS)
@@ -45,7 +152,7 @@
 			invalidateCache(getFreightOptions(freightParams))
 		} else {
 			// 按起运港、目的港
-			locationInfo.value = JSON.parse(options.info) || {};
+			locationInfo.value = options || shareMsg.value;
 			let { porInfo, fndInfo } = locationInfo.value
 			uni.setNavigationBarTitle({
 				title:
@@ -63,17 +170,6 @@
 		initialData: [],
 	});
 
-	// 查询条件 && 筛选条件
-	const freightParams = reactive<freightSearchParams>({
-		por: '',
-		fnd: '',
-		carrier: '',
-		transit: '',
-		channel: '',
-		status: 1,
-		tagId: '',
-		routeId: ''
-	});
 	// 运价数据
 	const freightNewData = ref<any>([])
 	const { data: freightData, send: isSend, onSuccess } : any = useRequest((getFreightOptions(freightParams)), { immediate: false })
@@ -98,6 +194,7 @@
 				products: [],
 			};
 		});
+		// 重组数据结构 && 排序
 		for (let i in freightData.value) {
 			arr.forEach((item : any) => {
 				if (item.carrierCode === freightData.value[i].carrierCode && freightData.value[i].channel !== ProductType.QMS && freightData.value[i].channel !== ProductType.SPOT) item.products.push(freightData.value[i]);
@@ -105,6 +202,9 @@
 		}
 		arr[0].products = freightData.value.filter((el : any) => el.channel === ProductType.QMS || el.channel === ProductType.SPOT)
 		freightNewData.value = freightParams.sort ? freightData.value : arr
+		if (!freightParams.sort) {
+			freightNewData.value = freightNewData.value.sort((a : any, b : any) => a.carrierCode !== ProductType.QMS && b.carrierCode !== ProductType.QMS && b.products.length - a.products.length)
+		}
 		loading.value = false
 	})
 
@@ -144,9 +244,10 @@
 	const jumpEither = (item : any, type ?: string) => {
 		if (type) {
 			console.log(item, "jump", type);
-			Toast('在舱实时运价还未开放！')
+			// Toast('在舱实时运价还未开放！')
+			router.push(`/pagesA/freight/actual/index?porCode=${freightParams.por}&fndCode=${freightParams.fnd}&info=${JSON.stringify(locationInfo.value)}`)
 		} else router.push(
-			"/pagesA/freight/freight-detail/index?info=" + JSON.stringify(item)
+			"/pagesA/freight/freight-detail/index?info=" + item.id
 		);
 	};
 
@@ -175,7 +276,6 @@
 
 	// 刷新船公司数据(ZDP)
 	const carrierRefresh = (carrierCode : string) => {
-		console.log(freightNewData.value, 'freightNewData.value ', getDateStr(3));
 		freightNewData.value.map((item : any) => {
 			if (item.carrierCode === carrierCode) item.searchstate = '正在更新....'
 		})
@@ -213,7 +313,6 @@
 		timer.value = setInterval(() => {
 			if (freightNewOptions.value.taskStatus === 'SUCCESS') {
 				clearInterval(timer.value);
-				console.log('success', freightNewOptions.value);
 				if (freightNewOptions.value.productList && freightNewOptions.value.productList.length > 0) {
 					let carrierCode = freightNewOptions.value.productList[0].carrierCode;
 					freightNewData.value.map((el : any) => {
@@ -228,7 +327,6 @@
 					})
 					// Toast('实时运价查询完成！')
 				}
-				console.log(freightNewData.value, 'freightNewData.value');
 			} else if (freightNewOptions.value.taskStatus === 'PENDING') {
 				if (freightNewOptions.value.productList && freightNewOptions.value.productList.length > 0) {
 					let carrierCode = freightNewOptions.value.productList[0].carrierCode;
@@ -257,7 +355,7 @@
 	<CustomLoading v-if="loading" iconType="annulus" position="fixed" :zIndex="9" :mask="false" :maskOpacity="1"
 		:maskMini="false" :maskDark="true" color="#0396FF" />
 	<view v-else class="freight">
-		<view class="py-12 px-20 bg-neutral flex align-center" v-if="locationInfo">
+		<view class="py-12 px-20 bg-neutral flex align-center" v-if="Object.keys(locationInfo)">
 			<view v-for="(item, index) in sortList" :key="index" class="sort br8 py-8 font26 ml-12 relative" :class="[
 		      current === index
 		        ? 'bg-light-red dull-red font-bolds'
@@ -288,6 +386,7 @@
 				<img src="/static/images/freight/filter.png" class="w-36 h-36" @click="filterModalShow = true" />
 			</view>
 		</view>
+
 		<view v-else>
 			<u-tabs :list="TABS" v-model="tabIndex" active-color="#EE2233" @change="tabChange"></u-tabs>
 		</view>
@@ -295,7 +394,7 @@
 			:isRoute="!locationInfo" @refresh="carrierRefresh" @jumpEither="jumpEither" @openShrink="openShrink" />
 		<view v-else style="margin: 250px auto;">
 			<u-empty mode="data"></u-empty>
-		</view>
+		</view>s
 		<!-- 过滤条件 -->
 		<u-popup v-model="filterModalShow" mode="top" :custom-style="{ backgroundColor: '#F5F7FA' }">
 			<view class="py-32 px-24 bg-neutral font-bold">
@@ -352,7 +451,7 @@
 	}
 
 	.freight {
-		height: 100%;
+		height: 100vh;
 
 		.sort {
 			width: 132rpx;

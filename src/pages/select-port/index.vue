@@ -4,7 +4,7 @@
 		getLocationList,
 	} from "@/services/api/freight";
 	import { onLoad } from "@dcloudio/uni-app";
-	import { useRequest, invalidateCache } from "alova";
+	import { useRequest, invalidateCache, useWatcher } from "alova";
 	import { reactive, ref } from "vue";
 	import CustomLoading from "@/components/Basic-loading/index.vue";
 
@@ -109,6 +109,12 @@
 			loadPorList();
 		}
 	};
+	// const { data: sss } : any = useWatcher(
+	// 	getLocationList(searchParams),
+	// 	[searchParams],
+	// 	{ initialData: [], debounce: [500], immediate: true }
+	// );
+	// console.log('ssss', sss.value);
 	// 取消
 	const cancel = () => {
 		searchParams.keyword = "";

@@ -199,7 +199,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   } : {}, {
     d: common_vendor.H($data.showText),
     e: common_vendor.D((...args) => $options.click && $options.click(...args)),
-    f: common_vendor.L($options.textStyle),
+    f: common_vendor.N($options.textStyle),
     g: common_vendor.I("u-type-" + $props.type),
     h: $data.animationDuration,
     i: $data.animationPlayState,

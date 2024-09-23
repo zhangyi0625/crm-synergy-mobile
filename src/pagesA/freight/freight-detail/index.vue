@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 	import { formatTime } from "@/utils/time";
-	import { onLoad } from "@dcloudio/uni-app";
-	import { invalidateCache, useRequest } from "alova";
+	import { onLoad, onShareAppMessage, onShareTimeline } from "@dcloudio/uni-app";
+	import { useRequest } from "alova";
 	import { useRouter } from "uni-mini-router";
 	import { computed, ref } from "vue";
-	import { getFreightDetail } from "@/services/api/freight";
+	import { getFreightByShare, getFreightDetail, postFreightByShare } from "@/services/api/freight";
 	import CustomLoading from "@/components/Basic-loading/index.vue";
 	import { ProductType, priceType } from "@/enums/freight";
 	import { assign } from "lodash-es";
@@ -20,22 +20,85 @@
 
 	const ctnType = ref<string[]>([])
 
+	const Key = ref<string>('')
+
 	// 箱型价格
 	const ctnTypeList = ref<any>([])
+	uni.showShareMenu()
+
+	// 发送
+	const { data: shareKey, send: postShare, onSuccess: success } : any = useRequest((info) => (postFreightByShare({ data: info })), { immediate: false })
+	//回显
+	const { data: showData, send: getShare, onSuccess: getShareSuccess } : any = useRequest((key) => (getFreightByShare(key)), { immediate: false })
+	getShareSuccess(() => {
+		let info : any = JSON.parse(showData.value)
+		let { detail,
+			ctn,
+			type } = info
+		cabinDetail.value = detail
+		ctnType.value = ctn
+		loading.value = false
+	})
+	onShareAppMessage(() => {
+		let info = {
+			detail: cabinDetail.value,
+			ctn: ctnType.value,
+			type: '分享'
+		}
+		postShare(info)
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve(
+					{
+						title: '运价详情',
+						path: `/pagesA/freight/freight-detail/index?key=${shareKey.value}`
+					})
+			}, 500)
+		})
+	})
+
+	success(() => {
+		// return {
+		// 	title: '运价列表',
+		// 	path: `/pagesA/freight/index?key=${shareKey.value}`
+		// }
+	})
+
+	onShareTimeline(() => {
+		let info = {
+			detail: cabinDetail.value,
+			ctn: ctnType.value,
+			type: '分享'
+		}
+		postShare(info)
+		return new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve(
+					{
+						title: '运价详情',
+						path: `/pagesA/freight/freight-detail/index?key=${shareKey.value}`
+					})
+			}, 500)
+		})
+	})
 
 
-	const { data: freightDetail, send: isSend, onSuccess: onSuccess } : any = useRequest((id) => getFreightDetail(id), { immediate: false })
+
+	const { data: freightDetail, send: isSend, onSuccess: onSuccess } : any = useRequest((id) => getFreightDetail(id), { immediate: false, force: true })
 	onLoad((options : any) => {
 		loading.value = true
-		let info = JSON.parse(options.info)
+		if (!!options.key) {
+			Key.value = options.key
+			getShare(options.key)
+			return
+		}
+		let info = options.info
 		// 自有运价
 		if (info.channel === 'QMS') {
-			isSend(info.id)
-			invalidateCache(getFreightDetail(info.id))
+			isSend(info)
 		} else {
 			// 电商运价
-			isSend(info.id)
-			invalidateCache(getFreightDetail(info.id))
+			isSend(info)
 		}
 	});
 
@@ -46,7 +109,6 @@
 		for (let i in freightDetail.value) {
 			if (i === priceType.COST || i === priceType.INNER || i === priceType.OUTER) {
 				getCtnTypePrice(i, freightDetail.value[i], ctnTypeList.value)
-				console.log(ctnType.value, 'freight', ctnTypeList.value);
 			}
 		}
 		setTimeout(() => {
@@ -145,23 +207,24 @@
 					</view>
 					<view class="pl-30 pb-20 ml-20 font400 grey whitespace-nowrap"
 						style="border-left: 1px solid #edeff2">
-						<view>ETD：{{ formatTime(cabinDetail.etd, "M-D") || '-' }}</view>
+						<!-- <view>ETD：{{ formatTime(cabinDetail.etd, "M-D") || '-' }}</view> -->
 						<view>码头：{{cabinDetail.terminal?.name || '-'}}</view>
 						<view class="mt-40 p-24 bg-light-grey br12">
 							<view class="flex flex-wrap">
 								<view>航程：{{ cabinDetail.voyDays }}天</view>
 								<view class="mx-40">航线：{{ cabinDetail.carrierRoute }}</view>
-								<view>船期：{{ cabinDetail.cutOffDay ? cabinDetail.cutOffDay : ''}}
+								<view>截/开：{{ cabinDetail.cutOffDay ? cabinDetail.cutOffDay : ''}}
 									/ {{cabinDetail.departureDay ? cabinDetail.departureDay : ''}}
 								</view>
 							</view>
-							<view>船名航次：{{ cabinDetail.vesselName ? cabinDetail.vesselName : '' }}/{{
+							<view style="white-space: pre-wrap;">
+								船名航次：{{ cabinDetail.vesselName ? cabinDetail.vesselName : '' }}/{{
 				            cabinDetail.voyNo ? cabinDetail.voyNo : ''
 				          }}</view>
 						</view>
 					</view>
-					<view class="flex flex-column" v-if="cabinDetail.transit > 0">
-						<view class="flex align-center font28 dull-grey font500">
+					<view class="flex flex-column relative pb-20" v-if="cabinDetail.transit > 0">
+						<view class="flex align-center font28 dull-grey font500 transit">
 							<img src="/static/images/collect/transit.png" class="mr-5 w-48 h-48" />
 							<view>中转港：{{cabinDetail.transitPorts}}</view>
 						</view>
@@ -173,7 +236,7 @@
 				            cabinDetail.fnd?.enName
 				          }}</view>
 						</view>
-						<view class="ml-50 grey">ETA：{{ formatTime(cabinDetail.eta, "M-D") || '-' }}</view>
+						<!-- <view class="ml-50 grey">ETA：{{ formatTime(cabinDetail.eta, "M-D") || '-' }}</view> -->
 					</view>
 				</view>
 			</view>
@@ -308,6 +371,16 @@
 			position: fixed;
 			bottom: 0;
 			padding: 20rpx 24rpx 40rpx;
+		}
+
+		.transit::before {
+			content: '';
+			width: 2rpx;
+			height: 20rpx;
+			background: #edeff2;
+			position: absolute;
+			bottom: 0;
+			left: 11px;
 		}
 	}
 </style>

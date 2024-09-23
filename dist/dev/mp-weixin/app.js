@@ -12,8 +12,10 @@ if (!Math) {
   "./pages/select-port/index.js";
   "./pages/notFound/404.js";
   "./pagesA/freight/index.js";
+  "./pagesA/freight/component/freight-table/index.js";
   "./pagesA/freight/freight-detail/index.js";
   "./pagesA/freight/quotation/index.js";
+  "./pagesA/freight/actual/index.js";
   "./pagesB/detail/index.js";
 }
 const _sfc_main = /* @__PURE__ */ common_vendor.k({

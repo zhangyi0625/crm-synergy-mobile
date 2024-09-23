@@ -1,16 +1,25 @@
 import { request } from "@/utils/http";
 
 const LOGIN = "/admin/login/phone";
+const LOGINBYPWD = "/api/app/login/password";
 const LOGIN_OUT = "/api/app/my/logout";
 const VERIFYCODE = "/admin/login/sms/phone/code";
 const ISREGISTER = "/api/app/login/wxAppCode";
 
 /**
- * 登录
+ * 验证码登录
  * @param params
  */
 export function login(data : LoginByVerifyCodeParams) {
 	return request.Post<LoginModel>(LOGIN, data);
+}
+
+/**
+ * 密码登录
+ * @param params
+ */
+export function pwdLogin(data : LoginByPwdParams) {
+	return request.Post<LoginModel>(LOGINBYPWD, data);
 }
 
 /**

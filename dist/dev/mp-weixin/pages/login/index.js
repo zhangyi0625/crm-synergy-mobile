@@ -20,6 +20,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       });
       pageQuery.value = query;
     });
+    const current = common_vendor.w("smsCode");
+    const showPassword = common_vendor.w(false);
     onSuccess(() => {
       loginForm.aid = dataOptions.value.aid;
     });
@@ -37,6 +39,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       (params) => services_api_auth.g({ phone: params.phone }),
       { immediate: false }
     );
+    const { data: pwdData, send: passWordLogin, onSuccess: pwdLoginSuccess } = common_vendor.u((params) => services_api_auth.p(params), { immediate: false });
     const regex = /^1[3-9]\d{9}$/;
     const dragCheckShow = common_vendor.w(false);
     const sendCode = () => {
@@ -50,11 +53,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
         dragCheckShow.value = true;
     };
     const handleLogin = () => {
-      if (!loginForm.code) {
+      if (current.value === "smsCode" && !loginForm.code) {
         utils_uniapi_prompt.T("请输入验证码");
         return;
       } else {
-        common_vendor.i.login({
+        current.value === "smsCode" && common_vendor.i.login({
           provider: "weixin",
           //使用微信登录
           success: function(loginRes) {
@@ -79,8 +82,41 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
             });
           }
         });
+        current.value === "pwd" && loginByPwd();
       }
     };
+    const pwdForm = common_vendor.x({
+      loginName: "",
+      password: ""
+    });
+    const loginByPwd = () => {
+      if (!pwdForm.loginName) {
+        utils_uniapi_prompt.T("请输入用户名!");
+        return;
+      } else if (!pwdForm.password) {
+        utils_uniapi_prompt.T("请输入密码");
+        return;
+      } else {
+        passWordLogin(pwdForm);
+      }
+    };
+    pwdLoginSuccess(() => {
+      utils_uniapi_prompt.T("登录成功", { duration: 1500 });
+      authStore.setToken(pwdData.value);
+      setTimeout(() => {
+        var _a, _b;
+        if ((_a = common_vendor.C(pageQuery)) == null ? void 0 : _a.redirect) {
+          const params = common_vendor.J(common_vendor.C(pageQuery), ["redirect", "tabBar"]);
+          if ((_b = common_vendor.C(pageQuery)) == null ? void 0 : _b.tabBar) {
+            router.replaceAll({ name: common_vendor.C(pageQuery).redirect, params });
+          } else {
+            router.replace({ name: common_vendor.C(pageQuery).redirect, params });
+          }
+        } else {
+          router.back();
+        }
+      }, 1500);
+    });
     const maskClick = common_vendor.w(true);
     const result = (e) => {
       dragCheckShow.value = false;
@@ -100,20 +136,41 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const isSendCheckCode = common_vendor.w(false);
     return (_ctx, _cache) => {
       return common_vendor.B({
-        a: loginForm.phone,
-        b: common_vendor.D(($event) => loginForm.phone = $event.detail.value),
-        c: loginForm.code,
-        d: common_vendor.D(($event) => loginForm.code = $event.detail.value),
-        e: !isSendCheckCode.value
+        a: common_vendor.I(current.value === "smsCode" ? "active light-red" : ""),
+        b: common_vendor.D(($event) => current.value = "smsCode"),
+        c: common_vendor.I(current.value === "pwd" ? "active light-red" : ""),
+        d: common_vendor.D(($event) => current.value = "pwd"),
+        e: current.value === "smsCode"
+      }, current.value === "smsCode" ? {
+        f: loginForm.phone,
+        g: common_vendor.D(($event) => loginForm.phone = $event.detail.value)
+      } : {}, {
+        h: current.value === "pwd"
+      }, current.value === "pwd" ? {
+        i: pwdForm.loginName,
+        j: common_vendor.D(($event) => pwdForm.loginName = $event.detail.value)
+      } : {}, {
+        k: current.value === "pwd"
+      }, current.value === "pwd" ? {
+        l: showPassword.value,
+        m: pwdForm.password,
+        n: common_vendor.D(($event) => pwdForm.password = $event.detail.value),
+        o: common_vendor.D(($event) => showPassword.value = !showPassword.value)
+      } : {}, {
+        p: current.value === "smsCode"
+      }, current.value === "smsCode" ? common_vendor.B({
+        q: loginForm.code,
+        r: common_vendor.D(($event) => loginForm.code = $event.detail.value),
+        s: !isSendCheckCode.value
       }, !isSendCheckCode.value ? {
-        f: common_vendor.D(sendCode)
+        t: common_vendor.D(sendCode)
       } : {
-        g: common_vendor.H(countdownNumber.value)
-      }, {
-        h: common_vendor.D(handleLogin),
-        i: common_vendor.D(($event) => dragCheckShow.value = $event),
-        j: common_vendor.D(result),
-        k: common_vendor.G({
+        v: common_vendor.H(countdownNumber.value)
+      }) : {}, {
+        w: common_vendor.D(handleLogin),
+        x: common_vendor.D(($event) => dragCheckShow.value = $event),
+        y: common_vendor.D(result),
+        z: common_vendor.G({
           visiable: dragCheckShow.value,
           title: "人工验证",
           minTitle: "滑动滑块，使图片显示角度为正",

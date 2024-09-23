@@ -1,6 +1,9 @@
 .login.data-v-45258083 {
   height: 100vh;
 }
+.login .active.data-v-45258083 {
+  text-decoration: underline;
+}
 .login .logo.data-v-45258083 {
   width: 400rpx;
   height: 400rpx;

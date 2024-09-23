@@ -15,6 +15,11 @@ declare interface LoginByVerifyCodeParams {
 	aid ?: string
 }
 
+declare interface LoginByPwdParams {
+	loginName : string;
+	password : string
+}
+
 declare interface RegisterParams {
 	jsCode : string
 }

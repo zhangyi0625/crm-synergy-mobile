@@ -211,16 +211,16 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   }, $options.isImg ? {
     b: $props.name,
     c: $props.imgMode,
-    d: common_vendor.L($options.imgStyle)
+    d: common_vendor.N($options.imgStyle)
   } : common_vendor.B({
     e: $props.showDecimalIcon
   }, $props.showDecimalIcon ? {
-    f: common_vendor.L($options.decimalIconStyle),
+    f: common_vendor.N($options.decimalIconStyle),
     g: common_vendor.I($options.decimalIconClass),
     h: $props.hoverClass
   } : {}, {
     i: common_vendor.I($options.customClass),
-    j: common_vendor.L($options.iconStyle),
+    j: common_vendor.N($options.iconStyle),
     k: $props.hoverClass,
     l: common_vendor.D((...args) => $options.touchstart && $options.touchstart(...args))
   }), {
@@ -234,7 +234,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     s: $props.labelPos == "left" ? _ctx.$u.addUnit($props.marginRight) : 0,
     t: $props.labelPos == "top" ? _ctx.$u.addUnit($props.marginBottom) : 0
   } : {}, {
-    v: common_vendor.L($props.customStyle),
+    v: common_vendor.N($props.customStyle),
     w: common_vendor.D((...args) => $options.click && $options.click(...args)),
     x: common_vendor.I("u-icon--" + $props.labelPos)
   });

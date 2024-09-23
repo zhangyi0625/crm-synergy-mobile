@@ -13,7 +13,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
     const imgUrl = common_vendor.w("");
     const disabled = common_vendor.w(false);
     const result = common_vendor.w("");
-    common_vendor.M(props, () => {
+    common_vendor.O(props, () => {
       if (props.visiable) {
         result.value = "";
         toStart();
@@ -71,7 +71,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       }, imgUrl.value ? {
         g: imgUrl.value
       } : {}, {
-        h: common_vendor.L("transform:rotate(" + deg.value + "deg)"),
+        h: common_vendor.N("transform:rotate(" + deg.value + "deg)"),
         i: props.icon,
         j: disabled.value,
         k: x.value,

@@ -102,3 +102,23 @@ export function postCreateTaskFreight(data : FreightTask) {
 export function getNewFreight(taskId : string | number) {
 	return request.Get("/api/zc/taskResult/" + taskId);
 }
+
+
+/**
+ * 运价查询 分享运价数据
+ * @param
+ * @returns
+ */
+export function getFreightByShare(key : string | number) {
+	return request.Get("/api/app/share/freight/" + key);
+}
+
+
+/**
+ * 运价查询 回显分享相关运价
+ * @param
+ * @returns
+ */
+export function postFreightByShare(data : any) {
+	return request.Post("/api/app/share/freight", data);
+}

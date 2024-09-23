@@ -104,6 +104,10 @@
 	position: absolute;
 }
 
+.fixed {
+	position: fixed;
+}
+
 .top-84 {
 	top: 84rpx;
 }
@@ -130,4 +134,8 @@
 
 .right-0 {
 	right: 0;
+}
+
+.right-10 {
+	right: 10rpx;
 }

@@ -94,9 +94,9 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_vendor.L($options.maskStyle),
-    b: common_vendor.L($data.zoomStyle),
-    c: common_vendor.L($options.filterStyle),
+    a: common_vendor.N($options.maskStyle),
+    b: common_vendor.N($data.zoomStyle),
+    c: common_vendor.N($options.filterStyle),
     d: common_vendor.D((...args) => $options.click && $options.click(...args)),
     e: common_vendor.D(() => {
     }),

@@ -14,8 +14,10 @@
       "root": "pagesA",
       "pages": [
         "freight/index",
+        "freight/component/freight-table/index",
         "freight/freight-detail/index",
-        "freight/quotation/index"
+        "freight/quotation/index",
+        "freight/actual/index"
       ]
     },
     {

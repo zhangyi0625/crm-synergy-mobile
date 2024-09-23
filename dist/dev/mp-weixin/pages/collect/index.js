@@ -16,8 +16,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.k({
       common_vendor.y(services_api_freight_index.c());
     });
     const jump = (item) => {
+      let porInfo = item.porCnlName + "-" + item.porEnName;
+      let fndInfo = item.fndCnlName + "-" + item.fndEnName;
       router.push({
-        path: "/pagesA/freight/index?info=" + JSON.stringify(item)
+        // path: "/pagesA/freight/index?info=" + JSON.stringify(item),
+        path: `/pagesA/freight/index?porCode=${item.porCode}&fndCode=${item.fndCode}&porInfo=${porInfo}&fndInfo=${fndInfo}`
       });
     };
     return (_ctx, _cache) => {

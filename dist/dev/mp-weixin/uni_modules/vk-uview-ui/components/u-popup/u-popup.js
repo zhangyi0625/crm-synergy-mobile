@@ -308,7 +308,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     j: common_vendor.D(() => {
     }),
-    k: common_vendor.L($options.centerStyle)
+    k: common_vendor.N($options.centerStyle)
   }) : {}, {
     l: $props.mode != "center" && $props.closeable
   }, $props.mode != "center" && $props.closeable ? {
@@ -327,9 +327,9 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     t: common_vendor.I($props.zoom && $props.mode == "center" ? "u-animation-zoom" : ""),
     v: common_vendor.D(() => {
     }),
-    w: common_vendor.L($options.style),
-    x: common_vendor.L($props.customStyle),
-    y: common_vendor.L({
+    w: common_vendor.N($options.style),
+    x: common_vendor.N($props.customStyle),
+    y: common_vendor.N({
       zIndex: $options.uZindex - 1
     })
   }) : {});

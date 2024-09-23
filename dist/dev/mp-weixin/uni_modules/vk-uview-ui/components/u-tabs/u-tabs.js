@@ -289,12 +289,12 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         d: "u-tab-item-" + index,
         e: index,
         f: common_vendor.D(($event) => $options.clickTab(index), index),
-        g: common_vendor.L($options.tabItemStyle(index))
+        g: common_vendor.N($options.tabItemStyle(index))
       };
     }),
     b: $props.showBar
   }, $props.showBar ? {
-    c: common_vendor.L($options.tabBarStyle)
+    c: common_vendor.N($options.tabBarStyle)
   } : {}, {
     d: $data.id,
     e: !$props.isScroll ? 1 : "",

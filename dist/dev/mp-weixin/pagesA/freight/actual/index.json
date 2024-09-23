@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "实时运价查询",
+  "navigationBarBackgroundColor": "#FFF",
+  "usingComponents": {
+    "custom-loading": "../../../components/Basic-loading/index"
+  }
+}

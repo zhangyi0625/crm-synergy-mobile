@@ -246,12 +246,12 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     i: $props.maxlength,
     j: $props.placeholder,
     k: `color: ${$props.placeholderColor}`,
-    l: common_vendor.L({
+    l: common_vendor.N({
       textAlign: $props.inputAlign,
       color: $props.color,
       backgroundColor: $props.bgColor
     }),
-    m: common_vendor.L($props.inputStyle),
+    m: common_vendor.N($props.inputStyle),
     n: $data.keyword && $props.clearabled && $data.focused
   }, $data.keyword && $props.clearabled && $data.focused ? {
     o: common_vendor.G({
@@ -266,7 +266,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     s: $options.borderStyle,
     t: $props.height + "rpx",
     v: common_vendor.H($props.actionText),
-    w: common_vendor.L($props.actionStyle),
+    w: common_vendor.N($props.actionStyle),
     x: common_vendor.I($options.showActionBtn || $data.show ? "u-action-active" : ""),
     y: common_vendor.D((...args) => $options.custom && $options.custom(...args)),
     z: common_vendor.D((...args) => $options.clickHandler && $options.clickHandler(...args)),

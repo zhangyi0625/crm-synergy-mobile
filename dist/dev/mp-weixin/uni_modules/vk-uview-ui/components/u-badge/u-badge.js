@@ -111,7 +111,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     c: common_vendor.I($props.isDot ? "u-badge-dot" : ""),
     d: common_vendor.I($props.size == "mini" ? "u-badge-mini" : ""),
     e: common_vendor.I($props.type ? "u-badge--bg--" + $props.type : ""),
-    f: common_vendor.L({
+    f: common_vendor.N({
       top: $props.offset[0] + "rpx",
       right: $props.offset[1] + "rpx",
       fontSize: $props.fontSize + "rpx",
@@ -119,7 +119,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       color: $props.color,
       backgroundColor: $props.bgColor
     }),
-    g: common_vendor.L($options.boxStyle)
+    g: common_vendor.N($options.boxStyle)
   } : {});
 }
 const Component = /* @__PURE__ */ common_vendor.q(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-a28ccbb2"], ["__file", "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system/src/uni_modules/vk-uview-ui/components/u-badge/u-badge.vue"]]);
