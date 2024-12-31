@@ -83,7 +83,7 @@ const devDependencies = {
   husky: "^8.0.3",
   "lint-staged": "^13.2.2",
   postcss: "^8.4.23",
-  prettier: "^2.8.8",
+  prettier: "2.8.8",
   sass: "^1.62.1",
   typescript: "^5.0.4",
   "uni-mini-router": "^0.0.11",
@@ -91,6 +91,11 @@ const devDependencies = {
   unocss: "^0.51.12",
   "unocss-preset-weapp": "^0.6.2",
   vite: "^4.3.5"
+};
+const husky = {
+  hooks: {
+    "pre-commit": "lint-staged"
+  }
 };
 const id = "h_mo-Vue3-Vite-TS-basic-framework";
 const displayName = "Vue3-Vite-TS 基础框架";
@@ -114,6 +119,18 @@ const pkg = {
   scripts,
   dependencies,
   devDependencies,
+  husky,
+  "lint-staged": {
+    "*.{js,json,ts}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.md": [
+      "markdown-toc -i",
+      "prettier --write",
+      "git add"
+    ]
+  },
   id,
   displayName,
   description,
@@ -128,7 +145,7 @@ function getEnvMode() {
   return getEnvValue("VITE_ENV");
 }
 function getEnvValue(key) {
-  const envValue = { "VITE_BASE_URL": "https://qms.ga-nb.com/apis", "VITE_CONSOLE_URL": "http://console.zaicang.net", "VITE_STATIC_URL": "https://files.zaicang.net", "VITE_USER_NODE_ENV": "development", "VITE_ROOT_DIR": "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system", "BASE_URL": "/", "MODE": "development", "DEV": true, "PROD": false, "SSR": false }[key];
+  const envValue = { "VITE_BASE_URL": "http://qms.lihang-logistics.com/apis", "VITE_CONSOLE_URL": "http://console.zaicang.net", "VITE_STATIC_URL": "https://files.zaicang.net", "VITE_USER_NODE_ENV": "development", "VITE_ROOT_DIR": "/Users/zhangyi/Desktop/vue/vue3/Vue3-Vite-TS-uniapp freight- system", "BASE_URL": "/", "MODE": "development", "DEV": true, "PROD": false, "SSR": false }[key];
   return envValue === "true" ? true : envValue === "false" ? false : envValue;
 }
 function isDevMode() {

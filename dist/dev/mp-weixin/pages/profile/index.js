@@ -4,7 +4,7 @@ require("../../services/api/auth.js"), require("../../utils/http/index.js"), req
 const _sfc_main = /* @__PURE__ */ common_vendor.k({
   __name: "index",
   setup(__props) {
-    const URL = "https://qms.ga-nb.com/apis";
+    const URL = "http://qms.lihang-logistics.com/apis";
     const { data: userInfo, send: isSend, onSuccess } = common_vendor.u(services_api_user.g(), {
       initialData: []
     });
