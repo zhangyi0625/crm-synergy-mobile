@@ -114,7 +114,7 @@
 			title:
 				(porInfo ? porInfo.split('-')[0] : locationInfo.value.porCnlName) + "-" + (fndInfo ? fndInfo.split('-')[0] : locationInfo.value.fndCnlName),
 		});
-		console.log(freightNewData.value, freightParams);
+		console.log(freightNewData.value, freightParams, locationInfo.value);
 		loading.value = false
 	}
 
@@ -150,6 +150,7 @@
 			freightParams.channel = "QMS"
 			isSend()
 			invalidateCache(getFreightOptions(freightParams))
+			loading.value = false;
 		} else {
 			// 按起运港、目的港
 			locationInfo.value = options || shareMsg.value;
@@ -355,7 +356,7 @@
 	<CustomLoading v-if="loading" iconType="annulus" position="fixed" :zIndex="9" :mask="false" :maskOpacity="1"
 		:maskMini="false" :maskDark="true" color="#0396FF" />
 	<view v-else class="freight">
-		<view class="py-12 px-20 bg-neutral flex align-center" v-if="Object.keys(locationInfo)">
+		<view class="py-12 px-20 bg-neutral flex align-center" v-if="locationInfo && Object.keys(locationInfo)">
 			<view v-for="(item, index) in sortList" :key="index" class="sort br8 py-8 font26 ml-12 relative" :class="[
 		      current === index
 		        ? 'bg-light-red dull-red font-bolds'
