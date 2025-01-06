@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "登录",
-  "navigationBarBackgroundColor": "#FFF",
-  "usingComponents": {
-    "drag-check": "../../components/Drag-check/index"
-  }
-}
