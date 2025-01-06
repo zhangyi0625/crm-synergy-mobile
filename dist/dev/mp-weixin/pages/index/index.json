@@ -1,6 +1,0 @@
-{
-  "navigationBarTitleText": "运价查询",
-  "usingComponents": {
-    "u-notice-bar": "../../uni_modules/vk-uview-ui/components/u-notice-bar/u-notice-bar"
-  }
-}

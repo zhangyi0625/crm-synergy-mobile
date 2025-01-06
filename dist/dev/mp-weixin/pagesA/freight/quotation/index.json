@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "报价单",
-  "navigationBarBackgroundColor": "#FFF",
-  "usingComponents": {
-    "custom-loading": "../../../components/Basic-loading/index"
-  }
-}
