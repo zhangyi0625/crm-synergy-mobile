@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 	import { ProductType } from "@/enums/freight";
 	import { formatTime, formatUpdated } from "@/utils/time";
+	import { getFreightCtnType } from "@/services/api/freight";
 
 	const emit = defineEmits(["jumpEither", "openShrink"]);
 	interface PropsType {
 		data : Array<any>;
 		isSort : string;
 		isRoute : boolean;
+		customCtnType : any
 	}
 	const props = defineProps<PropsType>();
 
@@ -22,7 +24,9 @@
 	// 价格展示判断
 	const getPrice = (price : string) => {
 		let innerPrice = JSON.parse(price);
-		let ctnType = ['20GP', '40GP', '40HQ']
+		// let ctnType = ['20GP', '40GP', '40HQ']
+		// let ctnType = [];
+		let ctnType = props.customCtnType.results.filter((item : any) => item.isDefault).map((er : any) => er.code);
 		let obj : any = {}
 		if (innerPrice) {
 			for (let i in ctnType) {

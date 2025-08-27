@@ -64,5 +64,7 @@
 <style lang="scss">
 	@import "@/assets/main.scss";
 	@import "../src/uni_modules/vk-uview-ui/index.scss";
-	@import "@/assets/reset.css";
+	@import"@/assets/reset.css";
+	// @use '../src/uni_modules/vk-uview-ui/theme.scss' as uview;
+	@import '../src/uni_modules/vk-uview-ui/theme.scss';
 </style>
