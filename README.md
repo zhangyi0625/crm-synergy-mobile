@@ -1,4 +1,5 @@
-# 伟大联盟小程序版本
+crm-synergy-mobile
+
 ###
 -- 主分支master
 
