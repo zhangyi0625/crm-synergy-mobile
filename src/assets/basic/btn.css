@@ -1,57 +1,70 @@
 .logout-btn {
-  background-color: #fff;
-  color: #fa5151;
-  height: 104rpx !important;
-  line-height: 104rpx !important;
-  text-align: center;
-  width: 100% !important;
-  padding: 0 !important;
-  font-size: 28rpx;
-  font-weight: 400 !important;
+	background-color: #fff;
+	color: #fa5151;
+	height: 104rpx !important;
+	line-height: 104rpx !important;
+	text-align: center;
+	width: 100% !important;
+	padding: 0 !important;
+	font-size: 28rpx;
+	font-weight: 400 !important;
 }
 
 .pwd-btn {
-  background: #ee2233;
-  color: #fff;
-  height: 88rpx !important;
-  line-height: 88rpx !important;
-  text-align: center;
-  width: 100% !important;
-  padding: 0 !important;
-  font-size: 32rpx;
-  font-weight: 600 !important;
+	background: #1677FF;
+	color: #fff;
+	height: 88rpx !important;
+	line-height: 88rpx !important;
+	text-align: center;
+	width: 100% !important;
+	padding: 0 !important;
+	font-size: 32rpx;
+	font-weight: 600 !important;
+}
+
+.wx-btn {
+	background: #fff;
+	border: 1px solid #07C160;
+	color: #07C160;
+	height: 88rpx !important;
+	line-height: 88rpx !important;
+	text-align: center;
+	width: 100% !important;
+	padding: 0 !important;
+	font-size: 32rpx;
+	font-weight: 600 !important;
 }
 
 .filter-reset-btn {
-  width: 346rpx !important;
-  height: 80rpx !important;
-  line-height: 40rpx !important;
-  border-radius: 8rpx;
-  border: 2rpx solid #bfc2cc;
-  font-weight: 600;
-  font-size: 32rpx;
-  color: #606266;
-  background: #fff;
+	width: 346rpx !important;
+	height: 80rpx !important;
+	line-height: 40rpx !important;
+	border-radius: 8rpx;
+	border: 2rpx solid #bfc2cc;
+	font-weight: 600;
+	font-size: 32rpx;
+	color: #606266;
+	background: #fff;
 }
 
 .filter-confirm-btn {
-  width: 346rpx !important;
-  height: 80rpx !important;
-  line-height: 40rpx !important;
-  background: #ee2233;
-  border-radius: 8rpx;
-  font-weight: 600;
-  font-size: 32rpx;
-  color: #fff;
+	width: 346rpx !important;
+	height: 80rpx !important;
+	line-height: 40rpx !important;
+	background: #ee2233;
+	border-radius: 8rpx;
+	font-weight: 600;
+	font-size: 32rpx;
+	color: #fff;
 }
 
 .quotation-btn {
-  width: 100% !important;
-  height: 88rpx !important;
-  line-height: 58rpx !important;
-  background: #ee2233;
-  border-radius: 12rpx;
-  font-weight: 500;
-  font-size: 32rpx;
-  color: #fff;
+	width: 100% !important;
+	height: 88rpx !important;
+	line-height: 58rpx !important;
+	background: #ee2233;
+	border-radius: 12rpx;
+	font-weight: 500;
+	font-size: 32rpx;
+	color: #fff;
 }

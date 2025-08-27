@@ -31,6 +31,10 @@
 	width: 112rpx;
 }
 
+.w-104 {
+	width: 104rpx;
+}
+
 .w-68 {
 	width: 68rpx;
 }
@@ -63,12 +67,20 @@
 	width: 16rpx;
 }
 
+.w-12 {
+	width: 12rpx;
+}
+
 .h-full {
 	height: 100%;
 }
 
 .h-400 {
 	height: 400rpx;
+}
+
+.h-320 {
+	height: 320rpx;
 }
 
 .h-300 {
@@ -81,6 +93,10 @@
 
 .h-112 {
 	height: 112rpx;
+}
+
+.h-104 {
+	height: 104rpx;
 }
 
 .h-68 {

@@ -162,14 +162,18 @@
 
 <template>
 	<view class="login bg-neutral">
-		<img src="/static/logo.png" class="logo flex" />
-		<view class="mx-30">
-			<view class="flex align-center font34 font-bold dull-grey">
+		<view class="relative neutral font48 font-bold logo">
+			<img src="/static/login/bg.png" class="w-full h-full flex" />
+			<p class="absolute" style="top: 66px;left: 24px;">欢迎登录</p>
+			<p class="absolute" style="top: 100px;left: 24px;">销售系统客户端</p>
+		</view>
+		<view class="p-48 bg-neutral relative h-full" style="border-radius: 24px 24px 0px 0px;top: -30px;">
+			<!-- 			<view class="flex align-center font34 font-bold dull-grey">
 				<view :class="[current === 'smsCode' ? 'active light-red' : '']" @click="current = 'smsCode'">验证码登录
 				</view>
 				<view class="ml-30" :class="[current === 'pwd' ? 'active light-red' : '']" @click="current = 'pwd'">密码登录
 				</view>
-			</view>
+			</view> -->
 			<view class="info flex align-center px-24 py-28 br12 mt-40" v-if="current === 'smsCode'">
 				<view class="font28 dull-grey mr-24">手机号</view>
 				<input type="text" v-model="loginForm.phone" placeholder="请输入手机号" />
@@ -186,12 +190,13 @@
 			</view>
 			<view class="info flex align-center px-24 py-28 br12 mt-20" v-if="current === 'smsCode'">
 				<view class="font28 dull-grey mr-24">验证码</view>
-				<input type="text" v-model="loginForm.code" placeholder="请输入验证码" style="width: 380rpx" />
-				<view class="dull-red font28 font400 whitespace-nowrap" @click="sendCode" v-if="!isSendCheckCode">发送验证码
+				<input type="text" v-model="loginForm.code" placeholder="请输入验证码" style="width: 350rpx" />
+				<view class="dull-blue font28 font400 whitespace-nowrap" @click="sendCode" v-if="!isSendCheckCode">发送验证码
 				</view>
-				<view v-else class="ml-50">{{ countdownNumber }}s</view>
+				<view v-else class="ml-50">再次获取({{ countdownNumber }})</view>
 			</view>
-			<button class="pwd-btn mt-40" @click="handleLogin">登录</button>
+			<button class="pwd-btn mt-40" @click="handleLogin">登录/注册</button>
+			<button class="wx-btn mt-20" @click="handleLogin">一键登录</button>
 		</view>
 		<DragCheck :visiable="dragCheckShow" title="人工验证" minTitle="滑动滑块，使图片显示角度为正" image="/static/logo.png"
 			icon="/static/images/icon/drag-check.png" :maskClick="maskClick" @update:visible="dragCheckShow = $event"
@@ -202,14 +207,17 @@
 <style lang="scss" scoped>
 	.login {
 		height: 100vh;
+		background: #EDEDED;
+		overflow: hidden;
 
 		.active {
 			text-decoration: underline;
 		}
 
 		.logo {
-			width: 400rpx;
-			height: 400rpx;
+			// width: 375rpx;
+			width: 100%;
+			height: 240px;
 			margin: auto;
 		}
 

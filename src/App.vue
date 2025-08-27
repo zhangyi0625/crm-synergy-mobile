@@ -46,6 +46,8 @@
 				isSend(loginRes.code)
 			}
 		})
+		// 隐藏底部导航
+		uni.hideTabBar();
 	});
 	onHide(() => {
 		console.log("App Hide");
@@ -57,7 +59,7 @@
 			authStore.setToken(dataOptions.value.accessToken)
 			authStore.getProfile()
 		} else {
-			router.push('/pages/login/index')
+			// router.push('/pages/login/index')
 		}
 	})
 </script>
