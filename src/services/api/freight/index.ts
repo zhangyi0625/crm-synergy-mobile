@@ -6,7 +6,7 @@ import { request } from "@/utils/http";
  * @returns
  */
 export function getSearchRecent() {
-	return request.Get("/api/app/my/searchPortList");
+  return request.Get("/api/app/my/searchPortList");
 }
 
 /**
@@ -15,7 +15,7 @@ export function getSearchRecent() {
  * @returns
  */
 export function getAreaList() {
-	return request.Get("/api/base/route/list", {});
+  return request.Get("/api/base/route/list", {});
 }
 
 /**
@@ -23,10 +23,10 @@ export function getAreaList() {
  * @param {*} params
  * @returns
  */
-export function getRecommendByArea(params : any) {
-	return request.Get("/api/customer/product/suggested/zdp/page", {
-		params: params,
-	});
+export function getRecommendByArea(params: any) {
+  return request.Get("/api/customer/product/suggested/zdp/page", {
+    params: params,
+  });
 }
 
 /**
@@ -34,8 +34,8 @@ export function getRecommendByArea(params : any) {
  * @param {*} params
  * @returns
  */
-export function getLocationList(params : Partial<locationPort>) {
-	return request.Get("/api/app/base/port/list", { params: params });
+export function getLocationList(params: Partial<locationPort>) {
+  return request.Get("/api/app/base/port/list", { params: params });
 }
 
 /**
@@ -44,7 +44,7 @@ export function getLocationList(params : Partial<locationPort>) {
  * @returns
  */
 export function getCarrierList() {
-	return request.Get("/api/base/carrier/list");
+  return request.Get("/api/base/carrier/list");
 }
 
 /**
@@ -52,8 +52,8 @@ export function getCarrierList() {
  * @param
  * @returns
  */
-export function getFreightOptions(params : any) {
-	return request.Get("/api/app/frt/list", { params: params });
+export function getFreightOptions(params: any) {
+  return request.Get("/api/app/frt/list", { params: params });
 }
 
 /**
@@ -61,10 +61,9 @@ export function getFreightOptions(params : any) {
  * @param
  * @returns
  */
-export function getFreightDetail(id : string | number) {
-	return request.Get("/api/app/frt/detail/" + id);
+export function getFreightDetail(id: string | number) {
+  return request.Get("/api/app/frt/detail/" + id);
 }
-
 
 /**
  * 运价查询 获取收藏港口
@@ -72,7 +71,7 @@ export function getFreightDetail(id : string | number) {
  * @returns
  */
 export function getCollectPort() {
-	return request.Get("/api/app/my/getFavoritePortList");
+  return request.Get("/api/app/my/getFavoritePortList");
 }
 
 /**
@@ -80,18 +79,17 @@ export function getCollectPort() {
  * @param
  * @returns
  */
-export function deleteCollectPort(id : string | number) {
-	return request.Delete("/api/app/my/deleteFavoritePort/" + id);
+export function deleteCollectPort(id: string | number) {
+  return request.Delete("/api/app/my/deleteFavoritePort/" + id);
 }
-
 
 /**
  * 运价查询 创建运价实时任务
  * @param
  * @returns
  */
-export function postCreateTaskFreight(data : FreightTask) {
-	return request.Post("/api/zc/createTask", data);
+export function postCreateTaskFreight(data: FreightTask) {
+  return request.Post("/api/zc/createTask", data);
 }
 
 /**
@@ -99,26 +97,28 @@ export function postCreateTaskFreight(data : FreightTask) {
  * @param
  * @returns
  */
-export function getNewFreight(taskId : string | number) {
-	return request.Get("/api/zc/taskResult/" + taskId);
+export function getNewFreight(taskId: string | number) {
+  return request.Get("/api/zc/taskResult/" + taskId);
 }
-
 
 /**
  * 运价查询 分享运价数据
  * @param
  * @returns
  */
-export function getFreightByShare(key : string | number) {
-	return request.Get("/api/app/share/freight/" + key);
+export function getFreightByShare(key: string | number) {
+  return request.Get("/api/app/share/freight/" + key);
 }
-
 
 /**
  * 运价查询 回显分享相关运价
  * @param
  * @returns
  */
-export function postFreightByShare(data : any) {
-	return request.Post("/api/app/share/freight", data);
+export function postFreightByShare(data: any) {
+  return request.Post("/api/app/share/freight", data);
+}
+
+export function getFreightCtnType() {
+  return request.Get("/api/base/ctn/page?size=100");
 }

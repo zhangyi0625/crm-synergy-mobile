@@ -111,8 +111,10 @@
 				getCtnTypePrice(i, freightDetail.value[i], ctnTypeList.value)
 			}
 		}
+		console.log(ctnTypeList.value, 'ctnTypeList.value', freightDetail.value);
 		setTimeout(() => {
 			cabinDetail.value = freightDetail.value
+			icon.value = URL + '/carrier-logo/' + cabinDetail.value.carrierCode + '.png'
 			loading.value = false
 		}, 500)
 	})
@@ -120,8 +122,7 @@
 	const getCtnTypePrice = (type : string, price : any, arr : Array<any>) => {
 		let prices = JSON.parse(price)
 		if (prices) {
-			let obj = assign({}, (isFullObject(prices.normal) ? prices.normal : {}), (isFullObject(prices.special) ? prices.special : {}))
-			ctnType.value = Object.keys(obj);
+			let obj = assign({}, (prices.normal ? prices.normal : {}), (prices.special ? prices.special : {}))
 			for (let i in obj) {
 				let index = arr.findIndex((el : any) => el.ctnType === i)
 				if (index === -1) {
@@ -164,6 +165,13 @@
 	const isCtnPrice = (type : string) => {
 		return ctnTypeList.value.filter((item : any) => item.price[type]).length > 0
 	}
+	//检查图片是否存在
+
+	const icon = ref('')
+	// 处理图片显示错误,显示默认图片
+	const handleImageError = (aitem : any) => {
+		icon.value = '/static/images/freight/carrier.png';
+	}
 </script>
 
 <template>
@@ -175,9 +183,8 @@
 			<view class="p-24 bg-neutral mx-20 mt-20 br12">
 				<view class="flex align-center flex-between">
 					<view class="flex align-center">
-						<img v-if="cabinDetail.carrierCode"
-							:src="URL + '/carrier-logo/' + cabinDetail.carrierCode + '.png'" class="w-68 h-68" />
-						<view class="flex flex-column font24 ml-12">
+						<image v-if="cabinDetail.carrierCode" @error="handleImageError" :src="icon" class="w-68 h-68" />
+						<view class=" flex flex-column font24 ml-12">
 							<view class="font-bold">{{ cabinDetail.carrierCode }}</view>
 							<view class="font24 grey">最近更新：{{ cabinDetail.modified }}</view>
 						</view>
@@ -291,7 +298,7 @@
 					</view>
 					<view class="flex flex-column mt-28" v-for="(item,index) in cabinDetail.localPriceInfo"
 						:key="index">
-						<view>{{item.name}}</view>
+						<view>{{item.name}}:{{item.nameEn}}</view>
 						<view class="flex align-center flex-between">
 							<view class="light-grey">{{item.currency}}/{{item.qtyType === 'BL' ? '票' :'箱型'}}</view>
 							<view>{{item.qtyType === 'BL' ? item.price : getRMBPrice(JSON.parse(item.ctnPrice))}}</view>

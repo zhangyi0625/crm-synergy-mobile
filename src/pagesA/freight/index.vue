@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	import { getCarrierList, getFreightByShare, getFreightOptions, getNewFreight, postCreateTaskFreight, postFreightByShare } from "@/services/api/freight";
+	import { getFreightCtnType, getCarrierList, getFreightByShare, getFreightOptions, getNewFreight, postCreateTaskFreight, postFreightByShare } from "@/services/api/freight";
 	import { onLoad, onShareAppMessage, onShareTimeline } from "@dcloudio/uni-app";
 	import { invalidateCache, useRequest } from "alova";
 	import { reactive, ref, watchEffect } from "vue";
@@ -99,6 +99,7 @@
 		await init(info)
 	})
 
+
 	const init = (info : any) => {
 		let { freightParam,
 			shareMsg,
@@ -164,10 +165,27 @@
 		}
 		freightParams.por && freightParams.fnd && isSend()
 		freightParams.por && freightParams.fnd && invalidateCache(getFreightOptions(freightParams))
+		// ctnSortPrice = []
+		// setTimeout(() => {
+		customCtnType.value.results && customCtnType.value.results.map((item : any) => {
+			if (item.isDefault) {
+				ctnSortPrices.value.push({
+					label: item.code,
+					value: 'CTN' + item.code
+				})
+			}
+		})
+		console.log(ctnSortPrices.value, customCtnType.value);
+		// }, 500)
 	});
+	const ctnSortPrices = ref([] as any)
 
 	// 船公司数据
 	const { data: carrierList } : any = useRequest(getCarrierList(), {
+		initialData: [],
+	});
+
+	const { data: customCtnType } : any = useRequest(getFreightCtnType(), {
 		initialData: [],
 	});
 
@@ -372,7 +390,7 @@
 				<view class="absolute priceModal" v-if="index === 1 && priceCtnShow && current === index">
 					<view class="priceModal-title relative"></view>
 					<view class="priceModal-content bg-neutral br8">
-						<view v-for="(ctn, ctnIndex) in ctnSortPrice" :key="ctnIndex"
+						<view v-for="(ctn, ctnIndex) in ctnSortPrices" :key="ctnIndex"
 							class="flex flex-column px-12 font26 font400 py-24 text-center" :class="[
 		            freightParams.sort === ctn.value
 		              ? 'dull-red'
@@ -392,13 +410,14 @@
 			<u-tabs :list="TABS" v-model="tabIndex" active-color="#EE2233" @change="tabChange"></u-tabs>
 		</view>
 		<FreightTable v-if="isEmpty(freightNewData)" :data="freightNewData" :isSort="freightParams.sort"
-			:isRoute="!locationInfo" @refresh="carrierRefresh" @jumpEither="jumpEither" @openShrink="openShrink" />
+			:isRoute="!locationInfo" :customCtnType="customCtnType" @refresh="carrierRefresh" @jumpEither="jumpEither"
+			@openShrink="openShrink" />
 		<view v-else style="margin: 250px auto;">
 			<u-empty mode="data"></u-empty>
 		</view>s
 		<!-- 过滤条件 -->
 		<u-popup v-model="filterModalShow" mode="top" :custom-style="{ backgroundColor: '#F5F7FA' }">
-			<view class="py-32 px-24 bg-neutral font-bold">
+			<view class="py-32 px-24 bg-neutral font-bold" style="overflow-y: scroll;max-height: 300px;">
 				<view class="mb-20">船公司</view>
 				<view class="flex align-center flex-wrap font28 font400 grid-4-1fr">
 					<view v-for="item in carrierList" :key="item.code" @click="changeFilter(item, 'carrier')"
