@@ -2,12 +2,12 @@
 	import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
 	import { useAuthStore } from "@/state/modules/auth";
 	import { useRequest } from "alova";
-	import { refreshToken } from "./services/api/auth";
+	// import { refreshToken } from "./services/api/auth";
 	import { useRouter } from "uni-mini-router";
 
 	const router = useRouter()
 
-	const { data: dataOptions, send: isSend, onSuccess: onSuccess } : any = useRequest((loginRes) => refreshToken({ jsCode: loginRes }), { immediate: false });
+	// const { data: dataOptions, send: isSend, onSuccess: onSuccess } : any = useRequest((loginRes) => refreshToken({ jsCode: loginRes }), { immediate: false });
 	onLaunch(() => {
 		console.log("App Launch");
 		const updateManager = uni.getUpdateManager();
@@ -43,7 +43,7 @@
 		uni.login({
 			provider: "weixin", //使用微信登录
 			success: function (loginRes) {
-				isSend(loginRes.code)
+				// isSend(loginRes.code)
 			}
 		})
 		// 隐藏底部导航
@@ -53,15 +53,15 @@
 		console.log("App Hide");
 	});
 
-	onSuccess(() => {
-		const authStore = useAuthStore();
-		if (dataOptions.value.status) {
-			authStore.setToken(dataOptions.value.accessToken)
-			authStore.getProfile()
-		} else {
-			// router.push('/pages/login/index')
-		}
-	})
+	// onSuccess(() => {
+	// 	const authStore = useAuthStore();
+	// 	if (dataOptions.value.status) {
+	// 		authStore.setToken(dataOptions.value.accessToken)
+	// 		authStore.getProfile()
+	// 	} else {
+	// 		router.push('/pages/login/index')
+	// 	}
+	// })
 </script>
 <style lang="scss">
 	@import "@/assets/main.scss";

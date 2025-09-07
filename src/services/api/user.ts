@@ -1,59 +1,64 @@
-import { request } from '@/utils/http';
+import { request } from "@/utils/http";
 
 /**
  * 获取用户信息
  */
 export function getUserInfo() {
-	return request.Get('/api/app/my/getInfo');
+  return request.Get("/api/app/my/getInfo");
 }
 
+/**
+ * 获取省市区信息
+ */
+export function getCityInfo() {
+  return request.Get("/business/area");
+}
 
 /**
  * 获取字典数据
  */
-export function getDictByTag(dictName : string) {
-	return request.Get('/api/system/dict/class/getData/' + dictName);
+export function getDictByTag(dictName: string) {
+  return request.Get("/api/system/dict/class/getData/" + dictName);
 }
 
 /**
  * 获取系统公告数据
  */
 export function getSysNotice() {
-	return request.Get('/api/message/notice/getValidList');
+  return request.Get("/api/message/notice/getValidList");
 }
-
 
 /**
  * 修改密码获取验证码
  */
 export function getEditPwdByCode() {
-	return request.Get('/api/app/my/phoneCode');
+  return request.Get("/api/app/my/phoneCode");
 }
 
 /**
  * 修改密码
  */
-export function postEditPwd(data : EditPassWord) {
-	return request.Post('/api/app/my/changePwd', data);
+export function postEditPwd(data: EditPassWord) {
+  return request.Post("/api/app/my/changePwd", data);
 }
 
 /**
  * 修改密码
  */
-export function putAvatar(data : any) {
-	return request.Post('/api/app/my/updateAvatar', data);
+export function putAvatar(data: any) {
+  return request.Post("/api/app/my/updateAvatar", data);
 }
 
 /**
  * 获取快速报价
  */
-export function getQuotation(id : string | number) {
-	return request.Get('/api/app/frt/getQuotationTemplate/' + id);
+export function getQuotation(id: string | number) {
+  return request.Get("/api/app/frt/getQuotationTemplate/" + id);
 }
 
 /**
  * 保存报价单
  */
-export function postQuotation(data : any) {
-	return request.Post('/api/app/frt/saveQuotation', data);
+export function postQuotation(data: any) {
+  return request.Post("/api/app/frt/saveQuotation", data);
 }

@@ -14,6 +14,14 @@
 	margin: 0 auto;
 }
 
+.overflow-hidden {
+	overflow: hidden;
+}
+
+.overflow-auto {
+	overflow: auto;
+}
+
 
 .p-48 {
 	padding: 48rpx;
@@ -289,6 +297,14 @@
 	margin-bottom: 10rpx;
 }
 
+.mt-80 {
+	margin-top: 80rpx;
+}
+
+.mt-72 {
+	margin-top: 72rpx;
+}
+
 .mt-50 {
 	margin-top: 50rpx;
 }
@@ -359,6 +375,10 @@
 
 .mr-5 {
 	margin-right: 5rpx;
+}
+
+.mb-80 {
+	margin-bottom: 80rpx;
 }
 
 .mb-40 {

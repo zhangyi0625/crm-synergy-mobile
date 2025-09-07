@@ -1,74 +1,35 @@
 <script lang="ts" setup>
 	import { ref } from 'vue';
 	import { useRouter } from "uni-mini-router";
+	import { invalidateCache, useRequest } from "alova";
+	import { postEnquiry, getAllProduct } from '@/services/api/enquiry';
+	import { ProductType } from '@/enums/freight';
+	import { ProductsType } from '@/services/model/enquiry';
 
 	const router = useRouter()
 
 
-	const list = ref([
-		{
-			"id": "1957641228514246658",
-			"createTime": "2025-08-19 11:10:15",
-			"createId": "1",
-			"createName": "管理员",
-			"updateTime": "2025-08-19 11:10:15",
-			"updateId": "1",
-			"updateName": "管理员",
-			"projectId": "1955116873741856769",
-			"projectSupplierId": "1957277777942085634",
-			"productName": "60227 IEC01(BV)-450/750V-2.5",
-			"productModel": "60227 IEC01(BV)-450",
-			"productSpec": "750V-2.5",
-			"productUnit": "米",
-			"qty": 200,
-			"price": 92,
-			"amount": 18400,
-			"adjPrice": 150.33,
-			"adjAmount": 30066
-		},
-		{
-			"id": "1957641228522635266",
-			"createTime": "2025-08-19 11:10:15",
-			"createId": "1",
-			"createName": "管理员",
-			"updateTime": "2025-08-19 11:10:15",
-			"updateId": "1",
-			"updateName": "管理员",
-			"projectId": "1955116873741856769",
-			"projectSupplierId": "1957277777942085634",
-			"productName": "BVR-450/750V-2.5",
-			"productModel": "BVR-450",
-			"productSpec": "750V-2.5",
-			"productUnit": "米",
-			"qty": 100,
-			"price": 92,
-			"amount": 9200,
-			"adjPrice": 150.33,
-			"adjAmount": 15033
-		},
-		{
-			"id": "1957641228526829570",
-			"createTime": "2025-08-19 11:10:15",
-			"createId": "1",
-			"createName": "管理员",
-			"updateTime": "2025-08-19 11:10:15",
-			"updateId": "1",
-			"updateName": "管理员",
-			"projectId": "1955116873741856769",
-			"projectSupplierId": "1957277777942085634",
-			"productName": "60227 IEC01(BV)-450/750V-4",
-			"productModel": "60227 IEC01(BV)-450",
-			"productSpec": "750V-4",
-			"productUnit": "米",
-			"qty": 60,
-			"price": 96,
-			"amount": 3960,
-			"adjPrice": 156.86,
-			"adjAmount": 9411.6
-		}
-	])
+	const list = ref<ProductsType[]>([])
 
-	const value = ref<string>('')
+	const value = ref<any>('')
+
+	const { data: productInfo, send: productSend, onSuccess: productSuccess } : any = useRequest(getAllProduct(), { immediate: true });
+	productSuccess(() => {
+		let arr = wx.getStorageSync('product') ? JSON.parse(wx.getStorageSync(('product')) as string) : []
+		productInfo.value.map((item : any) => {
+			item.productId = item.id
+			item.productName = item.name
+			item.productModel = item.model
+			item.productSpec = item.spec
+			item.productUnit = item.unit
+			item.productVolt = item.void
+			item.qty = 1
+			item.checked = arr.filter((items : ProductsType) => items.productId === item.productId).length > 0 ? true : false
+			item.id = null
+		})
+		list.value = productInfo.value
+		console.log(arr, 'arr');
+	})
 
 	const radioGroupChange = () => {
 
@@ -79,7 +40,8 @@
 	}
 
 	const confirm = () => {
-		let item = list.value.filter((item) => item.productName === value.value)[0]
+		let item = list.value.filter((item) => item.checked)
+		wx.setStorageSync('product', JSON.stringify(item))
 		let pages : any = getCurrentPages();
 		let prevPage = pages[pages.length - 2];
 		uni.setStorageSync('product-item', item)
@@ -99,15 +61,18 @@
 		<view style="background: #EDEDED;" class="px-20 py-24">
 			型号-电压等级-规格（单位）
 		</view>
-		<view v-for="(item, index) in list" class="flex align-center flex-between px-20 py-30" :key="index"
-			style="border-bottom: 1px solid #F0F0F0;">
-			<view>{{item.productName}}</view>
-			<u-radio-group v-model="value" @change="radioGroupChange">
-				<u-radio :name="item.productName">
-				</u-radio>
-			</u-radio-group>
+		<view style="padding-bottom: 100px;">
+			<view v-for="(item, index) in list" class="flex align-center flex-between px-20 py-30" :key="index"
+				style="border-bottom: 1px solid #F0F0F0;">
+				<view>{{item.productName}}</view>
+				<u-checkbox-group @change="radioGroupChange">
+					<u-checkbox :name="item.productName" v-model="item.checked">
+					</u-checkbox>
+				</u-checkbox-group>
+			</view>
 		</view>
-		<view class="fixed bottom-0 w-full px-24" style="height: 148px;">
+		<view class="fixed w-full px-24"
+			style="height: 148rpx;bottom:2px;background: #FFFFFF;box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.15);">
 			<button class="pwd-btn mt-20" @click="confirm">确定</button>
 		</view>
 	</view>

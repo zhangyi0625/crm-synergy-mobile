@@ -23,8 +23,20 @@
 	width: 300rpx;
 }
 
+.w-180 {
+	width: 180rpx;
+}
+
+.w-160 {
+	width: 160rpx;
+}
+
 .w-166 {
 	width: 166rpx;
+}
+
+.w-120 {
+	width: 120rpx;
 }
 
 .w-112 {
@@ -89,6 +101,28 @@
 
 .h-280 {
 	height: 280rpx;
+}
+
+
+.h-180 {
+	height: 180rpx;
+}
+
+
+.min-h-280 {
+	height: 280rpx;
+}
+
+.min-h-340 {
+	height: 340rpx;
+}
+
+.max-h-340 {
+	height: 340rpx;
+}
+
+.h-120 {
+	height: 120rpx;
 }
 
 .h-112 {

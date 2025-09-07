@@ -5,19 +5,19 @@
 	import { Toast } from "@/utils/uniapi/prompt";
 	import { useRouter } from "uni-mini-router";
 	import { useRequest } from "alova";
-	import { getVerifyCode, login, pwdLogin, refreshToken } from "@/services/api/auth";
+	import { getVerifyCode, login, profileInfo } from "@/services/api/auth";
 	import { omit } from "lodash-es";
 	import DragCheck from "@/components/Drag-check/index.vue";
 
 
-	const { data: dataOptions, send: isSend, onSuccess: onSuccess } : any = useRequest((loginRes) => refreshToken({ jsCode: loginRes }), { immediate: false });
 
 	const pageQuery = ref<Record<string, any> | undefined>(undefined);
 	onLoad((query) => {
 		uni.login({
 			provider: "weixin", //使用微信登录
 			success: function (loginRes) {
-				isSend(loginRes.code)
+				// isSend(loginRes.code)
+				console.log(loginRes, 'loggin');
 			}
 		})
 		pageQuery.value = query;
@@ -27,12 +27,6 @@
 
 	const showPassword = ref<boolean>(false)
 
-	onSuccess(() => {
-		// if (!uni.getStorageSync('AID')) {
-		// } else {
-		loginForm.aid = dataOptions.value.aid
-		// s}
-	})
 
 	const router = useRouter();
 
@@ -41,17 +35,22 @@
 	const { send: sendLogin } = useRequest((params) => login(params), {
 		immediate: false,
 	});
+
+	const { data: profileData, send: sendProfile, onSuccess: sendProfileSuccess } = useRequest(() => profileInfo(), { immediate: false })
+	sendProfileSuccess(() => {
+		console.log(profileData.value, 'profileInfo');
+		wx.setStorageSync('userInfo', profileData.value)
+	})
 	// 登录参数
 	const loginForm = reactive<LoginByVerifyCodeParams>({
 		phone: "",
-		code: "",
-		aid: ""
+		verifyCode: "",
+		// aid: ""
 	});
-	const { send: checkCodeIdentity } = useRequest(
+	const { data: checkCodeData, send: checkCodeIdentity, onSuccess: checkCodeSuccess } = useRequest(
 		(params) => getVerifyCode({ phone: params.phone }),
 		{ immediate: false }
 	);
-	const { data: pwdData, send: passWordLogin, onSuccess: pwdLoginSuccess } : any = useRequest((params) => pwdLogin(params), { immediate: false })
 	// 中国大陆手机号码正则表达式
 	const regex = /^1[3-9]\d{9}$/;
 	// 发送验证码
@@ -67,18 +66,20 @@
 	};
 	// 登录
 	const handleLogin = () => {
-		if (current.value === 'smsCode' && !loginForm.code) {
+		if (current.value === 'smsCode' && !loginForm.verifyCode) {
 			Toast("请输入验证码");
 			return;
 		} else {
 			current.value === 'smsCode' && uni.login({
 				provider: "weixin", //使用微信登录
 				success: function (loginRes) {
-					loginForm.wxCode = loginRes.code;
+					// loginForm.wxCode = loginRes.code;
 					sendLogin(loginForm).then((res : any) => {
 						console.log(res, "res");
 						Toast("登录成功", { duration: 1500 });
-						authStore.setToken(res.access_token);
+						authStore.setToken(res.token);
+						wx.setStorageSync('phone', loginForm.phone)
+						sendProfile();
 						setTimeout(() => {
 							if (unref(pageQuery)?.redirect) {
 								// 如果有存在redirect(重定向)参数，登录成功后直接跳转
@@ -113,28 +114,31 @@
 			Toast("请输入密码");
 			return;
 		} else {
-			passWordLogin(pwdForm)
+			// passWordLogin(pwdForm)
 		}
 	}
-	pwdLoginSuccess(() => {
-		Toast("登录成功", { duration: 1500 });
-		authStore.setToken(pwdData.value);
-		setTimeout(() => {
-			if (unref(pageQuery)?.redirect) {
-				// 如果有存在redirect(重定向)参数，登录成功后直接跳转
-				const params = omit(unref(pageQuery), ["redirect", "tabBar"]);
-				if (unref(pageQuery)?.tabBar) {
-					// 这里replace方法无法跳转tabbar页面故改为replaceAll
-					router.replaceAll({ name: unref(pageQuery).redirect, params });
-				} else {
-					router.replace({ name: unref(pageQuery).redirect, params });
-				}
-			} else {
-				// 不存在则返回上一页
-				router.back();
-			}
-		}, 1500);
+	checkCodeSuccess(() => {
+		console.log(checkCodeData.value);
 	})
+	// pwdLoginSuccess(() => {
+	// 	Toast("登录成功", { duration: 1500 });
+	// 	authStore.setToken(pwdData.value);
+	// 	setTimeout(() => {
+	// 		if (unref(pageQuery)?.redirect) {
+	// 			// 如果有存在redirect(重定向)参数，登录成功后直接跳转
+	// 			const params = omit(unref(pageQuery), ["redirect", "tabBar"]);
+	// 			if (unref(pageQuery)?.tabBar) {
+	// 				// 这里replace方法无法跳转tabbar页面故改为replaceAll
+	// 				router.replaceAll({ name: unref(pageQuery).redirect, params });
+	// 			} else {
+	// 				router.replace({ name: unref(pageQuery).redirect, params });
+	// 			}
+	// 		} else {
+	// 			// 不存在则返回上一页
+	// 			router.back();
+	// 		}
+	// 	}, 1500);
+	// })
 	const maskClick = ref<boolean>(true);
 	const result = (e : boolean) => {
 		dragCheckShow.value = false;
@@ -157,6 +161,15 @@
 
 	const changePassWordShow = () => {
 
+	}
+
+	const handleLoginByWx = () => {
+		Toast('暂未开放！')
+		return
+		// passWordLogin({
+		// 	loginName: 'admin',
+		// 	password: '123456'
+		// })
 	}
 </script>
 
@@ -190,13 +203,13 @@
 			</view>
 			<view class="info flex align-center px-24 py-28 br12 mt-20" v-if="current === 'smsCode'">
 				<view class="font28 dull-grey mr-24">验证码</view>
-				<input type="text" v-model="loginForm.code" placeholder="请输入验证码" style="width: 350rpx" />
+				<input type="text" v-model="loginForm.verifyCode" placeholder="请输入验证码" style="width: 300rpx" />
 				<view class="dull-blue font28 font400 whitespace-nowrap" @click="sendCode" v-if="!isSendCheckCode">发送验证码
 				</view>
-				<view v-else class="ml-50">再次获取({{ countdownNumber }})</view>
+				<view v-else class="ml-30">再次获取({{ countdownNumber }})</view>
 			</view>
 			<button class="pwd-btn mt-40" @click="handleLogin">登录/注册</button>
-			<button class="wx-btn mt-20" @click="handleLogin">一键登录</button>
+			<button class="wx-btn mt-20" @click="handleLoginByWx">一键登录</button>
 		</view>
 		<DragCheck :visiable="dragCheckShow" title="人工验证" minTitle="滑动滑块，使图片显示角度为正" image="/static/logo.png"
 			icon="/static/images/icon/drag-check.png" :maskClick="maskClick" @update:visible="dragCheckShow = $event"

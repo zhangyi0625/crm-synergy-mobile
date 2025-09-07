@@ -28,6 +28,28 @@
       }
     },
     {
+      "name": "MyEnquiry",
+      "path": "pages/myEnquiry/index",
+      "style": {
+        "navigationBarTitleText": "我发起的询价",
+        "navigationBarBackgroundColor": "#EDEDED"
+      },
+      "meta": {
+        "tabBar": true
+      }
+    },
+    {
+      "name": "MyEnquiryDetail",
+      "path": "pages/myEnquiry/detail",
+      "style": {
+        "navigationBarTitleText": "询价详情页",
+        "navigationBarBackgroundColor": "#EDEDED"
+      },
+      "meta": {
+        "tabBar": true
+      }
+    },
+    {
       "name": "EnquiryProduct",
       "path": "pages/enquiry/enquiry-product",
       "style": {

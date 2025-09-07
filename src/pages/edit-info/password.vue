@@ -5,6 +5,12 @@
 	import { useAuthStore } from "@/state/modules/auth";
 	import { getEditPwdByCode, postEditPwd } from "@/services/api/user";
 	import { Toast } from "@/utils/uniapi/prompt";
+	import { onLoad } from "@dcloudio/uni-app";
+	import { TOKEN_KEY, USER_INFO_KEY } from "@/enums/cacheEnum";
+	import { getCache, removeCache, setCache } from "@/utils/cache";
+	import { useRouter } from "uni-mini-router";
+
+	const router = useRouter()
 
 	const authStore = useAuthStore();
 
@@ -14,6 +20,10 @@
 		code: '',
 		confirmPassword: '',
 	});
+
+	onLoad(() => {
+		pwdForm.phone = wx.getStorageSync('userInfo')?.phone
+	})
 
 	const { send: checkCodeIdentity } = useRequest(getEditPwdByCode(), { immediate: false });
 
@@ -55,6 +65,17 @@
 			isSend()
 		}
 	};
+
+	const logout = () => {
+		wx.removeStorageSync('userInfo')
+		removeCache(TOKEN_KEY);
+		wx.removeStorageSync('phone');
+		setTimeout(() => {
+			router.replace({
+				path: '/pages/login/index'
+			})
+		}, 300)
+	}
 </script>
 
 <template>
@@ -65,7 +86,7 @@
 				<view class="mr-50">手机号</view>
 				<input type="text" :disabled="true" placeholder="请输入手机号" v-model="pwdForm.phone" />
 			</view>
-			<view class="flex align-center font400 font28 dull-grey px-24 py-32"
+			<!-- 			<view class="flex align-center font400 font28 dull-grey px-24 py-32"
 				style="border-bottom: 1rpx solid #f5f7fa">
 				<view class="mr-50">验证码</view>
 				<input type="text" placeholder="请输入验证码" v-model="pwdForm.code" />
@@ -79,12 +100,13 @@
 			<view class="flex align-center font400 font28 dull-grey px-24 py-32">
 				<view class="mr-50">新密码</view>
 				<input type="text" placeholder="请输入新密码" v-model="pwdForm.password" />
-			</view>
+			</view> -->
 		</view>
-		<DragCheck :visiable="dragCheckShow" title="人工验证" minTitle="滑动滑块，使图片显示角度为正" image="/static/logo.png"
+		<!-- 		<DragCheck :visiable="dragCheckShow" title="人工验证" minTitle="滑动滑块，使图片显示角度为正" image="/static/logo.png"
 			icon="/static/images/icon/drag-check.png" :maskClick="maskClick" @update:visible="dragCheckShow = $event"
 			@result="result" />
-		<button class="pwd-btn mt-40" @click="save">保存</button>
+		<button class="pwd-btn mt-40" @click="save">保存</button> -->
+		<button class="logout-btn mt-40" @click="logout">退出登陆</button>
 	</view>
 </template>
 
