@@ -62,10 +62,18 @@
 
 	const quotationsVal = ref<string>('')
 
+	const currentList = ref([] as any)
+
 	enquiryInfoSuccess(() => {
 		console.log(enquiryInfo.value, 'enquiryInfo');
 		detail.value = enquiryInfo.value
-		current.value = enquiryInfo.value.quotations.length ? enquiryInfo.value.quotations[0].id : ''
+		current.value = enquiryInfo.value.quotations.length ? enquiryInfo.value.quotations[0].supplierId : ''
+		currentList.value = enquiryInfo.value.quotations.length ? enquiryInfo.value.quotations.map((item) => {
+			return {
+				supplierId: item.supplierId,
+				supplierName: item.supplierName
+			}
+		}) : []
 		fileList.value = []
 		if (detail.value.files?.length) {
 			detail.value.files.map((item) => {
@@ -76,6 +84,9 @@
 				})
 			})
 		}
+		setTimeout(() => {
+			changeTab(current.value)
+		}, 300)
 	})
 
 	const cancelEnquiry = () => {
@@ -118,9 +129,18 @@
 	// }
 
 	confirmEnquirySuccess(() => {
-		Toast('确认报价')
-		invalidateCache(getEnquiryDetail(detail.value.id as string))
+		Toast('确认报价');
+		show.value = false;
+		invalidateCache(getEnquiryDetail(detail.value.id as string));
 	})
+
+
+	const currentItem = ref({} as any)
+	const changeTab = (item : string) => {
+		current.value = item
+		currentItem.value = detail.value.quotations.filter((items) => items.supplierId === item)[0]
+		console.log(currentItem.value, 'currentItem.value', item, currentList.value);
+	}
 </script>
 
 <template>
@@ -185,15 +205,16 @@
 				<img src="/static/home/empty.png" class="w-120 h-120 mt-80 mb-28" alt="">
 				<view class="light-grey font28 font400 mb-80">暂无报价信息</view>
 			</view>
-			<view v-else>
-				<view v-for="(item,index) in detail.quotations" class="flex flex-column" :key="index">
+			<view v-else class="">
+				<!-- <view v-for="(item,index) in detail.quotations" class="flex flex-column" :key="index">
 					<view class="flex align-center mr-10 px-24 py-24" style="border-bottom: 1px solid #F5F5F5;">
 						<view class="relative">
 							{{item.supplierName}}
 							<span :class="[current === item.id ? 'line' : '']"></span>
 						</view>
 					</view>
-					<view class="px-24 py-24" style="padding-bottom: 130rpx;">
+					<view class="px-24 py-24" style="padding-bottom: 130rpx;" :style="[current===item.id ? ''
+						: 'display:none']">
 						<view class="flex align-center flex-between">
 							报价日期
 							<view>{{formatTime(item.createTime,'Y-M-D')}}</view>
@@ -212,6 +233,36 @@
 								{{el.name}}
 								<view class="dull-grey">{{el.qty}}*{{el.amount}}</view>
 							</view>
+						</view>
+					</view>
+				</view> -->
+				<view class="flex align-center mr-10 px-24 py-24"
+					style="border-bottom: 1px solid #F5F5F5;overflow-x: scroll;">
+					<view v-for="(item,index) in currentList" :key="index">
+						<view @click="changeTab(item.supplierId)" class="relative topItem">
+							{{item.supplierName}}
+							<span :class="[current === item.supplierId ? 'line' : '']"></span>
+						</view>
+					</view>
+				</view>
+				<view class="px-24 py-24" style="padding-bottom: 130rpx;" v-if="current">
+					<view class="flex align-center flex-between">
+						报价日期
+						<view>{{formatTime(currentItem.createTime,'Y-M-D')}}</view>
+					</view>
+					<view class="flex align-center flex-between mt-24">
+						报价总金额
+						<view class="dull-red">{{currentItem.amount}}</view>
+					</view>
+					<view class="mt-24">报价清单</view>
+					<view class="flex align-center flex-between mt-24 light-grey">
+						型号-电压等级-规格（单位）
+						<view>数量*单价</view>
+					</view>
+					<view v-for="(el) in currentItem.items" :key="el.id" class="mt-24">
+						<view class="flex align-center flex-between light-grey">
+							{{el.name}}
+							<view class="dull-grey">{{el.qty}}*{{el.amount}}</view>
 						</view>
 					</view>
 				</view>
@@ -254,13 +305,19 @@
 		background: #F7F7F7;
 
 		// overflow: hidden;
-		.line {
-			position: absolute;
-			width: 42px;
-			height: 4px;
-			background: #1677FF;
-			bottom: -13px;
-			left: 10px;
+		.topItem {
+			position: relative;
+			margin-right: 25px;
+
+			.line {
+				position: absolute;
+				width: 42px;
+				height: 4px;
+				background: #1677FF;
+				bottom: -13px;
+				left: 0px;
+			}
 		}
+
 	}
 </style>

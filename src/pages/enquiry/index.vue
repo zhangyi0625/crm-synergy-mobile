@@ -11,6 +11,7 @@
 	import { getCityInfo } from "@/services/api/user";
 	// import type { EnquiryType } from '@/services/model/enquiry;
 	import { postEnquiry, getAllProduct } from '@/services/api/enquiry';
+	import { EnquiryType } from "@/services/model/enquiry";
 
 
 	interface DateType {
@@ -42,7 +43,8 @@
 		deadline: '',
 		files: [],
 		remark: '',
-		products: []
+		products: [],
+		quotations: []
 	})
 
 
@@ -114,8 +116,7 @@
 	const defaultTime = ref<string>('')
 
 	onReady(() => {
-		defaultTime.value = formatTime(new Date() as unknown as string, 'Y-M-D')
-		console.log(defaultTime.value);
+		defaultTime.value = formatTime(new Date() as unknown as string, 'Y-M-D') as string
 	})
 
 	// 页面初始化
@@ -127,7 +128,9 @@
 
 	enquirySuccess(() => {
 		Toast('发布询价成功')
-		router.replace('/pages/myEnquiry/index')
+		setTimeout(() => {
+			router.replace('/pages/myEnquiry/index')
+		}, 500)
 	})
 
 	const releaseEnquiry = () => {
@@ -140,7 +143,7 @@
 			return
 		}
 		if (!form.address) {
-			Toast('请选择城市/区县')
+			Toast('请选择交货地区')
 			return
 		}
 		if (!form.deadline) {
@@ -247,10 +250,9 @@
 				</view>
 			</view>
 			<view class="flex flex-column mt-30">
-				<view><span class="dull-red">*</span>城市/区县</view>
+				<view><span class="dull-red">*</span>交货地区</view>
 				<view class="enquiry-input mt-10 relative">
-					<input type="text" v-model="form.address" @click="cityShow = true" disabled
-						placeholder="请选择城市/区县" />
+					<input type="text" v-model="form.address" @click="cityShow = true" disabled placeholder="请选择交货地区" />
 					<img src="/static/home/right.png" class="w-12 h-24 ml-8 absolute" style="right: 12px;top: 40%;"
 						alt="">
 				</view>

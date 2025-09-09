@@ -89,7 +89,8 @@ const alovaInstance = createAlova({
         if (
           rawData.code === 401 ||
           rawData.code === 402 ||
-          rawData.code === 403
+          rawData.code === 403 ||
+          rawData.code === 410
         ) {
           checkStatus(statusCode, message || "");
           removeCache(TOKEN_KEY);

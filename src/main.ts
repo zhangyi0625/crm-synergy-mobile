@@ -4,6 +4,7 @@ import "uno.css";
 import { setupStore } from "@/state";
 import { setupRouter } from "@/router";
 import uView from "@/uni_modules/vk-uview-ui";
+import sr from "sr-sdk-wxapp";
 
 export function createApp() {
   const app = createSSRApp(App);

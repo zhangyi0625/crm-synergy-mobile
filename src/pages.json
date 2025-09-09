@@ -87,7 +87,7 @@
       "name": "Edit-Info",
       "path": "pages/edit-info/index",
       "style": {
-        "navigationBarTitleText": "修改密码",
+        "navigationBarTitleText": "用户信息",
         "navigationBarBackgroundColor": "#FFF"
       }
     },
@@ -95,7 +95,7 @@
       "name": "Password",
       "path": "pages/edit-info/password",
       "style": {
-        "navigationBarTitleText": "修改密码",
+        "navigationBarTitleText": "用户信息",
         "navigationBarBackgroundColor": "#FFF"
       }
     },

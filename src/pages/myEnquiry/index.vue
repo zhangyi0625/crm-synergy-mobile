@@ -64,6 +64,7 @@
 		invalidateCache(getAllEnquiryList(searchForm))
 	})
 
+
 	const { data: enquiryInfo, send: enquiryInfoSend, onSuccess: enquiryInfoSuccess } : any = useRequest(() => getAllEnquiryList(searchForm), { immediate: true });
 	enquiryInfoSuccess(() => {
 		console.log(enquiryInfo.value, 'enquiryInfo');

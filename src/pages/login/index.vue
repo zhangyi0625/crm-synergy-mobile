@@ -13,13 +13,13 @@
 
 	const pageQuery = ref<Record<string, any> | undefined>(undefined);
 	onLoad((query) => {
-		uni.login({
-			provider: "weixin", //使用微信登录
-			success: function (loginRes) {
-				// isSend(loginRes.code)
-				console.log(loginRes, 'loggin');
-			}
-		})
+		// uni.login({
+		// 	provider: "weixin", //使用微信登录
+		// 	success: function (loginRes) {
+		// 		// isSend(loginRes.code)
+		// 		console.log(loginRes, 'loggin');
+		// 	}
+		// })
 		pageQuery.value = query;
 	});
 
@@ -62,7 +62,20 @@
 		} else if (!regex.test(loginForm.phone)) {
 			Toast("请输入正确手机号");
 			return;
-		} else dragCheckShow.value = true;
+		} else {
+			checkCodeIdentity(loginForm).then(() => {
+				isSendCheckCode.value = true;
+				var timer = setInterval(() => {
+					countdownNumber.value--;
+					if (countdownNumber.value === 0) {
+						isSendCheckCode.value = false;
+						countdownNumber.value = 60;
+						clearInterval(timer);
+					}
+				}, 1e3);
+			});
+		}
+		// dragCheckShow.value = true;
 	};
 	// 登录
 	const handleLogin = () => {
@@ -70,34 +83,35 @@
 			Toast("请输入验证码");
 			return;
 		} else {
-			current.value === 'smsCode' && uni.login({
-				provider: "weixin", //使用微信登录
-				success: function (loginRes) {
-					// loginForm.wxCode = loginRes.code;
-					sendLogin(loginForm).then((res : any) => {
-						console.log(res, "res");
-						Toast("登录成功", { duration: 1500 });
-						authStore.setToken(res.token);
-						wx.setStorageSync('phone', loginForm.phone)
-						sendProfile();
-						setTimeout(() => {
-							if (unref(pageQuery)?.redirect) {
-								// 如果有存在redirect(重定向)参数，登录成功后直接跳转
-								const params = omit(unref(pageQuery), ["redirect", "tabBar"]);
-								if (unref(pageQuery)?.tabBar) {
-									// 这里replace方法无法跳转tabbar页面故改为replaceAll
-									router.replaceAll({ name: unref(pageQuery).redirect, params });
-								} else {
-									router.replace({ name: unref(pageQuery).redirect, params });
-								}
+			current.value === 'smsCode' &&
+				// uni.login({
+				// 	provider: "weixin", //使用微信登录
+				// 	success: function (loginRes) {
+				// loginForm.wxCode = loginRes.code;
+				sendLogin(loginForm).then((res : any) => {
+					console.log(res, "res");
+					Toast("登录成功", { duration: 1500 });
+					authStore.setToken(res.token);
+					wx.setStorageSync('phone', loginForm.phone)
+					sendProfile();
+					setTimeout(() => {
+						if (unref(pageQuery)?.redirect) {
+							// 如果有存在redirect(重定向)参数，登录成功后直接跳转
+							const params = omit(unref(pageQuery), ["redirect", "tabBar"]);
+							if (unref(pageQuery)?.tabBar) {
+								// 这里replace方法无法跳转tabbar页面故改为replaceAll
+								router.replaceAll({ name: unref(pageQuery).redirect, params });
 							} else {
-								// 不存在则返回上一页
-								router.back();
+								router.replace({ name: unref(pageQuery).redirect, params });
 							}
-						}, 1500);
-					});
-				},
-			});
+						} else {
+							// 不存在则返回上一页
+							router.back();
+						}
+					}, 1500);
+				});
+			// 	},
+			// });
 			current.value === 'pwd' && loginByPwd()
 		}
 	};
