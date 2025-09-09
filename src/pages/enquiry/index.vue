@@ -108,6 +108,7 @@
 			success(res) {
 				if (res.confirm) {
 					productList.value.splice(index, 1)
+					wx.setStorageSync('product', JSON.stringify(productList.value))
 				}
 			}
 		});
@@ -130,6 +131,7 @@
 		Toast('发布询价成功')
 		setTimeout(() => {
 			router.replace('/pages/myEnquiry/index')
+			wx.removeStorageSync('product')
 		}, 500)
 	})
 
@@ -164,7 +166,7 @@
 		form.files = fileList.value.map((item : any) => item.id)
 		form.products = productList.value
 		sendEnquiy()
-		wx.removeStorageSync('product')
+		// wx.removeStorageSync('product')
 	}
 
 	const onChange = () => {
@@ -244,7 +246,7 @@
 				</view>
 			</view>
 			<view class="flex flex-column mt-30">
-				<view><span class="dull-red">*</span>预估金额</view>
+				<view><span class="dull-red">*</span>预估金额(万元)</view>
 				<view class="enquiry-input mt-10">
 					<input type="text" v-model="form.estimatedAmount" placeholder="请输入预估金额" />
 				</view>

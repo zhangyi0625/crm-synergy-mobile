@@ -65,6 +65,7 @@
 		} else {
 			checkCodeIdentity(loginForm).then(() => {
 				isSendCheckCode.value = true;
+				Toast("手机号验证码服务暂未接通，请暂时填写0000");
 				var timer = setInterval(() => {
 					countdownNumber.value--;
 					if (countdownNumber.value === 0) {

@@ -5,16 +5,24 @@
 	import { postEnquiry, getAllProduct } from '@/services/api/enquiry';
 	import { ProductType } from '@/enums/freight';
 	import { ProductsType } from '@/services/model/enquiry';
+	import { onShow } from '@dcloudio/uni-app';
 
 	const router = useRouter()
 
 
 	const list = ref<ProductsType[]>([])
 
+	const copyList = ref<ProductType[]>([])
+
 	const value = ref<any>('')
+
+	onShow(() => {
+		invalidateCache(getAllProduct())
+	})
 
 	const { data: productInfo, send: productSend, onSuccess: productSuccess } : any = useRequest(getAllProduct(), { immediate: true });
 	productSuccess(() => {
+		keyword.value = ''
 		let arr = wx.getStorageSync('product') ? JSON.parse(wx.getStorageSync(('product')) as string) : []
 		productInfo.value.map((item : any) => {
 			item.productId = item.id
@@ -24,10 +32,11 @@
 			item.productUnit = item.unit
 			item.productVolt = item.void
 			item.qty = 1
-			item.checked = arr.filter((items : ProductsType) => items.productId === item.productId).length > 0 ? true : false
+			item.checked = arr.filter((items : ProductsType) => items.productId === item.id).length > 0 ? true : false
 			item.id = null
 		})
 		list.value = productInfo.value
+		copyList.value = productInfo.value
 		console.log(arr, 'arr');
 	})
 
@@ -44,7 +53,7 @@
 		wx.setStorageSync('product', JSON.stringify(item))
 		let pages : any = getCurrentPages();
 		let prevPage = pages[pages.length - 2];
-		uni.setStorageSync('product-item', item)
+		// uni.setStorageSync('product-item', item)
 		// router.back()
 		prevPage.$vm["form"] = item;
 		// // 返回上级页面的多级参数
@@ -53,6 +62,14 @@
 			delta: 1,
 		});
 	}
+
+	const keyword = ref<string>('')
+
+	const onSearch = () => {
+		const arr = copyList.value.filter((item) => item.productName?.includes(keyword.value) || item.pinyin?.includes(keyword.value))
+		console.log(keyword.value, 'aaaa', arr, copyList.value);
+		list.value = arr;
+	}
 </script>
 
 <template>
@@ -60,6 +77,9 @@
 	<view class="enquiry-product relative">
 		<view style="background: #EDEDED;" class="px-20 py-24">
 			型号-电压等级-规格（单位）
+		</view>
+		<view class="px-20 py-24">
+			<u-search placeholder="搜索产品" v-model="keyword" @search="onSearch"></u-search>
 		</view>
 		<view style="padding-bottom: 100px;">
 			<view v-for="(item, index) in list" class="flex align-center flex-between px-20 py-30" :key="index"
