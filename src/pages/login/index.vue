@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { reactive, ref, unref } from "vue";
+	import { reactive, ref, unref, onMounted } from "vue";
 	import { onLoad } from "@dcloudio/uni-app";
 	import { useAuthStore } from "@/state/modules/auth";
 	import { Toast } from "@/utils/uniapi/prompt";
@@ -8,6 +8,18 @@
 	import { getVerifyCode, login, profileInfo } from "@/services/api/auth";
 	import { omit } from "lodash-es";
 	import DragCheck from "@/components/Drag-check/index.vue";
+
+
+	let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd1ee5e24bed667c3&redirect_uri=https://sx.zaicang.net/customer/#/pages/callback/index&response_type=code&scope=snsapi_base&state=123#wechat_redirect'
+	const APP_ID = "wxd1ee5e24bed667c3"; // 公众号 AppID
+	const API = import.meta.env.VITE_BASE_URL.split('/api')[0];
+	const REDIRECT_URI = encodeURIComponent('https://testsx.zaicang.net/customer' + "/#/pages/callback/index"); // 需在公众号后台配置
+	const SCOPE = "snsapi_base"; // 获取用户信息权限
+
+	onMounted(() => {
+
+
+	})
 
 
 
@@ -94,6 +106,7 @@
 					Toast("登录成功", { duration: 1500 });
 					authStore.setToken(res.token);
 					wx.setStorageSync('phone', loginForm.phone)
+
 					sendProfile();
 					setTimeout(() => {
 						if (unref(pageQuery)?.redirect) {
@@ -178,31 +191,51 @@
 
 	}
 
+	const getQueryString = (name) => {
+		const url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd1ee5e24bed667c3&redirect_uri=http://localhost:5173/#/pages/login/index&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect"
+		const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		const r = url.substr(1).match(reg);
+		console.log(reg, r, url);
+		return r ? decodeURIComponent(r[2]) : null;
+	};
+
 	const handleLoginByWx = () => {
-		Toast('暂未开放！')
-		return
-		// passWordLogin({
-		// 	loginName: 'admin',
-		// 	password: '123456'
+		// const code = getQueryString("code");
+		// console.log(code, 'code');
+		// if (code) {
+
+		// }
+		// router.push("/pages/login/register/index")
+		// authStore.setToken('5fd4405be08d463ab6ed37a1d0f51a0d');
+		// uni.switchTab({
+		// 	url: '/pages/index/index'
 		// })
+		// return
+		const authUrl = `https://sx.zaicang.net/get_wxcode.html?appid=${APP_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${SCOPE}&state=123#wechat_redirect`;
+		console.log(window.location.origin, 'window.location.origin', authUrl);
+		window.location.href = authUrl;
 	}
 </script>
 
 <template>
 	<view class="login bg-neutral">
-		<view class="relative neutral font48 font-bold logo">
+		<!-- 		<view class="relative neutral font48 font-bold logo">
 			<img src="/static/login/bg.png" class="w-full h-full flex" />
 			<p class="absolute" style="top: 66px;left: 24px;">欢迎登录</p>
 			<p class="absolute" style="top: 100px;left: 24px;">销售系统客户端</p>
-		</view>
+		</view> -->
 		<view class="p-48 bg-neutral relative h-full" style="border-radius: 24px 24px 0px 0px;top: -30px;">
+			<view class="flex flex-column text-center flex-center" style="margin-bottom: 80px;">
+				<img src="/static/images/logo.png" class="logo">
+				<view class="font40 font-bold mt-10" style="color: #0E3380;">刷箱管理平台</view>
+			</view>
 			<!-- 			<view class="flex align-center font34 font-bold dull-grey">
 				<view :class="[current === 'smsCode' ? 'active light-red' : '']" @click="current = 'smsCode'">验证码登录
 				</view>
 				<view class="ml-30" :class="[current === 'pwd' ? 'active light-red' : '']" @click="current = 'pwd'">密码登录
 				</view>
 			</view> -->
-			<view class="info flex align-center px-24 py-28 br12 mt-40" v-if="current === 'smsCode'">
+			<!-- 			<view class="info flex align-center px-24 py-28 br12 mt-40" v-if="current === 'smsCode'">
 				<view class="font28 dull-grey mr-24">手机号</view>
 				<input type="text" v-model="loginForm.phone" placeholder="请输入手机号" />
 			</view>
@@ -223,12 +256,12 @@
 				</view>
 				<view v-else class="ml-30">再次获取({{ countdownNumber }})</view>
 			</view>
-			<button class="pwd-btn mt-40" @click="handleLogin">登录/注册</button>
-			<button class="wx-btn mt-20" @click="handleLoginByWx">一键登录</button>
+			<button class="pwd-btn mt-40" @click="handleLogin">登录/注册</button> -->
+			<button class="wx-btn mt-20" @click="handleLoginByWx">微信登录</button>
 		</view>
-		<DragCheck :visiable="dragCheckShow" title="人工验证" minTitle="滑动滑块，使图片显示角度为正" image="/static/logo.png"
+		<!-- 		<DragCheck :visiable="dragCheckShow" title="人工验证" minTitle="滑动滑块，使图片显示角度为正" image="/static/logo.png"
 			icon="/static/images/icon/drag-check.png" :maskClick="maskClick" @update:visible="dragCheckShow = $event"
-			@result="result" />
+			@result="result" /> -->
 	</view>
 </template>
 
@@ -244,9 +277,17 @@
 
 		.logo {
 			// width: 375rpx;
-			width: 100%;
-			height: 240px;
-			margin: auto;
+			width: 153rpx;
+			// height: 168rpx;
+			margin: 0 auto;
+			padding-top: 80px;
+		}
+
+
+		.wx-btn {
+			background: #1677FF;
+			color: #fff;
+			border-color: #1677FF;
 		}
 
 		.info {

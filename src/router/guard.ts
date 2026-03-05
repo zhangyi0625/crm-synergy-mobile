@@ -11,7 +11,6 @@ export function createRouterGuard(router: Router) {
 function createBeforeEachGuard(router: Router) {
   router.beforeEach((to, _, next) => {
     const authStore = useAuthStore();
-    console.log(authStore, authStore.isLogin, "to");
     // @ts-ignore
     if (to && to?.meta?.ignoreAuth) {
       // 如果目标路由忽略验证直接跳转
@@ -19,13 +18,12 @@ function createBeforeEachGuard(router: Router) {
     } else if (!authStore.isLogin && to && to.name !== "Login") {
       // 如果没有登录且目标路由不是登录页面则跳转到登录页面
       // 将目标路由和参数传入登录页面，登录成功后直接跳转到目标路由，优化体验
-      console.log(authStore, "zzzz");
-      next({
-        name: "Login",
-        params: { redirect: to.name!, tabBar: to?.meta?.tabBar, ...to.query },
-        navType: "push",
-      });
-      // next();
+      // next({
+      // 	name: "Login",
+      // 	params: { redirect: to.name!, tabBar: to?.meta?.tabBar, ...to.query },
+      // 	navType: "push",
+      // });
+      next();
     } else if (authStore.isLogin && to && to.name === "Login") {
       // 如果已经登录且目标页面是登录页面则跳转至首页
       next({ name: "Home", navType: "replaceAll" });

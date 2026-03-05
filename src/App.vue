@@ -47,7 +47,7 @@
 			}
 		})
 		// 隐藏底部导航
-		uni.hideTabBar();
+		// uni.hideTabBar();
 	});
 	onHide(() => {
 		console.log("App Hide");

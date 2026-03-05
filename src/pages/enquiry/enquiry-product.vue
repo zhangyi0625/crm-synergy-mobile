@@ -70,6 +70,12 @@
 		console.log(keyword.value, 'aaaa', arr, copyList.value);
 		list.value = arr;
 	}
+
+	const onClear = () => {
+		console.log('zzzzz');
+		keyword.value = ''
+		list.value = copyList.value
+	}
 </script>
 
 <template>
@@ -79,7 +85,7 @@
 			型号-电压等级-规格（单位）
 		</view>
 		<view class="px-20 py-24">
-			<u-search placeholder="搜索产品" v-model="keyword" @search="onSearch"></u-search>
+			<u-search placeholder="搜索产品" v-model="keyword" @clear="onClear" @search="onSearch"></u-search>
 		</view>
 		<view style="padding-bottom: 100px;">
 			<view v-for="(item, index) in list" class="flex align-center flex-between px-20 py-30" :key="index"

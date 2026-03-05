@@ -18,6 +18,10 @@ export function getAreaList() {
   return request.Get("/api/base/route/list", {});
 }
 
+export function getNoticeList() {
+  return request.Get("/client/advertisement/getEffectiveAnnouncement", {});
+}
+
 /**
  * 运价查询 获取航线对应舱位
  * @param {*} params

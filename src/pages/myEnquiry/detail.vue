@@ -158,7 +158,7 @@
 		<view class="px-24 py-24 bg-neutral font-400" style="color: #8C8C8C;">
 			<view class="dull-grey font32 font-bold">{{detail.title}}</view>
 			<view class="flex align-center flex-between mt-24">
-				预估金额
+				预估金额(万元)
 				<view class="dull-grey">{{detail.estimatedAmount}}</view>
 			</view>
 			<view class="flex align-center flex-between mt-24">

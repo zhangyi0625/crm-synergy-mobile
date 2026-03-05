@@ -28,7 +28,7 @@
 }
 
 .w-160 {
-	width: 160rpx;
+	min-width: 130rpx;
 }
 
 .w-166 {

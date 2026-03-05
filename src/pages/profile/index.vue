@@ -15,17 +15,21 @@
 	const URL = import.meta.env.VITE_BASE_URL;
 
 	const { data: userInfo, send: isSend, onSuccess: onSuccess } : any = useRequest(getUserInfo(), {
-		initialData: [],
+		initialData: [], immediate: false
 	})
 
 	const authStore = useAuthStore();
 	const isLogin = ref<boolean>(false);
 	const router = useRouter();
 
+	const userData = ref({})
+
 	onShow(() => {
 		isLogin.value = authStore.isLogin;
-		isLogin.value && isSend()
-		isLogin.value && invalidateCache()
+		// isLogin.value && isSend()
+		// isLogin.value && invalidateCache()
+		if (authStore.isLogin) userData.value = wx.getStorageSync('userInfo')
+		console.log(isLogin.value, authStore.isLogin);
 	});
 
 	onSuccess(() => {
@@ -85,6 +89,9 @@
 		isLogin.value = false;
 		router.push(LOGIN_PAGE);
 		userInfo.value = null
+		wx.removeStorageSync('userInfo')
+		wx.removeStorageSync('phone')
+		wx.removeStorageSync('openid')
 	};
 
 	// 登录
@@ -110,53 +117,66 @@
 
 <template>
 	<view class="profile">
-		<view class="profile-title bg-dull-red flex align-center">
+		<view class="profile-title flex align-center">
 			<img v-if="userInfo && userInfo?.avatar" :src="userInfo?.avatar" class="w-112 h-112 br-half" />
-			<img v-else src="/static/images/avatar.png" class="w-112 h-112 br-half" />
-			<view class="ml-20 font500 font40 neutral" @click="handleLogin">
+			<img v-else src="/static/images/avatar.png?timeStamp=111" class="w-112 h-112 br-half" />
+			<view class="ml-20 font500 font40 dull-grey" v-if="!isLogin" @click="handleLogin">
 				{{ !isLogin ? "登录/注册" : userInfo?.nickname }}
 			</view>
+			<view v-else class="ml-20 font500 font32 dull-grey">
+				<p>{{userData.name}}</p>
+				<p class="font28 font400">{{userData.phone}}</p>
+			</view>
 		</view>
-		<view class="profile-content px-24">
+		<view class="profile-content px-24 mt-40">
 			<view class="br16 bg-neutral">
-				<view class="flex align-center flex-between font400 font28 dull-grey px-24 py-32"
+				<view class="flex align-center font400 font28 dull-grey px-24 py-32"
 					style="border-bottom: 1rpx solid #f5f7fa">
-					<view class="">头像</view>
-					<view class="flex align-center" @click="editAvatar">
-						<view class="font26 light-grey">修改</view>
-						<img src="/static/images/icon/left.png" class="w-16 h-24 ml-12" />
+					<view class="light-grey">所在企业</view>
+					<view class="flex align-center ml-70 font26 font500">
+						{{userData.companyName}}
+						<!-- <view class="font26 light-grey">修改</view> -->
+						<!-- <img src="/static/images/icon/left.png" class="w-16 h-24 ml-12" /> -->
 					</view>
 				</view>
-				<view class="flex align-center flex-between font400 font28 dull-grey px-24 py-32"
+				<view class="flex align-center  font400 font28 dull-grey px-24 py-32"
 					style="border-bottom: 1rpx solid #f5f7fa">
-					<view class="">登录密码</view>
-					<view class="flex align-center" @click="handleJump">
-						<view class="font26 light-grey">修改密码</view>
-						<img src="/static/images/icon/left.png" class="w-16 h-24 ml-12" />
+					<view class="light-grey">所属一代</view>
+					<view class="flex align-center ml-70 font26 font500">
+						{{userData.companyName}}
+						<!-- <view class="font26 light-grey">修改密码</view> -->
+						<!-- <img src="/static/images/icon/left.png" class="w-16 h-24 ml-12" /> -->
 					</view>
 				</view>
-				<view class="flex align-center flex-between font400 font28 dull-grey px-24 py-32">
+				<!-- 				<view class="flex align-center flex-between font400 font28 dull-grey px-24 py-32">
 					<view class="">绑定手机号</view>
 					<view class="flex align-center">
 						<view class="font26 light-grey">{{userInfo?.phone}}</view>
 					</view>
-				</view>
+				</view> -->
 			</view>
-			<button @click="handleLoginOut" class="logout-btn mt-20">退出登录</button>
+			<button @click="handleLoginOut" class="logout-btn mt-20" style="border: none;">退出登录</button>
 		</view>
 	</view>
 </template>
 
 <style lang="scss" scoped>
 	.profile {
+		background: #F5F7FA;
+		overflow: hidden;
+
 		&-title {
 			height: 400rpx;
-			padding: 200rpx 0 0 32rpx;
+			padding: 20rpx 0 0 32rpx;
 		}
 
 		&-content {
-			height: 160rpx;
-			background: linear-gradient(180deg, #ee2233 0%, #f5f7fa 100%);
+			// height: 160rpx;
+			// background: linear-gradient(180deg, #ee2233 0%, #f5f7fa 100%);
+		}
+
+		::v-deep .uni-button:after {
+			border: none !important;
 		}
 	}
 </style>

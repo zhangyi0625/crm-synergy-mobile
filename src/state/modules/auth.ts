@@ -42,7 +42,7 @@ export const useAuthStore = defineStore({
       // try {
       // 	const res = useRequest(logout());
       // 	removeCache(USER_INFO_KEY);
-      // 	removeCache(TOKEN_KEY);
+      removeCache(TOKEN_KEY);
       // 	this.setToken(undefined);
       // 	this.setUserInfo(undefined)
       // 	return Promise.resolve(res);

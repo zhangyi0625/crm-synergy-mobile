@@ -10,6 +10,10 @@
 	font-weight: 400 !important;
 }
 
+.logout-btn::after {
+	border: none !important;
+}
+
 .pwd-btn {
 	background: #1677FF;
 	color: #fff;

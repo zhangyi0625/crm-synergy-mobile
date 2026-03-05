@@ -253,16 +253,16 @@
 			</view>
 			<view class="flex flex-column mt-30">
 				<view><span class="dull-red">*</span>交货地区</view>
-				<view class="enquiry-input mt-10 relative">
-					<input type="text" v-model="form.address" @click="cityShow = true" disabled placeholder="请选择交货地区" />
+				<view class="enquiry-input mt-10 relative" @click="cityShow = true">
+					<input type="text" v-model="form.address" disabled placeholder="请选择交货地区" />
 					<img src="/static/home/right.png" class="w-12 h-24 ml-8 absolute" style="right: 12px;top: 40%;"
 						alt="">
 				</view>
 			</view>
 			<view class="flex flex-column mt-30">
 				<view><span class="dull-red">*</span>截止报价日期</view>
-				<view class="enquiry-input mt-10 relative">
-					<input type="text" v-model="form.deadline" disabled @click="openDate" placeholder="请选择截止报价日期" />
+				<view class="enquiry-input mt-10 relative" @click="openDate">
+					<input type="text" v-model="form.deadline" disabled placeholder="请选择截止报价日期" />
 					<img src="/static/home/right.png" class="w-12 h-24 ml-8 absolute" style="right: 12px;top: 40%;"
 						alt="">
 				</view>
@@ -287,7 +287,7 @@
 					<view>单位：{{item.productUnit}}</view>
 					<view class="flex align-center">
 						<view style="color: #8C8C8C;" class="mr-12">采购数量</view>
-						<u-number-box :min="1" :max="100" v-model="item.qty"></u-number-box>
+						<u-number-box :min="1" v-model="item.qty"></u-number-box>
 					</view>
 				</view>
 			</view>
@@ -330,11 +330,11 @@
 
 			.line {
 				position: absolute;
-				width: 64px;
-				height: 4px;
+				width: 128rpx;
+				height: 8rpx;
 				background: #1677FF;
-				bottom: -13px;
-				left: -6px;
+				bottom: -26rpx;
+				left: -10rpx;
 			}
 		}
 
@@ -345,11 +345,11 @@
 
 		.enquiry-input {
 			width: 100%;
-			height: 44px;
-			line-height: 44px;
-			padding: 12px;
+			height: 88rpx;
+			line-height: 88rpx;
+			padding: 24rpx;
 			background: #F5F5F5;
-			border-radius: 6px;
+			border-radius: 12rpx;
 		}
 
 		// .line {

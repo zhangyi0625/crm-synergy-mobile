@@ -141,7 +141,7 @@
 			<view class="dull-grey font-bold font32 px-24 py-24 relative">
 				<view>{{item.title}}</view>
 				<view class="flex align-center flex-between font28 font400 mt-12">
-					<view>预估金额：{{item.estimatedAmount}}</view>
+					<view>预估金额(万元)：{{item.estimatedAmount}}</view>
 					<view class="flex align-center">
 						<view>报价数：{{item.quotationCount}}</view>
 						<view class="ml-20">浏览量：{{item.viewCount}}</view>

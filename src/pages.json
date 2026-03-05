@@ -17,6 +17,25 @@
       }
     },
     {
+      "name": "Task",
+      "path": "pages/task/index",
+      "style": {
+        "navigationBarTitleText": "任务",
+        "navigationBarBackgroundColor": "#EDEDED"
+      },
+      "meta": {
+        "tabBar": true
+      }
+    },
+    {
+      "name": "TaskDetail",
+      "path": "pages/task/taskDetail",
+      "style": {
+        "navigationBarTitleText": "刷箱详情",
+        "navigationBarBackgroundColor": "#EDEDED"
+      }
+    },
+    {
       "name": "Enquiry",
       "path": "pages/enquiry/index",
       "style": {
@@ -64,7 +83,7 @@
       "name": "Profile",
       "path": "pages/profile/index",
       "style": {
-        "navigationBarTitleText": "关于",
+        "navigationBarTitleText": "我的",
         "navigationStyle": "custom"
       },
       "meta": {
@@ -76,7 +95,29 @@
       "name": "Login",
       "path": "pages/login/index",
       "style": {
-        "navigationBarTitleText": "客户登录",
+        "navigationBarTitleText": "登录",
+        "navigationBarBackgroundColor": "#FFF"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "name": "Register",
+      "path": "pages/login/register/index",
+      "style": {
+        "navigationBarTitleText": "绑定手机号",
+        "navigationBarBackgroundColor": "#FFF"
+      },
+      "meta": {
+        "ignoreAuth": true
+      }
+    },
+    {
+      "name": "Callback",
+      "path": "pages/callback/index",
+      "style": {
+        "navigationBarTitleText": "",
         "navigationBarBackgroundColor": "#FFF"
       },
       "meta": {
@@ -159,6 +200,22 @@
             "navigationBarTitleText": "实时运价查询",
             "navigationBarBackgroundColor": "#FFF"
           }
+        },
+        {
+          // "name":'friehgt'
+          "path": "brushBox/addTask/index",
+          "style": {
+            "navigationBarTitleText": "任务",
+            "navigationBarBackgroundColor": "#FFF"
+          }
+        },
+        {
+          // "name":'friehgt'
+          "path": "brushBox/addTask/detail",
+          "style": {
+            "navigationBarTitleText": "任务",
+            "navigationBarBackgroundColor": "#FFF"
+          }
         }
       ]
     },
@@ -188,7 +245,7 @@
   },
   "tabBar": {
     "color": "#303133",
-    "selectedColor": "#EE2233",
+    "selectedColor": "#1677FF",
     "backgroundColor": "#FFFFFF",
     "list": [
       {
@@ -198,8 +255,14 @@
         "selectedIconPath": "static/images/tabBar/selectedHome.png"
       },
       {
+        "pagePath": "pages/task/index",
+        "text": "任务",
+        "iconPath": "static/images/tabBar/task.png",
+        "selectedIconPath": "static/images/tabBar/selectedTask.png"
+      },
+      {
         "pagePath": "pages/profile/index",
-        "text": "关于",
+        "text": "我的",
         "iconPath": "static/images/tabBar/profile.png",
         "selectedIconPath": "static/images/tabBar/selectedProfile.png"
       }

@@ -31,7 +31,7 @@ const alovaInstance = createAlova({
     mockRequest: isUseMock() ? mockAdapter : undefined, // APP 平台无法使用mock
     /* #endif */
   }),
-  timeout: 5000,
+  timeout: 15000,
   beforeRequest: (method) => {
     const authStore = useAuthStore();
     if (method.url !== "/api/app/login/wxAppCode") {
